@@ -1,0 +1,29 @@
+{
+  "mainFile": "SearchFiles.py", 
+  "use-tabs": true, 
+  "venv": "", 
+  "relatedProjects": [], 
+  "name": "search", 
+  "license": "", 
+  "url": "", 
+  "pythonPath": "python", 
+  "preExecScript": "", 
+  "additional_builtins": [], 
+  "programParams": "/media/Data/Clue_Index", 
+  "indentation": 4, 
+  "PYTHONPATH": "", 
+  "supported-extensions": [
+    ".py", 
+    ".html", 
+    ".jpg", 
+    ".png", 
+    ".ui", 
+    ".css", 
+    ".json", 
+    ".js", 
+    ".ini"
+  ], 
+  "project-type": "", 
+  "postExecScript": "", 
+  "description": ""
+}

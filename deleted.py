@@ -307,3 +307,38 @@ total = 0
 		total+= len(session)
 		aT += len(aTerms)
 	print total	, aT
+	
+	'''num = 1.0/sum(self.termTermFreq[i].values())
+				print 'Num i ',sum(self.termTermFreq[i].values()),
+				if j in self.termFreq:
+					den = self.termFreq[j]/self.termTotal
+					print 'Den i+j ' ,self.termFreq[j], self.termTotal
+				else:
+					den = 1.0/self.termTotal
+					print 'Den i-j ' , self.termTotal
+				'''
+				
+				'''num = 1.0/sum(self.termTermFreq[j].values())
+			print 'Num j ',sum(self.termTermFreq[j].values()),
+			if i in self.termFreq:
+				den = self.termFreq[i]/self.termTotal
+				print 'Den j+i ' ,self.termFreq[i], self.termTotal
+			else:
+				den = 1.0/self.termTotal
+				print 'Den j-i ' , self.termTotal
+			'''
+			
+			'''num = 1.0/self.termTermTotal
+				if j in self.termFreq:
+					den = (self.termFreq[j]*self.termFreq[i])/math.pow(self.termTotal,2)
+				else:
+					den = self.termFreq[i]/math.pow(self.termTotal,2)
+				'''
+				
+				'''num = 1.0/self.termTermTotal
+			#i isnt in db
+			if i in self.termFreq:
+				den = (self.termFreq[j]*self.termFreq[i])/math.pow(self.termTotal,2)
+			else:
+				den = self.termFreq[j]/math.pow(self.termTotal,2)
+			'''
