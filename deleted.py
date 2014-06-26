@@ -306,6 +306,7 @@ total = 0
 		print len(session), len(aTerms), aTerms, '\t'.join(session)
 		total+= len(session)
 		aT += len(aTerms)
+<<<<<<< HEAD
 	print total	, aT
 	
 	'''num = 1.0/sum(self.termTermFreq[i].values())
@@ -342,3 +343,6 @@ total = 0
 			else:
 				den = self.termFreq[j]/math.pow(self.termTotal,2)
 			'''
+=======
+	print total	, aT
+>>>>>>> origin/master

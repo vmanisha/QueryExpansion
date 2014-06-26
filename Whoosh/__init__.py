@@ -3,12 +3,20 @@
 '''
 Imports
 '''
+<<<<<<< HEAD
 
 import os
 from whoosh import scoring
 import whoosh.index as index
 from whoosh.collectors import TimeLimitCollector
 from whoosh.qparser import QueryParser,  OrGroup
+=======
+from whoosh.query import *
+
+from whoosh import scoring
+import whoosh.index as index
+from whoosh.collectors import TimeLimitCollector
+>>>>>>> origin/master
 
 '''
 Utility Functions
@@ -16,7 +24,10 @@ Utility Functions
 
 def loadIndex(indexPath,indexName):
 
+<<<<<<< HEAD
 	print 'IndexPath ',indexPath, 'IndexName ', indexName
+=======
+>>>>>>> origin/master
 	if not os.path.exists(indexPath):
 		exit()
 	ontIndex = index.open_dir(indexPath,  indexname =indexName)
@@ -30,8 +41,13 @@ def loadCollector(searcher,dlim,tlim):
 	tlc = TimeLimitCollector(c, timelimit=tlim)
 	return tlc	
 
+<<<<<<< HEAD
 def loadQueryParser(index, field):
 	return QueryParser(field, schema=index.schema,group = OrGroup)
+=======
+def loadQueryParser(index):
+	return QueryParser("content", schema=index.schema)
+>>>>>>> origin/master
 	
 def closeIndex(searcher,index):
 	try:
