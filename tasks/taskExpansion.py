@@ -46,17 +46,8 @@ class TaskExpansion:
 	def rankAndRetrieveTasks(self,query):
 	#get the terms in query
 		resultSet = {}
-		'''terms = query.split()
-		termDict = getDictFromSet(terms)
-		for term in terms:
-			if term in wordTaskDict:
-				for tid in wordTaskDict[term]:
-					#calculate the similarity
-					cosine = get_cosine(termDict, taskDict[tid])
-					#print query , taskDict[tid], cosine
-					if cosine > 0.05:
-						resultSet[tid] = cosine
-		'''			
+	
+			
 		q = self.qp.parse(query)
 		try :
 			self.searcher.search_with_collector(q, self.tlc)

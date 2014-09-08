@@ -2,6 +2,8 @@
 import sys
 from search.searchIndex import SearchIndex
 from entity.catThesExpansion import CatThesExpansion
+from entity.catWalkExpansion import CatWalkExpansion
+from entity.termVector import TermVector
 from queryLog import getSessionWithNL
 from entity.category.categoryManager import CategoryManager
 from entity.dexter import Dexter
@@ -11,14 +13,14 @@ from entity.category.coOcManager import CoOcManager
 from tasks.taskExpansion import TaskExpansion
 #from entity.category.catSubManager import CategorySubtopicManager
 from randomwalk.randomWalk import RandomWalk
-#import ast
+import ast
 #from nltk.stem import porter
 '''
 argv[1] = Session file
 argv[2] = index folder
 argv[3] = vector file / cat query folder / wikiIndex
 argv[4] = category phrase folder / topic folder / queryIndex
-argv[5] = category Co-Occurrence file
+argv[5] = category Co-Occurrence file / term vector file
 arg[6] = Task index
 '''
 def main(argv):
@@ -51,21 +53,25 @@ def main(argv):
 	
 	#expansion
 	#entExp = CatThesExpansion(dexter, catManage, ranker,catCoMan)
-	
+	#entTermVect = TermVector(argv[6])
+	#catTermVect = TermVector(argv[7])
+	#dexter  = None
+	#entExp = CatWalkExpansion(dexter, catManage, ranker,termVect)
 	
 	#taskExpansion
 	#taskExp = TaskExpansion(argv[6],ranker, 50)
 	#taskExp50 = TaskExpansion(argv[5],ranker,50)
-	#taskExp100 = TaskExpansion(argv[6],ranker,100)
-	
+	taskExp100 = TaskExpansion(argv[6],ranker,100)
+	taskInd = argv[6][argv[6].rfind('/')+1:]
 	#randomWalk
-	randWalk = RandomWalk(argv[3],argv[4],ranker)
+	#randWalk = RandomWalk(argv[3],argv[4],ranker)
+	#randWalk = RandomWalk(catManage,catCoMan,entTermVect, catTermVect,ranker)
 	
 	#result String
 	#entFile = {}
-	randFile = {}
+	#randFile = {}
 	#task50File = {}
-	#task100File = {}
+	task100File = {}
 	#porter1 = porter.PorterStemmer()
 	#resStringAll = {}
 	
@@ -84,10 +90,19 @@ def main(argv):
 	for r in xrange(1,7,2):
 		scoredTerms[r] = ranker.getTopKWithFilter(toScore,r,r+5)
 	
-	'''		
+		
+	querySpotDict = {}
+	for line in open(argv[8],'r'):
+		split = line.strip().split('\t')
+		spotDict = ast.literal_eval(split[-1])
+		query = split[0].strip()
+		querySpotDict[query] = spotDict
+		print len(querySpotDict)
+	'''	
+	
+	
 	for i, session in getSessionWithNL(argv[1]):
 		query = session[0]
-		
 		#docList = searcher.getTopDocuments(query,2000,'content','id')
 		#k =0
 		#for dtuple  in docList:
@@ -95,17 +110,19 @@ def main(argv):
 		#	k+=1
 		
 		##get max cat terms
-		randExpTerms = randWalk.expandTextWithStep(query,25,55,25)
-		#entExpTerms = entExp.expandTextWithStep(query,1,25,55,25)
-		for noT , entry in randExpTerms.iteritems():
-			if noT not in randFile:
-				randFile[noT] = open('rand_onlySession_11_'+str(noT)+'.RL1','w')
-			k=1
-			print 'RQuery\t',i,'\t',noT,'\t',query,'\t',entry
-			docList = searcher.getTopDocumentsWithExpansion(query,entry,2000,'content','id')
-			for dtuple  in docList:
-				randFile[noT].write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' ent\n')
-				k+=1
+		#randExpTerms = randWalk.expandTextWithStep(query,25,55,25)
+		'''if query in querySpotDict:
+			#entExpTerms = entExp.expandTextWithStep(query,1,25,55,25,querySpotDict[query])
+			randExpTerms = randWalk.expandTextWithStep(query,25,55,25,querySpotDict[query])
+			for noT , entry in randExpTerms.iteritems():
+				if noT not in randFile:
+					randFile[noT] = open(argv[9]+str(noT)+'.RL1','a')
+				k=1
+				print 'RWQuery\t',i,'\t',noT,'\t',query,'\t',entry
+				docList = searcher.getTopDocumentsWithExpansion(query,entry,2000,'content','id')
+				for dtuple  in docList:
+					randFile[noT].write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' ent\n')
+					k+=1
 		#entExpTerms = entExp.expandText(query,1,1)
 		#k=0
 		#docList = searcher.getTopDocumentsWithExpansion(query,entExpTerms,2000,'content','id')
@@ -114,7 +131,8 @@ def main(argv):
 			#resStringAll[noT]+=str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' probExpansion_1_'+str(noT)+'\n'
 		#	k+=1
 			
-		'''taskExpTerms50 = taskExp50.expandTextWithStep(query,0,20,5)
+		
+		taskExpTerms50 = taskExp50.expandTextWithStep(query,0,20,5)
 		for noT , entry in taskExpTerms50.iteritems():
 			if noT not in entFile:
 				task50File[noT] = open('task50_11_'+str(noT)+'.RL1','w')
@@ -124,11 +142,11 @@ def main(argv):
 				entFile[noT].write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' task1\n')
 				k+=1
 		'''
-		'''
+		
 		taskExpTerms100 = taskExp100.expandTextWithStep(query,25,55,25)
 		for noT , entry in taskExpTerms100.iteritems():
 			if noT not in task100File:
-				task100File[noT] = open('qcc_100_12_'+str(noT)+'.RL1','w')
+				task100File[noT] = open(taskInd+'_100_11_'+str(noT)+'.RL1','w')
 			k=1
 			print 'TQuery\t',i,'\t',noT,'\t',query,'\t',entry
 			docList = searcher.getTopDocumentsWithExpansion(query,entry,2000,'content','id')
@@ -145,7 +163,8 @@ def main(argv):
 		
 		#randExpTerms = randWalk.expandText(query,5)
 		
-		'''k=0
+		
+		k=0
 		docList = searcher.getTopDocumentsWithExpansion(query,randExpTerms,2000,'content','id')
 		for dtuple  in docList:
 			resString4+=str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' texpansion_1_5\n'
@@ -157,11 +176,11 @@ def main(argv):
 	#	oFile2 = open('probExp_11_'+str(entry)+'.RL1','w')
 	#	oFile2.write(string)
 	#oFile1.close()
-	for entry, fileP in randFile.iteritems():
-		fileP.close()
-	
-	#for entry, fileP in task100File.iteritems():
+	#for entry, fileP in randFile.iteritems():
 	#	fileP.close()
+	
+	for entry, fileP in task100File.iteritems():
+		fileP.close()
 		
 	#oFile2.close()	
 	#oFile3.close()

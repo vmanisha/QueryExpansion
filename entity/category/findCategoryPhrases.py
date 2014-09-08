@@ -88,12 +88,16 @@ def getProtEntityPhrases(fileName,outDir):
 			entityDict = ast.literal_eval(split[-1])
 			query = re.sub(SYMB, ' ',split[0]).strip()
 			#get the query
+			nquery = query
+			for match in entityDict.keys():
+				nquery = nquery.replace(match,' ')
+				
 			for match, entDict in entityDict.iteritems():
 				cats = entDict["cat"]
 				if len(cats) > 2:
 					categories = cats.split()
 					#rho = entDict["score"]
-					qrep = query.replace(match," _CAT_ ")
+					#qrep = query.replace(match," _CAT_ ")
 					for cat in categories:
 						if cat not in catQueries:
 							catQueries[cat] = {}
@@ -101,10 +105,12 @@ def getProtEntityPhrases(fileName,outDir):
 							catMatch[cat] = {}
 						#if rho > 0.00001:
 							#qsplit = qrep.strip().split('_CAT_')
-						qsplit = qrep.strip().split()
+						#qsplit = qrep.strip().split()
+						qsplit = nquery.split()
 						for qRep in qsplit:
-							qRep = porter.stem(qRep.strip())
 							if len(qRep) > 2 and qRep not in stopSet and hasAlpha(qRep):
+								qRep = porter.stem(qRep.strip())
+							
 								if qRep not in catQueries[cat]:
 									catQueries[cat][qRep] = 0.0 #{"score":0.0 }
 								#catQueries[cat][qRep]["score"] += 1.0
@@ -247,7 +253,10 @@ def getEntityPhrases(fileName,outDir):
 	
 	#print string
 		
-
+'''
+#argv[1] = input file
+#argv[2] = output dir
+'''
 def main(argv):
 	#biMeasure = nltk.collocations.BigramAssocMeasures()
 	#triMeasure = nltk.collocations.TrigramAssocMeasures()

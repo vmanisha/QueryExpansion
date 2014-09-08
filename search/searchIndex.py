@@ -104,19 +104,21 @@ def main(argv):
 	for line in open(argv[1],'r'):
 		split = line.strip().split('\t')
 		qId = split[0]
-		query = split[1]
+		lenth = int(split[1])
+		query = split[2]
 		terms = ast.literal_eval(split[-1])
-		rankr = Ranker()
-		sortedTerms = rankr.getTopK(terms, 50)
+		#rankr = Ranker()
+		#sortedTerms = rankr.getTopK(terms, 50)
 		#lenth = int(split[-1])
-		for step in xrange(0,55,5):
+		'''for step in xrange(0,55,5):
 			lenth = step
 			if step == 0:
 				lenth = 1
-		#if lenth > 0 and lenth < 60:
+		'''
+		if lenth > 0 and lenth < 60:
 			if lenth not in oFile:
 				oFile[lenth] = open(argv[3]+'_'+str(lenth)+'.RL1','w')
-			docList = searcher.getTopDocumentsWithExpansion(query,sortedTerms[:lenth],2000,'content','id')
+			docList = searcher.getTopDocumentsWithExpansion(query,terms[:lenth],2000,'content','id')
 			k = 1
 			for dtuple  in docList:
 				oFile[lenth].write(qId+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' prob\n')

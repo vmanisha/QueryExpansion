@@ -10,7 +10,24 @@ ashleelString = set (['sex','sexy','porn','horny','sexi','naked','pornstar','kis
 				'dick','penus','boobs','breasts','boob','orgasm','pregnant','masturbate','fuck','nude','topless',\
 			'testicle','fucks','tits', 'boobies','whore','erotic', 'masturbating','nipple','nipples','cock','cocks','shagging','pussy','nudist'])
 
-stopSet = set (['_CAT_','a','about','according','accordingly','after','all','also','am','an','and','any','anything','are','as','at','b','back','be','because','been','big','bring','bringing','but','by','both','can','cant','com','come','could','did','didnt','do','doing','dont','down','even','either','essentially','ever','every','first','for','from','four','get','give','go','going','gonna','good','got','had','has','hate','have','he','her','here','hes','hey','him','his','how','i','get','getting','gets','if','ill','im','in','into','is','it','its','ive','just','know','kind','kinds','let','life','like','little','look','love','made','make','man','many','may','maybe','me','mean','more','most','much','my','near','need','never','no','not','now','of','off','oh','ok','okay','on','one','only','or','other','our','out','over','people','please','read','really','right','said','say','see','six','seven','she','shes','should','slow','small','so','some','something','sorry','stop','since','sure','such','take','ten','than','that','thats','the','them','their','these','then','there','therefore','thereafter','themselves','theres','they','thing','think','this','thought','those','though','thus','through','throughout','three','till','time','to','too','todays','true','two','under','uh','up','us','until','upon','use','usually','very','want','was','way','we','well','were','what','whats','whose','whatever','whereby','when','where','wherein','which','who','while','whether','why','will','with','within','without','would','www','yeah','yes','you','your','youre','new'])
+stopSet = set (['_CAT_','a','about','according','accordingly','after','all','also','am','an','and','any','anything','are','as',\
+'at','b','back','be','because','been','big','bring','bringing','but','by','both','can',\
+'cant','com','come','could','doe','did','didnt','do','doing','dont','down','even','either',\
+'essentially','ever','every','first','for','from','four','get','give','go','going','gonna',\
+'good','got','had','has','hate','have','he','her','here','hes','hey','him','his','how','http',\
+'i','get','getting','gets','if','ill','im','in','into','is','it','its','ive','just','know',\
+'kind','kinds','let','life','like','little','look','love','made','make','man','many','may',\
+'maybe','me','mean','more','most','much','my','near','need','never','no','not','now','of',\
+'off','oh','ok','okay','on','one','only','or','other','our','out','over','put','people','please',\
+'read','really','right','said','say','see','six','seven','she','shes','should','slow',\
+'small','so','some','something','sorry','stop','since','sure','such','take','ten','than',\
+'that','thats','the','them','their','these','then','there','therefore','thereafter',\
+'themselves','theres','they','thing','think','this','thought','those','though','thus',\
+'through','throughout','three','till','time','to','too','todays','true','two','under',\
+'uh','up','us','until','upon','use','usually','very','want','was','way','we','well',\
+'were','what','whats','whose','whatever','whereby','when','where','wherein','which',\
+'who','while','whether','why','will','with','within','without','would','www','yeah',\
+'yes','you','your','youre','new'])
 
 
 #SYMB = '[.!,;-*&"\'_]'
@@ -59,9 +76,11 @@ def text_to_vector(text):
 def getNGrams(string, length):
 	split = string.split()
 	#print split, len(split), length
-	for i in range(0,len(split)+1):
-		for j in range(i+1,length+1):
-			yield ' '.join(split[i:j]), split[i:j],j-i
+	for i in range(0,len(split)):
+		for j in range(i+1,i+length+1):
+			#print i, j , length
+			if j <= len(split):
+				yield ' '.join(split[i:j]), split[i:j],j-i
 
 
 def removeFreqWords(fileName, rfreq):

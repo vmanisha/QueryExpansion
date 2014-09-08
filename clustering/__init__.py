@@ -14,9 +14,9 @@ def reduceTaskToTerms(fileName):
 				for entry , val in taskVector.iteritems():
 					taskTermDict[key][entry]=taskTermDict[key].setdefault(entry,0.0) + val + count
 			
-	
+	out = open('taskVectors.txt','w')
 	for index, tDict in taskTermDict.iteritems():
-		#print index, '\t', ' '.join('{0}:{1}'.format(x,y) for x, y in tDict.iteritems())
+		out.write(str(index)+ '\t'+ ' '.join('{0}:{1}'.format(x,y) for x, y in tDict.iteritems())+'\n')
 		print index, '\t',tDict
 
 

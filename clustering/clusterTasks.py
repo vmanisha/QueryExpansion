@@ -2,7 +2,7 @@ from ast import literal_eval
 import sys
 import math
 from utils import text_to_vector,get_cosine
-#from sklearn.decomposition import TruncatedSVD
+from sklearn.decomposition import TruncatedSVD
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction import DictVectorizer
 #from sklearn.feature_extraction.text import HashingVectorizer
@@ -124,8 +124,11 @@ def transformCorpus(tdocuments, tentities):
 	#print()
 	vec = Pipeline((('dictText',DictVectorizer()), ('tfIdf',TfidfTransformer())))
 	X2 = vec.fit_transform(tentities)
+	lsa = TruncatedSVD(1000)
+	X = lsa.fit_transform(X2 )
+	X1 = Normalizer(copy=False).fit_transform(X)
 	#X2 = Normalizer(copy=False).fit_transform(X)
-	print("n_samples: %d, n_features: %d" % X2.shape)
+	print("n_samples: %d, n_features: %d" % X.shape)
 	print()
 
 	return X1, X2
@@ -192,10 +195,10 @@ def writeDict(result, fileName):
 #on text vectors
 def clusterTasksAgglomerative(features,num):
 	#clustering = AgglomerativeClustering(n_clusters = num, affinity='cosine',linkage='average')
-	clustering = MiniBatchKMeans(n_clusters=num, init='k-means++', n_init=1,
-						 init_size=5000, batch_size=10000, verbose=True)
-	#clustering = KMeans(n_clusters=num, init='k-means++', max_iter=100, n_init=1,
-    #            verbose=True)
+	#clustering = MiniBatchKMeans(n_clusters=num, init='k-means++', n_init=1,
+	#					 init_size=5000, batch_size=10000, verbose=True)
+	clustering = KMeans(n_clusters=num, init='k-means++', max_iter=100, n_init=1,
+                verbose=True)
 	clustering.fit(features)
 	return clustering
 

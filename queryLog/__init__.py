@@ -83,18 +83,21 @@ def getQuery(filename, index):
 def parseLine(line):
 	entry = {}
 	split= line.strip().split('\t')
-	entry[USER]=int(split[UIND])
-	raw_split = re.sub(SYMB, ' ',split[QIND].lower()).split(' ')
-	entry[QUERY] = filterStopWordsFromList(raw_split)
-	entry[QTIME]= datetime.datetime.strptime(split[TIND], "%Y-%m-%d %H:%M:%S") #np.datetime64(split[2])
-	if len(split) > 3:
-		try:
-			entry[CLICKR]=int(split[CIND])
-		except Exception as err:
-			print line, err
-	entry[CLICKU]=split[CUIND].lower().strip()
-	return entry
-
+	try:
+		entry[USER]=int(split[UIND])
+		raw_split = re.sub(SYMB, ' ',split[QIND].lower()).split(' ')
+		entry[QUERY] = filterStopWordsFromList(raw_split)
+		entry[QTIME]= datetime.datetime.strptime(split[TIND], "%Y-%m-%d %H:%M:%S") #np.datetime64(split[2])
+		if len(split) > 3:
+			try:
+				entry[CLICKR]=int(split[CIND])
+			except Exception as err:
+				print line, err
+			entry[CLICKU]=split[CUIND].lower().strip()
+		return entry
+	except Exception as err:
+		
+		return {}
 
 #dont need index since new line marks the session
 def getSessionWithNL(fileName):
@@ -105,14 +108,14 @@ def getSessionWithNL(fileName):
 		line = re.sub('\s+',' ',line)
 		if len(line) < 2:
 			sid= int(session[0][0:session[0].find(' ')])
-			session[0] = session[0][session[0].find(' ')+1:]
+			session[0] = session[0][session[0].find(' ')+1:].strip()
 			yield sid, session
 			session = []
 		else:
-			session.append(line)
+			session.append(line.strip())
 	
 	sid = int(session[0][0:session[0].find(' ')])
-	session[0] = session[0][session[0].find(' ')+1:]
+	session[0] = session[0][session[0].find(' ')+1:].strip()
 	yield sid, session
 
 #get user sessions with time difference
@@ -176,14 +179,16 @@ def getSessionWithInfo(fileName,delim,timeCutoff):
 				#queryVector = []
 				currSessionString = ''
 		
-		if hasManyChars(query,raw_split,1,4,70) \
-		and hasInapWords(raw_split) and hasManyWords(raw_split,15,40) \
-		and hasAlpha(query) and hasWebsite(query):
+		if not hasManyChars(query,raw_split,1,4,70) \
+		and not hasInapWords(raw_split) and not hasManyWords(raw_split,15,40) \
+		and hasAlpha(query) and not hasWebsite(query):
 			currSession.append(entry)
 			currSessionString += str(i) +'\t' + line
 		lastTime = currTime
 		lastUser = currUser
 		lastQuery = query
+	
+	yield lastUser,i-1, currSession, currSessionString #, queryVector
 	
 	iFile.close()
 

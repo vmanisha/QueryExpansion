@@ -1,10 +1,11 @@
 import networkx as nx
 import os, sys
 import numpy as np
-from tools import *
+from utils import get_cosine, text_to_vector
+
 from sklearn.cluster import DBSCAN
 from sklearn import metrics
-from queryLog import QUERY, QTIME, CLICKU, getSessionAndInfo
+from queryLog import QUERY, QTIME, CLICKU, USER, getSessionWithInfo
 
 import argparse
 
@@ -153,8 +154,23 @@ def getComponents(wxScore,tscore):
 		return labels
 	return []
 
-def formatResults(session, jsonObject, label, cTask, sc1):
 
+def getTaskFeatures(session, cTask, sc1):
+	taskList = {}
+	for j in range(len(cTask)+1):
+		i = int(cTask[j])
+		if i not in taskList:
+			taskList[i] = {'query':{}, 'url':{},'user':0.0,'score':0.0}
+		uquery = session[j][QUERY]
+		taskList[i]['query'][uquery] = 1 if uquery  not in taskList[i] else taskList[i][uquery] + 1
+		if CLICKU in session[j]:
+			curl = session[j][CLICKU]
+			taskList[i]['url'][curl] = taskList[i]['url'].setdefault(curl, 0.0)+ 1.0
+		taskList[i]['user'] =  session[j][USER]
+		taskList[i]['score'] = sc1
+		return taskList
+		
+def formatResults(session, jsonObject, label, cTask, sc1):
 	jsonObject[label]={'score':sc1,'tasks':{}}
 	taskList = {}
 	for j in range(len(cTask)):
@@ -207,7 +223,7 @@ def compareAlgos(task1, task2, wxScore):
 	return sc1, sc2, sc3
 
 def getHTCTasks(session, thresh, sId = 1, userId = 1):
-	wxScore, jScore, featList,featString = getSessionFeatures(session,sId,user)
+	wxScore, jScore, featList,featString = getSessionFeatures(session,sId,userId)
 	htc = getHTC(jScore,wxScore,thresh, len(session))
 	sc2 = -2
 	taskDict = {}
@@ -217,7 +233,7 @@ def getHTCTasks(session, thresh, sId = 1, userId = 1):
 	return taskDict
 
 def getQCCTasks(session,thresh, sId = 1, userId = 1):
-	wxScore, jScore, featList,featString = getSessionFeatures(session,sId,user)
+	wxScore, jScore, featList,featString = getSessionFeatures(session,sId,userId)
 	qcc = getComponents(wxScore,thresh)
 	sc2 = -2
 	taskDict = {}
@@ -296,8 +312,11 @@ def main(argv):
 		#featFile = open(args.featDir+'//'+fileName,'w')
 		#sessionFile = open(args.sessDir + '//'+fileName,'w')
 		taskFile = open(args.taskDir + '//'+fileName,'w')
+		taskFeatures1 = open(args.taskDir+'//Feat1'+fileName,'w')
+		taskFeatures2 = open(args.taskDir+'//Feat2'+fileName,'w')
+		
 		#get the session features
-		for user,sId, session, sessionString in getSessionAndInfo(args.inputDir+'//'+fileName,args.inputDelim, 1500):
+		for user,sId, session, sessionString in getSessionWithInfo(args.inputDir+'//'+fileName,args.inputDelim, 1500):
 			if len(session) > 5:
 				wxScore, jScore, featList,featString = getSessionFeatures(session,sId,user)
 				#qcc
@@ -311,19 +330,22 @@ def main(argv):
 				
 				#write Tasks to file
 				taskDict = {}
-				formatResults(session,taskDict,QCC,qcc,s1)
-				formatResults(session,taskDict,HTC,htc,s2)
+				formatResults(session,taskDict,QCC,qcc,sc1)
+				formatResults(session,taskDict,HTC,htc,sc2)
 				updateStats(taskDict,stats,HTC)
 				updateStats(taskDict,stats,QCC)
 				taskFile.write(str(sId)+'\t'+str(session[0][USER])+'\t'+str(taskDict)+'\n')
+				
+				taskFeatures1.write(str(sId)+'\t'+str(getTaskFeatures(session,taskDict,qcc,sc1)))
 				#featFile.write(featString+'\n')
 				#sessionFile.write(sessionString+'\n')
+				
 			if i % 10000 == 0:
 				print 'STATS', i
 				print stats
 
 			i +=1	
-		#sessionFile.close()
+		sessionFile.close()
 		#featFile.close()
 		taskFile.close()
 	

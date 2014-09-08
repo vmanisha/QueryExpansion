@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from utils import stopSet,get_cosine, getDictFromSet
-from queryLog import hasAlpha
-from nltk import stem
+from utils import get_cosine, getDictFromSet, stopSet
 
+from nltk import stem
+from randomwalk.simpleWalk import SimpleWalk
 class CatWalkExpansion:
 	
 	def __init__(self,dext,categoryM,rnker,vectMan):
@@ -23,14 +23,13 @@ class CatWalkExpansion:
 		termSet = set(qsplit)
 		termDict = getDictFromSet(qsplit)
 		catList = self.scoreCategories(termSet,termDict,spotDict,topC)
-		terms = self.aggregateTerms(text,spotDict,topC)
+		terms = self.aggregateTerms(text,catList)
 		scoredTerms = self.ranker.getTopKWithFilter(terms,limit,limit+50)
-		
 		return scoredTerms
 		
-	def expandTextWithStep(self,text,topC,limit1,limit2,step):
-		
-		spotDict = self.dexter.tagText(text)
+	def expandTextWithStep(self,text,topC,limit1,limit2,step, spotDict = None):
+		if not spotDict:
+			spotDict = self.dexter.tagText(text)
 		if len(spotDict) == 0:
 			print 'No Entity found\t', text, spotDict
 		else:
@@ -39,7 +38,7 @@ class CatWalkExpansion:
 		termSet = set(qsplit)
 		termDict = getDictFromSet(qsplit)
 		catList = self.scoreCategories(termSet,termDict,spotDict,topC)
-		terms = self.aggregateTerms(text,spotDict,topC)
+		terms = self.aggregateTerms(text,catList)
 		scoredTerms = {}
 		for i in xrange(limit1,limit2,step):
 			if i == 0:
@@ -82,11 +81,44 @@ class CatWalkExpansion:
 		return entityCatScore
 
 
-	def aggregateTerms(self,query,querySet,entityCatScore):
+	def aggregateTerms(self,query,entityCatScore):
 		#max -- Take the terms from max category
-		termList = []
+		#weight = {}
+		tList = {}
 		for entity , catScoreList in entityCatScore.iteritems():
 			for catS in catScoreList:
-				for phrase, count in  self.catManager.getPhrases(catS[0]):
-					
-						
+				pList =  self.catManager.getPhrases(catS[0])
+				for x in pList:
+					if x[0] not in stopSet and x[0] not in query:
+						tList[x[0]] = tList.setdefault(x[0],0.0) + x[1]
+		
+		
+		#termList = list(tList.keys())		
+		print 'Term size', len(tList)
+		
+		
+		sTerm = sorted(tList.items(), reverse= True, key = lambda x : x[1])
+		sw = SimpleWalk()
+		k = len(sTerm) if len(sTerm) < 1000 else 1000
+		for i in range(0,k):
+			ivect = self.vectManager.getVector(sTerm[i][0])
+			if ivect:
+				#weight[termList[i]] = {}
+				for j in range(i+1,k):
+					jvect = self.vectManager.getVector(sTerm[j][0])
+					if jvect:
+						#print sTerm[i][0], ivect
+						#print sTerm[j][0], jvect
+						sim = get_cosine(ivect, jvect)
+						if sim > 0.001:
+							#weight[termList[i]][termList[j]] = sim
+							sw.addEdge(sTerm[i][0], sTerm[j][0], sim)		
+		
+		print 'Done graph, starting walk'
+		#return tList
+		try :
+			results = sw.walk()
+			return results
+		except :
+			return {}
+		

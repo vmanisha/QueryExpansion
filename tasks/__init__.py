@@ -35,7 +35,7 @@ def getUserVector(fileName, uIndex, qIndex):
 					userVector[entry1] = userVector.setdefault(entry1,0.0) + val
 					
 		lastUser = uId
-		
+	yield lastUser, userVector		
 
 def loadTasks(fileName):
 	taskList = {}
@@ -48,18 +48,21 @@ def loadTasks(fileName):
 		
 def main(argv):
 	taskList = loadTasks(argv[1])
-	
+	userVectFile = open('userVect.txt','w')
+	userTaskSimFile = open('userTaskSim.txt','w')
 	uSim = {}
 	for uId, termVector in getUserVector(argv[2],0,1):
 		uSim[uId] = {}
-		print uId, '\t','\t'.join('{0}\t{1}'.format(x,y) for x, y in termVector.items())
-		'''for taskid , task in taskList.iteritems():
+		userVectFile.write(str(uId)+ '\t'+'\t'.join('{0}\t{1}'.format(x,y) for x, y in termVector.items())+'\n')
+
+		for taskid , task in taskList.iteritems():
 			sim = round(get_cosine(task, termVector),5)
 			uSim[uId][taskid] = sim
 		tSort = sorted(uSim[uId].items(),reverse = True, key = lambda x : x[0])
-		print uId,'\t', '\t'.join(str(x[1]) for x in tSort)
+		userTaskSimFile.write(str(uId)+'\t'+ '\t'.join(str(x[1]) for x in tSort)+'\n')
+		
 		#print 'Check ',uId,'\t', tSort
-		'''			
+		
 
 if __name__ == '__main__':
 	main(sys.argv)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from entity.category import getCats, loadCategoryVector
-from entity.category import Category
+from entity.category.category import Category
 
 class CategoryManager:
 	
@@ -18,7 +18,7 @@ class CategoryManager:
 	def loadCategoryObject(self,cat):
 		if cat not in self.catObjDict:
 			if cat in self.catFileDict:
-				self.catObjDict[cat] = Category.Category(self.catFileDict[cat])
+				self.catObjDict[cat] = Category(self.catFileDict[cat])
 				return True
 			else:
 				return False
