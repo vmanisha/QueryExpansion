@@ -1,31 +1,32 @@
 # -*- coding: utf-8 -*-
-#from nltk.tokenize import word_tokenize
-#from nltk.collocations import BigramAssocMeasures, BigramCollocationFinder
+from nltk.tokenize import word_tokenize
+from nltk.collocations import BigramAssocMeasures, BigramCollocationFinder
 from nltk import stem
 from utils import stopSet, get_cosine,getDictFromSet
 from queryLog import hasAlpha, hasWebsite
-#from Whoosh import loadIndex, loadCollector, loadQueryParser
+from Whoosh import loadIndex, loadCollector, loadQueryParser
 from  sklearn.preprocessing import normalize
 import numpy
 import math
 import re
 
-#from whoosh.collectors import TimeLimit
+from utils import SYMBreg
+from whoosh.collectors import TimeLimit
 
 class RandomWalk:
 	
 	porter = stem.porter.PorterStemmer()
-	#biMeas = BigramAssocMeasures()
+	biMeas = BigramAssocMeasures()
 	
-	'''def __init__(self,wikiIndexDir,queryIndexDir,rnker):
+	def __init__(self,wikiIndexDir,queryIndexDir,rnker):
 		self.network  = {}
 		self.terms = set()
 		self.ranker = rnker
 		self.setSearcher(wikiIndexDir,queryIndexDir)		
-	'''
 	
-	def __init__(self,categoryM,catCoMan,entVectMan, catVectMan,rnker):
-		'''Init function for entity oriented random walk'''
+	
+	'''def __init__(self,categoryM,catCoMan,entVectMan, catVectMan,rnker):
+		'''''''Init function for entity oriented random walk'''''''
 		self.network = {}
 		self.catManager = categoryM
 		self.entVectManager = entVectMan
@@ -33,8 +34,8 @@ class RandomWalk:
 		self.catCoManager = catCoMan
 		self.ranker = rnker
 		
-	
-	'''def setSearcher(self, wikiIndexDir, queryIndexDir):
+	'''
+	def setSearcher(self, wikiIndexDir, queryIndexDir):
 		""" Setting the indexes to search for terms"""
 		self.wIndex, self.wsearcher = loadIndex(wikiIndexDir,wikiIndexDir[wikiIndexDir.rfind('/')+1:])
 		self.wtlc = loadCollector(self.wsearcher,2000,20)
@@ -44,15 +45,15 @@ class RandomWalk:
 		
 		self.qqp = loadQueryParser(self.qIndex,"session")
 		self.wqp = loadQueryParser(self.wIndex,"content")
-	'''
+	
 	
 	def clearNetwork(self):
 		self.network = {}
 		self.terms = set()
 	
-	
+	'''
 	def updateNetworkFromDict(self,query,spotDict):
-		'''Creates a network of terms using several sources'''
+		'''''''Creates a network of terms using several sources'''''''
 		#get the topmost category
 		qsplit = query.split()
 		termSet = set(qsplit)
@@ -100,7 +101,9 @@ class RandomWalk:
 					print i				
 		self.entVectManager.clear()
 		self.catVectManager.clear()
-		
+	'''
+	
+	
 	def getVectSim(self,term1, term2, vectManager):
 		ivect = vectManager.getVector(term1)
 		jvect = vectManager.getVector(term2)
@@ -141,13 +144,10 @@ class RandomWalk:
 	
 	
 		
-	'''def updateNetwork(self,query,qp,searcher,tlc,field,ntype):
+	def updateNetworkFromIndex(self,query,qp,searcher,tlc,field,ntype):
 		q = qp.parse(unicode(query))
 		totalText = ''
-		total = 0.0
-		tmin = -1000
-		tmax = 1000
-		
+			
 		try:
 			searcher.search_with_collector(q, tlc)
 		except TimeLimit:
@@ -157,11 +157,24 @@ class RandomWalk:
 		for entry in results:
 			totalText += entry[field] + ' '
 		
-		finder =  BigramCollocationFinder.from_words(word_tokenize(totalText))		
+		self.updateNetworkFromText(query,totalText,ntype)
+		
+	def updateNetworkFromText(self,query, text,ntype):		
+		
+		total = 0.0
+		tmin = -1000
+		tmax = 1000
+		
+		qsplit = query.split()
+		for entry in qsplit:
+			term = self.porter.stem(entry)
+			self.network[term] = {}
+			self.terms.add(term)
+			
+		finder =  BigramCollocationFinder.from_words(word_tokenize(text))		
 		#update the network	
 		
 		rList = finder.score_ngrams(self.biMeas.pmi)
-		
 		for rTuple in rList:
 			total+= rTuple[1]
 			if tmin > rTuple[1]:
@@ -170,17 +183,20 @@ class RandomWalk:
 				tmax = rTuple[1]
 			
 		for rTuple in sorted(rList,reverse = True , key = lambda x : x [1]):
-			if (len(self.terms) < 3000  and finder.ngram_fd[rTuple[0]] > 2) or \
+			if (len(self.terms) < 1000  and finder.ngram_fd[rTuple[0]] > 2) or \
 			((finder.ngram_fd[rTuple[0]] > 1.0 and rTuple[0][0] in query) or \
-			 (rTuple[0][1] in query and len(self.terms) < 4000)):
-			#if (len(terms) < 3000  and finder.ngram_fd[rTuple[0]] > 2) or (rTuple[0][0] in query or rTuple[0][1] in query and len(terms) < 4000):
-				a = self.porter.stem(rTuple[0][0])
-				if len(a) > 2 and hasAlpha(a) and a not in stopSet and not hasWebsite(a):
-					if a not in self.network:
-						self.network[a] = {}
-						self.terms.add(a)
-					b = self.porter.stem(rTuple[0][1])
-					if len(b) > 2 and hasAlpha(b) and b not in stopSet and not hasWebsite(b):
+			 (rTuple[0][1] in query and len(self.terms) < 1500)):
+				noSymbA = SYMBreg.sub('',rTuple[0][0])
+				noSymbB = SYMBreg.sub('',rTuple[0][1])
+						
+				if noSymbA not in stopSet and noSymbB not in stopSet:
+					a = self.porter.stem(noSymbA)
+					b = self.porter.stem(noSymbB)
+					if len(a) > 2 and hasAlpha(a) and a not in stopSet and not hasWebsite(a) \
+					and len(b) > 2 and hasAlpha(b) and b not in stopSet and not hasWebsite(b):
+						if a not in self.network:
+							self.network[a] = {}
+							self.terms.add(a)
 						if b not in self.network[a]:
 							self.network[a][b]  = {}
 							self.terms.add(b)
@@ -188,7 +204,7 @@ class RandomWalk:
 		
 		print query, ntype, len(self.terms)		
 	
-	'''
+	
 	
 	def normalizeNetworks(self):
 		for i in self.network.keys():
@@ -231,19 +247,33 @@ class RandomWalk:
 		backSmooth = 1.0/noTerms
 		
 	
-	def walk(self,query,spotDict):
+	def walk(self,query,docText=None, clickText=None,spotDict=None):
 	
-		#self.updateNetwork(query,self.wqp,self.wsearcher,self.wtlc,'content','wiki')
+	
+		if docText:
+			self.updateNetworkFromText(query,docText,'doc')
+		if clickText:
+			self.updateNetworkFromText(query,clickText,'click')
+		#self.updateNetworkFromIndex(query,self.wqp,self.wsearcher,self.wtlc,'content','wiki')
+		
+		
 		#self.updateNetwork(query,self.qqp,self.qsearcher,self.qtlc,'session','query')	
-		self.updateNetworkFromDict(query, spotDict)
+		#self.updateNetworkFromDict(query, spotDict)
 		#calculate the mixtures at two stages
 		stage1 = {}
 		stage2 = {}
 		#self.combineNetwork(1.0,stage1,totalNetwork,'stem')
-		self.combineNetwork(1,stage1,'pmi')
-		self.combineNetwork(0.60,stage2,'cat')
-		self.combineNetwork(0.40,stage2,'ent')
-
+		#self.combineNetwork(1,stage1,'pmi')
+		#self.combineNetwork(0.60,stage2,'cat')
+		#self.combineNetwork(0.40,stage2,'ent')
+		
+		#self.combineNetwork(0.3,stage1,'wiki')
+		
+		if clickText:
+			self.combineNetwork(1.0,stage2,'click')
+		if docText:
+			self.combineNetwork(0.7,stage1,'doc')
+		
 		#convert into matrix for multiplication
 		#totalDim = sorted(list(set(stage1.keys()) | set(stage2.keys())))
 		totalDim = sorted(set(stage2.keys()) | set(stage1.keys()))
@@ -251,7 +281,7 @@ class RandomWalk:
 		dim = len(totalDim)
 		if dim > 0:
 			stage1Matrix = self.toMatrix(totalDim,stage1)
-			print 'STAGE1',stage1Matrix[0],stage1Matrix.shape
+			#print 'STAGE1',stage1Matrix[0],stage1Matrix.shape
 			
 			stage2Matrix = self.toMatrix(totalDim,stage2)
 			print 'STAGE2',stage2Matrix[0],stage2Matrix.shape
@@ -263,17 +293,20 @@ class RandomWalk:
 				
 			alpha=0.80
 			#matrix = ['stage2','stage2','stage2','stage2','stage2','stage2','stage2','stage2','stage3']
-			matrix = ['stage1','stage2','stage2','stage2','stage3']
+			matrix = ['stage1','stage2','stage2','stage3']
 			totalSum = numpy.zeros((dim,dim))
-			cK = numpy.ones((dim,dim))
+			cK = None #numpy.ones((dim,dim))
+			#cK.fill(backSmooth)
 			
 			#start walk!
 			for k in range(len(matrix)):
 				print k, matrix[k]	
 				#if matrix[k] == 'stage1':
 				#	cK = numpy.dot(stage1Matrix,cK)
-				if matrix[k] == 'stage2':
-					cK = numpy.dot(stage2Matrix,cK)
+				if k == 0 and matrix[k] == 'stage1':
+					cK = stage1Matrix;
+				elif matrix[k] == 'stage2':
+					cK = numpy.dot(cK, stage2Matrix)
 				else:
 					cK = numpy.dot(cK, stage3Matrix)
 				print 'CK',cK[0]
@@ -298,7 +331,8 @@ class RandomWalk:
 				termScore[totalDim[i]] = 0.0
 				for j in qList:
 					if totalSum[i][j] > 0.0:
-						termScore[totalDim[i]] += math.log(totalSum[i][j])
+						termScore[totalDim[i]] += totalSum[i][j]
+			#print len(termScore) , termScore
 			
 			for term in terms:
 				termScore.pop(term,None)
@@ -318,7 +352,9 @@ class RandomWalk:
 		scoredTerms = self.ranker.getTopKWithFilter(terms,limit,limit+10)
 		print 'Query \t',query, '\t',scoredTerms
 		return scoredTerms
-		
+	
+	
+	
 	def expandTextWithStep(self,query, limit1,limit2,step,spotDict = None):
 		self.clearNetwork()
 		query = re.sub('\d+',' ',query)
@@ -337,5 +373,40 @@ class RandomWalk:
 				#print 'Query \t',query, '\t',i,'\t',scoredTerms[i]
 		
 		return scoredTerms
-		
 	
+	def expandLastWithSession(self,session,docText, clickText, limit):
+		#take the terms from the clicked document
+		#take the terms form top 3 documents
+		#modify the query and check again
+		print session
+		
+		queries = {}
+		self.clearNetwork()
+		query  = session[-1].lower().strip()
+		query = re.sub('\d+',' ',query)
+		query = re.sub('\s+',' ',query).strip()
+		
+		print query, len(docText), len(clickText), limit
+		
+		'''if len(docText) > 3:
+			srpTerms = self.walk(query,docText)
+			#print srpTerms
+			print 'Got srpTerms ',len(srpTerms), srpTerms
+			queries['srp']=self.ranker.getTopKWithFilter(srpTerms,limit,limit+10)
+		
+		if len(clickText) > 3:
+			clickTerms = self.walk(query,clickText)
+			#print clickTerms
+			print 'Got click ',len(clickTerms), clickTerms
+			queries['click']=self.ranker.getTopKWithFilter(clickTerms,limit,limit+10)
+		'''
+		if len(clickText) > 3 and len(docText) > 3:
+			srpClickTerms = self.walk(query,docText, clickText)
+			#print srpClickTerms
+			#print 'Got both ',len(srpClickTerms)
+			queries['srp+click']=self.ranker.getTopKWithFilter(srpClickTerms,limit,limit+10)
+		
+		print 'Query \t',query, '\t',queries
+		return queries
+	
+		

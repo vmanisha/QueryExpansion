@@ -25,10 +25,10 @@ class CoOcManager:
 		iFile.close()
 		self.coOccur.setTermTotal()
 	
-	def getPMI(self,term1, term2):
+	def getPMI(self,term1, term2,thresh):
 		#if cat not in self.catList:
 		#return 0.00001
-		return self.coOccur.getPMI(term1, term2)
+		return round(self.coOccur.getPMI(term1, term2,thresh),3);
 	
 	def getProb(self,term1,term2):
 		return self.coOccur.getProb(term1,term2)

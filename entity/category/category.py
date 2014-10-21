@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from utils import stopSet
+import ast;
 class Category:
 	
 	def __init__(self,fileName):
 		self.phrases = {}
-		phrase = False
+		'''phrase = False
 		for line in open(fileName , 'r'):
 			split = line.strip().split('\t')
 			if phrase and len(split[0]) > 2 and split[0] not in stopSet:
@@ -12,7 +13,15 @@ class Category:
 			if len(split) != 2 :
 				phrase = True
 		self.phraseCount = 1.0*sum(self.phrases.values())
-
+		'''
+		for line in open(fileName, 'r'):
+			split = line.split('\t');
+			term = split[0];
+			if term not in stopSet:
+				entDict = ast.literal_eval(split[1]);
+				self.phrases[term] = sum(entDict.values());
+		self.phraseCount = 1.0*sum(self.phrases.values());
+				
 	#returns the phrases as a set
 	def getPhraseSet(self):
 		return set(self.phrases.keys())

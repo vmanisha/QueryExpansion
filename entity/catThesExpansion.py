@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from utils import get_cosine, getDictFromSet,stopSet
-from queryLog import hasAlpha
+from utils import get_cosine, getDictFromSet,stopSet;
+from queryLog import hasAlpha;
 
-from nltk import stem
+from nltk import stem;
+from utils import normalize;
 
 '''
 Import the query Index
@@ -35,9 +36,56 @@ class CatThesExpansion:
 		terms = self.aggregateTerms(text,termSet,catList)
 		#terms = self.aggregateTermsFromTopics(text,spotDict,topC)
 		scoredTerms = self.ranker.getTopKWithFilter(terms,limit,limit+50)
-		
 		return scoredTerms
 		
+	def expandTextWithSubClusters(self, qText,cDocText, topC, limit):
+		
+		spotDict = self.dexter.tagText(qText);
+		
+		if len(spotDict) == 0:
+			print 'No Entitity Found\t', qText;
+		else:
+			qSplit = qText.split();
+			qSet = set(qSplit);
+			qDict = getDictFromSet(qSplit);
+			#Rank cateogories
+			catList = self.scoreCategories(qSet,qDict,spotDict,topC);
+			print qText,'CatList ',catList;
+			#Rank subclusters
+			termSet = self.aggregateTermsFromSubclusters(qSet,catList, limit+100);
+			print len(termSet);
+			#Rank terms
+			scoredTerms = self.ranker.getTopKWithFilter(termSet,limit,limit+50)
+			return scoredTerms
+			#send results
+		return {};
+			
+	def expandTextWithStepAndSubcluster(self, qText,cDocText, topC, limit1, limit2, step):
+		spotDict = self.dexter.tagText(qText);
+		scoredTerms = {};
+		if len(spotDict) == 0:
+			print 'No Entitity Found\t', qText;
+		else:
+			qSplit = qText.split();
+			qSet = set(qSplit);
+			qDict = getDictFromSet(qSplit);
+			#Rank cateogories
+			catList = self.scoreCategories(qSet,qDict,spotDict,topC);
+			print qText,'CatList ',catList;
+			#Rank subclusters
+			termSet = self.aggregateTermsFromSubclusters(qSet,catList, limit2+50);
+			print len(termSet);
+			
+			for i in xrange(limit1,limit2,step):
+				if i == 0:
+					scoredTerms[i] = self.ranker.getTopKWithFilter(termSet,i+1,i+50);
+				else:
+					scoredTerms[i] = self.ranker.getTopKWithFilter(termSet,i,i+50);
+				
+		return scoredTerms;
+		
+			#Rank terms
+			
 	def expandTextWithStep(self,text,topC,limit1,limit2,step):
 		
 		spotDict = self.dexter.tagText(text)
@@ -106,6 +154,18 @@ class CatThesExpansion:
 			
 		return termDict
 	
+	def aggregateTermsForCategory(self,query,querySet,category):
+		termDict = {}
+		for phrase, count in  self.catManager.getPhrases(category):
+			if phrase not in query:
+				coOcScore = self.getCoOcScore(phrase,querySet)
+				#print phrase, coOcScore, count, catS[1],catTotal
+				termDict[phrase] = termDict.setdefault(phrase,0.0) + count*coOcScore
+				#(0.75*(count*catS[1])+0.25*(coOcScore*catS[1]))
+			
+		return termDict
+		
+	
 	def scoreCategories(self,querySet,queryDict,spotDict, k):
 		entityCatScore = {}
 		for entry, eDict in spotDict.iteritems():
@@ -137,6 +197,44 @@ class CatThesExpansion:
 			
 			print 'Query\t',querySet, ' Entity\t', entry, entityCatScore[entry]
 		return entityCatScore
+	
+	def aggregateTermsFromSubclusters(self,querySet,entityCatScore, limit):
+		sScore = {};
+		sPhrases = {};
+					
+		for entity, catScoreList in entityCatScore.items():
+			#get the subclusters
+			for catS in catScoreList:
+				print catS[0];
+				for centry  in self.catManager.getSubclusters(catS[0]):
+					cid= centry[0];
+					cluster = centry[1];
+					key = catS[0]+'_'+str(cid);
+					phraseScore = {};
+					for phrase, count in cluster.items():
+						coOcScore = self.getCoOcScore(phrase,querySet)
+						#print phrase, coOcScore, count, catS[1],catTotal
+						phraseScore[phrase] = coOcScore;
+					phraseScore = normalize(phraseScore);
+					for phrase,count in cluster.items():
+						phraseScore[phrase] *= count;
+					sScore[key] = sum(phraseScore.values());
+					sPhrases[key] = phraseScore;
+					print key, sum(phraseScore.values()),phraseScore ;
+				
+		#sort the subclusters with scores, and combine the phrases
+		sortS = sorted(sScore.items(), reverse=True, key = lambda x: x[1]);
+		toReturn = {};
+		for entry in sortS:
+			if len(toReturn) > limit:
+				break;
+			for phrase, count in sPhrases[entry[0]]:
+				if phrase not in toReturn:
+					toReturn[phrase] = 0.0
+				toReturn[phrase]+=count;
+				
+		return toReturn;
+		
 			
 	def getCoOcScore(self,phrase,querySet):
 		total = 0.0
@@ -146,10 +244,23 @@ class CatThesExpansion:
 			qRep = self.porter.stem(entry.strip())
 			#get PMI
 			if len(qRep) > 2 and qRep not in stopSet and hasAlpha(qRep):
-				total += self.catCoMan.getPMI(phrase, qRep)
+				total += self.catCoMan.getPMI(phrase, qRep,10)
 				tCount += 1.0
-		return total/tCount
+		if tCount > 0:
+			return total/tCount
+		return 0
 			
-
 	
-	
+	def getTopEntityCategoryTerms(self,query,topC,limit):
+		entCatTerms = {}
+		spotDict = self.dexter.tagText(query)
+		qsplit = query.split()
+		termSet = set(qsplit)
+		termDict = getDictFromSet(qsplit)
+		catList = self.scoreCategories(termSet,termDict,spotDict,topC)
+		for entity, cats in catList.iteritems():
+			entCatTerms[entity] = {}
+			for cat, score in cats:
+				terms = self.aggregateTermsForCategory(query,termSet,cat)
+				entCatTerms[entity][cat] = self.ranker.getTopKWithFilter(terms,limit,limit+50)
+		return entCatTerms

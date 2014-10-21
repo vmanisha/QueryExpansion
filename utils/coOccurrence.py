@@ -78,7 +78,7 @@ class CoOccurrence:
 	def setTermTotal(self):
 		self.termTotal = sum(self.termFreq.values())
 		
-	def getPMI(self,term1, term2):
+	def getPMI(self,term1, term2,thresh):
 		#dont know the
 		i , j = self.orderTerms(term1,term2)
 		hasi = i in self.termTermFreq
@@ -87,6 +87,8 @@ class CoOccurrence:
 		#print term1, term2,
 		if hasi:
 			if j in self.termTermFreq[i]:
+				if self.termTermFreq[i][j] < thresh:
+					return 0.0
 				num = self.termTermFreq[i][j]/self.termTermTotal
 				den = (self.termFreq[i]/self.termTotal)*(self.termFreq[j]/self.termTotal)
 				#print 'Num ij ',self.termTermFreq[i][j],self.termTermTotal,
@@ -122,7 +124,7 @@ class CoOccurrence:
 			word1 = self.idTerm[i]
 			for j,freq in eDict.iteritems():
 				word2 = self.idTerm[j]
-				oFile.write(word1+' '+word2+' '+str(freq))
+				oFile.write(word1+' '+word2+' '+str(freq)+'\n')
 		oFile.close()
 
 	def toStringList(self):	
@@ -134,7 +136,22 @@ class CoOccurrence:
 				word2 = self.idTerm[j]
 				sList.append(word1+' '+word2+' '+str(freq))
 		return sList
+	
+	
+	def getNeighbours(self, term):
+		tid = None
+		if term in self.termId:
+			tid = self.termId[term]
 		
+		if tid in self.termTermFreq:
+			neigh = self.termTermFreq[tid]
+			toReturn = []
+			for entry in neigh:
+				toReturn.append(self.idTerm[entry])
+			return toReturn;
+		
+		return None;
+	
 	#def loadTermCo(self,fileName):
 	
 		

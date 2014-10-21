@@ -10,6 +10,7 @@ from org.apache.lucene.index import DirectoryReader
 from org.apache.lucene.queryparser.classic import QueryParser
 from org.apache.lucene.store import SimpleFSDirectory
 from org.apache.lucene.search import IndexSearcher
+from org.apache.lucene.index import IndexReader
 from org.apache.lucene.search.similarities import BM25Similarity
 from org.apache.lucene.util import Version
 #from lucene.collections import JavaSet
@@ -37,17 +38,20 @@ class SearchIndex:
 		for entry in stopSet:
 			sSet.add(entry)
 		self.stopSet = sSet
-		self.analyzer = EnglishAnalyzer(Version.LUCENE_CURRENT,sSet)
+		#self.analyzer = EnglishAnalyzer(Version.LUCENE_CURRENT,sSet)
+		self.analyzer = EnglishAnalyzer(Version.LUCENE_CURRENT)
 	
 	def getTopDocuments(self,query,limit,sfield,dfield):
 		queryObj = QueryParser(Version.LUCENE_CURRENT,sfield,
                             self.analyzer).parse(query)
+		print queryObj
 		scoreDocs = self.searcher.search(queryObj, limit).scoreDocs
 		print "%s total matching documents." % len(scoreDocs)
 		self.results = scoreDocs
 		rresults = []
 		i = 0
-		
+		#reader = self.searcher.getIndexReader();
+		#print type(reader)
 		for scoreDoc in scoreDocs:
 			doc = self.searcher.doc(scoreDoc.doc)
 			rresults.append((doc.get(dfield),scoreDoc.score))
@@ -100,13 +104,18 @@ class SearchIndex:
 def main(argv):
 	searcher = SearchIndex(argv[2])
 	searcher.initializeAnalyzer()
-	oFile = {}
+	#oFile = {}
 	for line in open(argv[1],'r'):
-		split = line.strip().split('\t')
-		qId = split[0]
-		lenth = int(split[1])
-		query = split[2]
-		terms = ast.literal_eval(split[-1])
+		split = line.strip().split(' ')
+		did = split[2]
+		print did
+		for entry in searcher.getTopDocuments(did, 10, 'id','title'):
+			print entry
+		break;
+		#qId = split[0]
+		#lenth = int(split[1])
+		#query = split[2]
+		#terms = ast.literal_eval(split[-1])
 		#rankr = Ranker()
 		#sortedTerms = rankr.getTopK(terms, 50)
 		#lenth = int(split[-1])
@@ -115,7 +124,7 @@ def main(argv):
 			if step == 0:
 				lenth = 1
 		'''
-		if lenth > 0 and lenth < 60:
+		'''if lenth > 0 and lenth < 60:
 			if lenth not in oFile:
 				oFile[lenth] = open(argv[3]+'_'+str(lenth)+'.RL1','w')
 			docList = searcher.getTopDocumentsWithExpansion(query,terms[:lenth],2000,'content','id')
@@ -126,6 +135,7 @@ def main(argv):
 		
 	for i in oFile.keys():
 		oFile[i].close()
+	'''
 	searcher.close()
 
 if __name__ == '__main__':

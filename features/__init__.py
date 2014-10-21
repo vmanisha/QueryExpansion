@@ -70,13 +70,36 @@ def calWordFeatures(fileName,clickQuery):
 	for word , wObj in wordStats.iteritems():
 		print word, wObj.string()
 
+
+def mergeQueryCountS(file1, file2):
+	counts = {}
+	for line in open(file1,'r'):
+		split = line.strip().split('\t')
+		query = split[0].lower().strip()
+		if query not in counts:
+			counts[query] = int(split[1])
+		else:
+			counts[query] += int(split[1])
+	
+	for line in open(file2,'r'):
+		split = line.strip().split('\t')
+		query = split[0].lower().strip()
+		if query not in counts:
+			counts[query] = int(split[1])
+		else:
+			counts[query] += int(split[1])
+			
+	for entry, freq in counts.iteritems():
+		print entry ,'\t',freq
+		
 '''
 argv[1] = Query Log
 argv[2] = tagged File
 '''
 def main(argv):
-	clickedInfo = loadClickedTerms(argv[1])
-	calWordFeatures(argv[2], clickedInfo)
+	#clickedInfo = loadClickedTerms(argv[1])
+	#calWordFeatures(argv[2], clickedInfo)
+	mergeQueryCountS(argv[1],argv[2])
 	
 if __name__ == '__main__':
 	main(sys.argv)		

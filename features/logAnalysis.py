@@ -9,6 +9,7 @@ from whoosh.fields import Schema, TEXT
 from Whoosh import loadIndex, loadQueryParser, loadCollector
 from whoosh.collectors import TimeLimit
 from utils import get_cosine
+from queryLog import getQueryTerms;
 
 linkP = re.compile('\(.+?,\d+\)')
 def getQueryFreqValues(fileName):
@@ -289,7 +290,47 @@ def printNonEmptyRows(fileName):
 		except:
 			pass
 
-		
+def calWordCount(fileName):
+	words = {};
+	for line in open(fileName,'r'):
+		split = line.lower().split('\t');
+		query = split[1].strip();
+		qsplit = getQueryTerms(query);
+		for entry in qsplit:
+			if entry not in words:
+				words[entry] = 0.0
+			words[entry] +=1;
+	
+	wsort = sorted(words.items(),reverse=True,key = lambda x : x[1]);		
+	for entry in wsort:
+		if entry[1] > 3 and len(entry[0]) > 2:
+			print entry[0],'\t',entry[1];
+
+def filterWords(fileName, thresh):
+	words = set();
+	for line in open(fileName,'r'):
+		split = line.split(' ');
+		count = float(split[1])
+		if count > thresh:
+			words.add(split[0].strip());
+			#print line,;
+	return words;
+
+def filterWordsFromList(file1, file2):
+	words = set();
+	
+	for line in open(file1,'r'):
+		line = line.strip();
+		words.add(line);
+	
+	for line in open(file2,'r'):
+		split=line.split(' ');
+		w1 = split[0].strip();
+		w2 = split[1].strip();
+		if w1 in words and w2 in words:
+			print line,
+			
+	
 def main(argv):
 	#getQueryFreqValues(argv[1])	
 	#formatQueryFeatures(argv[1])
@@ -297,7 +338,10 @@ def main(argv):
 	#featFile, indexName, indexLocation, parts , pindex
 	#getQuerySimilarity(argv[1], argv[2], argv[3], int(argv[4]) , int(argv[5]))
 	#generatePairs(argv[1],int(argv[2]),int(argv[3]), int(argv[4]))
-	printNonEmptyRows(argv[1])
+	#printNonEmptyRows(argv[1])
+	#filterWords(argv[1],3);
+	#calWordCount(argv[1]);
+	filterWordsFromList(argv[1],argv[2]);
 	
 if __name__=='__main__':
 	main(sys.argv)

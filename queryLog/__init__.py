@@ -8,6 +8,7 @@ import datetime
 from utils import SYMB, WEB, ashleelString, stopSet
 import re
 import os
+from lxml import etree
 
 '''
 		AnonID - an anonymous user ID number.
@@ -99,6 +100,58 @@ def parseLine(line):
 		
 		return {}
 
+def stemQuery(string, stemmer):
+	split = string.split(' ')
+	return ' '.join(stemmer.stem(x) for x in split)
+	
+
+def getSessionWithXML(fileName):
+	#content = open(fileName,'r').read()
+	root = etree.parse(fileName)
+	session = []
+	docs = {}
+	clicks = {}
+	k = 0
+	for sess in root.iter('session'):
+		session = []
+		docs ={}
+		clicks = {}
+		i =0
+		k+=1
+		for entry in sess.iter('interaction'):
+			for query in entry.iter('query'):
+				line = (query.text).lower()
+				line = re.sub(SYMB,' ',line)
+				line = re.sub('\s+',' ',line)
+				session.append(line.strip())
+				docs[i] = []
+				clicks[i] = []
+				#print i,'query', line
+			for result in entry.iter('clueweb12id'):
+				docs[i].append(result.text)
+			
+			for result in entry.iter('clueweb09id'):
+				docs[i].append(result.text)
+
+				#print i,'result',result.text
+			for clicked in entry.iter('click'):
+				for rank in clicked.iter('rank'):
+					index = int(rank.text)
+					#print i,'click', index, docs[i][index-1]
+					try:
+						clicks[i].append(docs[i][index-1])
+					except:
+						print 'ERROR IN CLICK', index, i, docs[i]
+			i+=1
+		for curr in sess.iter('currentquery'):
+			for query in curr.iter('query'):
+				line = re.sub(SYMB,' ',query.text.lower())
+				line = re.sub('\s+',' ',line)
+				session.append(line)
+				print k, i, query.text
+		yield session, docs, clicks
+	yield session, docs, clicks
+	
 #dont need index since new line marks the session
 def getSessionWithNL(fileName):
 	session = []
@@ -119,7 +172,7 @@ def getSessionWithNL(fileName):
 	yield sid, session
 
 #get user sessions with time difference
-def getSessionWithQuery(fileName, timeCutoff):
+def getSessionWithQuery(fileName, timeCutoff = 1500):
 	session = []
 	lastUser = lastTime = lastQuery = None
 
@@ -128,29 +181,32 @@ def getSessionWithQuery(fileName, timeCutoff):
 		try :
 			currTime = datetime.datetime.strptime(split[TIND], "%Y-%m-%d %H:%M:%S") #np.datetime64(split[2])
 			query = split[QIND].lower()
-			currUser = split[UIND].lower()
+			#currUser = split[UIND].lower()
 			raw_split = query.strip().split(' ')
 			if not ((lastTime == None) or (((currTime -lastTime).total_seconds()<timeCutoff
-			or subQuery(query,lastQuery,0.7)) and currUser == lastUser)):
+			or subQuery(query,lastQuery,0.7)))): #and currUser == lastUser)):
 				if len(session) > 1:
 					yield session
 					session = []
-				
+			
 			if (lastTime != currTime or lastQuery != query) \
-			and (hasManyChars(query,raw_split,1,4,70) \
-			and hasInapWords(raw_split) and hasManyWords(raw_split,15,40) \
-			and hasAlpha(query) and hasWebsite(query)):
+			and (not hasManyChars(query,raw_split,1,4,70) \
+			and not hasInapWords(raw_split) and not hasManyWords(raw_split,15,40) \
+			and hasAlpha(query) and not hasWebsite(query)):
 				session.append(query)
 				
-			lastUser = currUser	
+			#lastUser = currUser	
 			lastTime = currTime
 			lastQuery = query
 		except Exception as err:
-			print line, err, err.args
-
+			# print line, err, err.args
+			pass
+	
+	yield session
+	
 
 # get the session and related data
-def getSessionWithInfo(fileName,delim,timeCutoff):
+def getSessionWithInfo(fileName,timeCutoff=1500):
 	iFile = open(fileName,'r')
 	currSession = []
 	iFile.readline()
@@ -235,8 +291,50 @@ def hasAlpha(query):
 def hasWebsite(query):
 	return WEB.match(query)
 
+#clear symbols, numbers and stem
+def normalize(query, stemmer):
+	
+	split = query.split()
+	if hasWebsite(query) or hasInapWords(split):
+		return ''
+	#replace symbols
+	query = re.sub(SYMB,' ',query)
+	
+	#remove numbers 	
+	query = re.sub('\d+','',query)
+
+	#remove spaces
+	query = re.sub('\s+',' ',query)
+
+	
+	nQuery = ''	
+	#remove words less than 2 letters
+	for entry in query.split():
+		stemmed = stemmer.stem(entry)
+		if len(stemmed) >1:
+			nQuery+= stemmed+' '
+	
+	return nQuery.strip()
+	
+
+def normalizeWithoutStem(query):
+	if hasWebsite(query):
+		return ''
+	#replace symbols
+	query = re.sub(SYMB,' ',query)
+	
+	#remove numbers 	
+	query = re.sub('\d+','',query)
+
+	#remove spaces
+	query = re.sub('\s+',' ',query)
+	return query
+	
 #get term list from a query
 def getQueryTerms(query):
+	
+	if hasWebsite(query):
+		return []
 	#replace symbols
 	query = re.sub(SYMB,' ',query)
 	
@@ -246,9 +344,9 @@ def getQueryTerms(query):
 	#fix spaces
 	query = re.sub('\s+',' ',query)
 
-	qset = query.strip().split() 	
+	qset = set(query.strip().split())
 	qset -= stopSet		
-	return list(qset)
+	return qset;#list(qset)
 	
 #remove stop words from split
 def filterStopWordsFromList(split):
@@ -344,4 +442,5 @@ def findSessionStats(folderName):
         print '\nPrinting User Session info'
         for uId, count in userQueryCountList.iteritems():
                 print uId, count
+
 

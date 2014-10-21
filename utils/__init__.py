@@ -1,40 +1,45 @@
 # -*- coding: utf-8 -*-
 import re
-#import os
-#import sys
+import os
+import sys
 from collections import Counter, defaultdict
 import math
+import html2text
+from nltk import stem;
 
-
-ashleelString = set (['sex','sexy','porn','horny','sexi','naked','pornstar','kiss','masturbation','porno','fucking','penis','shag', \
-				'dick','penus','boobs','breasts','boob','orgasm','pregnant','masturbate','fuck','nude','topless',\
+ashleelString = set (['sex','sexy','porn','horny','sexi','naked','pornstar','kiss','masturbation','porno','fucking','penis','shag', 'viagra','sexual'\
+				'dicks','dick','penus','boobs','breasts','boob','orgasm','pregnant','masturbate','fuck','nude','topless','boobs','nudes','vagina','xxx'\
 			'testicle','fucks','tits', 'boobies','whore','erotic', 'masturbating','nipple','nipples','cock','cocks','shagging','pussy','nudist'])
 
-stopSet = set (['_CAT_','a','about','according','accordingly','after','all','also','am','an','and','any','anything','are','as',\
-'at','b','back','be','because','been','big','bring','bringing','but','by','both','can',\
-'cant','com','come','could','doe','did','didnt','do','doing','dont','down','even','either',\
+stopSet = set (['_CAT_','a','above','about','according','accordingly','after','all','also','am','an','and','any','anything','are','as',\
+'at','always','b','back','be','being','because','before','been','big','bring','bringing','but','by','both','can',\
+'cant','called','com','comn','comhttp','come','could','doe','did','didnt','do','doing','dont','down','during','does','even','either',\
 'essentially','ever','every','first','for','from','four','get','give','go','going','gonna',\
 'good','got','had','has','hate','have','he','her','here','hes','hey','him','his','how','http',\
-'i','get','getting','gets','if','ill','im','in','into','is','it','its','ive','just','know',\
-'kind','kinds','let','life','like','little','look','love','made','make','man','many','may',\
-'maybe','me','mean','more','most','much','my','near','need','never','no','not','now','of',\
+'i','get','getting','gets','great','if','ill','im','in','into','is','it','its','ive','just','know',\
+'kind','kinds','knows','keep','let','life','like','little','look','looking','love','made','make','making','man','many','may',\
+'maybe','me','mean','more','most','mostly','much','my','near','need','never','no','not','now','of',\
 'off','oh','ok','okay','on','one','only','or','other','our','out','over','put','people','please',\
-'read','really','right','said','say','see','six','seven','she','shes','should','slow',\
-'small','so','some','something','sorry','stop','since','sure','such','take','ten','than',\
+'read','really','regarding','relate','related','right','said','say','see','six','seven','she','shes','should','slow',\
+'small','so','some','something','sorry','still','stop','since','sure','such','take','ten','than',\
 'that','thats','the','them','their','these','then','there','therefore','thereafter',\
 'themselves','theres','they','thing','think','this','thought','those','though','thus',\
 'through','throughout','three','till','time','to','too','todays','true','two','under',\
-'uh','up','us','until','upon','use','usually','very','want','was','way','we','well',\
+'uh','up','us','until','upon','use','using','usually','very','want','was','way','we','well',\
 'were','what','whats','whose','whatever','whereby','when','where','wherein','which',\
-'who','while','whether','why','will','with','within','without','would','www','yeah',\
-'yes','you','your','youre','new'])
+'who','whi','while','whether','why','will','with','within','without','would','www','wwww','yeah',\
+'yes','you','your','youre','new','clueweb12','same'])
 
 
 #SYMB = '[.!,;-*&"\'_]'
 SYMB = '[^\w]+'
+SYMBreg = re.compile('[^\w]+')
+SYMB2 = re.compile('[\.\!\,\;\-\*\&\"\'\_\%\^\@\~\#\<\>\/]+')
 DIGIT = re.compile(r'\d')
 WORD = re.compile(r'\w+')
 WEB = re.compile("^(((ht|f)tp(s?))\://)?(www.|[a-zA-Z].)[a-zA-Z0-9\-\.]+\.([a-z]{2,4})(\:[0-9]+)*(/($|[a-zA-Z0-9\.\,\;\?\'\\\+&amp;%\$#\=~_\-]+))*")
+HTML = re.compile('<html')
+LEMR = re.compile('the lemur project')
 
 def getDictFromSet(qset):
 	d = defaultdict(int)
@@ -71,6 +76,16 @@ def text_to_vector(text):
      words = WORD.findall(text)
      return Counter(words)
 
+def getNGramsAsList(string, length):
+	split = string.split()
+	result = []
+	#print split, len(split), length
+	for i in range(0,len(split)):
+		for j in range(i+1,i+length+1):
+			#print i, j , length
+			if j <= len(split):
+				result.append(' '.join(split[i:j]))
+	return result 	
 
 
 def getNGrams(string, length):
@@ -129,10 +144,96 @@ def loadFileInDict(fileName):
 		tokens = line.split()
 		content[tokens[0]] = tokens[1]
 	return content
+
+def plain_text(html):
+	try:
+		return html2text.html2text(html)
+	except :
+		print 'Cant parse Html'
+		return ''
 	
-#def main(argv):
+def getDocumentText(fileName, dirPath):
+	if os.path.exists(dirPath+'/'+fileName):
+		dtext = open(dirPath+'/'+fileName,'r').read()
+		dec = dtext.decode('utf-8','ignore').lower()
+		#assuming the the content is in html
+		end = len(dec)
+		for content in LEMR.finditer(dec):
+			end = content.start()
+		strt = 50
+		for content in HTML.finditer(dec):
+			strt = content.start()
+		print fileName, strt, end, len(dec)
+		return plain_text(dec[strt:end-14].encode('ascii','ignore'))
+	else:
+		return ''
+
+def loadFileInList(fileName):
+	eset = set();
+	for line in open(fileName,'r'):
+		split = line.strip().split('\t');
+		eset.add(split[0].strip());		
+	return eset;
+
+def allLetters(entry):
+	if DIGIT.search(entry):
+		return False;
+	if SYMB2.search(entry):
+		return False;
+	return True;
+	
+	
+#load the pattern query \t entry1:value \t entry2:value
+def loadDictFromFile(filename, delimit1, delimit2):
+	entryDict = {}
+	for line in open(filename,'r'):
+		split = line.strip().split(delimit1)
+		if len(split) > 1:
+			key = split[0].strip()
+			entryDict[key] = {}
+			for entry in split[1:]:
+				fsplit = entry.split(delimit2)
+				entryDict[key][fsplit[0]] = fsplit[1]
+	return entryDict;
+
+def normalize(idict):
+	dmin = min(idict.values());
+	diff = max(idict.values()) - (dmin*1.0);
+	for entry in idict.keys():
+		idict[entry] = (idict[entry] - dmin)/diff;
+	return idict;
+	
+def stemFileContents(fileName):
+	porter =  stem.porter.PorterStemmer();
+	toPrint = {};
+	for line in open(fileName,'r'):
+		split = line.split(' ');
+		#print split;
+		'''if len(split) > 2:
+			w1 = split[0];
+			w2 = split[1];
+			freq = float(split[-1]);
+			key = porter.stem(w1) + ' '+ porter.stem(w2);
+			#print key;
+			if key not in toPrint:
+				toPrint[key] =0.0;
+			toPrint[key] += freq;
+		'''
+		if len(split) > 1:
+			w1 = split[0];
+			freq = float(split[-1]);
+			key = porter.stem(w1)
+			if key not in toPrint:
+				toPrint[key] =0.0;
+			toPrint[key] += freq;
+			
+	for entry, val in toPrint.items():
+		print entry, val;
+			
+def main(argv):
 	#replaceAlphaNum(argv[1],argv[2])
 	#removeFreqWords(argv[1],int(argv[2]))
-	#buildLinkGraph(argv[1])
-#if __name__ == "__main__":
-#	main(sys.argv)
+	stemFileContents(argv[1]);
+	
+if __name__ == "__main__":
+	main(sys.argv)

@@ -23,7 +23,7 @@ def loadCategoryVector(fileName):
 def getCats(directory):
 	f1Dict = {}
 	for line in os.listdir(directory):
-		line = line.strip()
+		line = line.strip().lower();
 		f1Dict[line[:line.rfind('_')]] = directory+'/'+line
 	
 	return f1Dict	
@@ -38,7 +38,7 @@ def getCatsWithType(directory,ttype):
 	return f1Dict	
 
 
-def loadPhrases(fileName):
+'''def loadPhrases(fileName):
 	phrases = set()
 	phrase = False
 	for line in open(fileName , 'r'):
@@ -49,8 +49,17 @@ def loadPhrases(fileName):
 			phrase = True
 
 	return phrases
-
-
+'''
+def loadPhrases(fileName):
+	phrases = set();
+	for line in open(fileName, 'r'):
+		split = line.split('\t');
+		term = split[0];
+		#entDict = ast.literal_eval(split[1]);
+		phrases.add(term);
+	return phrases;
+	
+		
 def loadPhrasesWithScore(fileName):
 	phrases = {}
 	phrase = False

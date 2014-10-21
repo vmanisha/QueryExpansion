@@ -132,7 +132,22 @@ def transformCorpus(tdocuments, tentities):
 	print()
 
 	return X1, X2
+	
+def transformWeightMatrix(weightMatrix):
+	X1 = [];
+	toChange = [];
+	X2 = None;
+	
+	v = DictVectorizer(sparse=False);
+	for entry, edict in weightMatrix.iteritems():
+		X1.append(entry);
+		toChange.append(edict);
+	
+	
+	X2 = v.fit_transform(toChange);
 
+	return X1, X2;	
+	
 def main(argv):
 	corpus,tokenDict,taskVectorDict = loadTasks(argv[1],argv[2])
 	
@@ -202,8 +217,8 @@ def clusterTasksAgglomerative(features,num):
 	clustering.fit(features)
 	return clustering
 
-def clusterTasksWithSimMatrix(simMatrix,num):
-	clustering = AgglomerativeClustering(n_clusters = num, affinity='precomputed',linkage='average')
+def clusterWithSimMatrix(simMatrix,num):
+	clustering = AgglomerativeClustering(n_clusters = num, affinity='precomputed',linkage='complete')
 	#clustering = MiniBatchKMeans(n_clusters=num, init='k-means++', n_init=1,
 		#				 init_size=1000, batch_size=1000, verbose=opts.verbose)
 	clustering.fit(simMatrix)
