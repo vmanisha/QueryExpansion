@@ -60,7 +60,7 @@ def findClusters(weightMatrix, wordList,n):
 	
 	print n, len(wordList);
 	
-	if n > 2:
+	if n > 1:
 		kmeans = KMeans(n, wordList, weightMatrix,10, 0.01);
 		kmeans.cluster();
 		clusters = kmeans.getClusters();
@@ -181,7 +181,7 @@ def main(argv):
 	coSessOcMan = CoOcManager(argv[3],coSessOccur,' ');
 	
 	featureFolder = argv[4];
-	featMan = WordManager(featureFolder);
+	featMan = WordManager(featureFolder,False);
 	
 	outFolder = argv[5];
 	if not os.path.exists(outFolder):
@@ -202,13 +202,13 @@ def main(argv):
 		for line in open(inFolder+'/'+ifile,'r'):
 			split = line.split('\t');
 			term = split[0].strip();
-			if term not in stopSet:
+			if term not in stopSet : #and featMan.hasWord(term):
 				termList.append(term);
 				termFreq[term] = float(split[1]);
 		termList = sorted(termList);
 			
 		tlen = len(termList);
-		if tlen > 10 and tlen < 5000:
+		if tlen >= 10 and tlen < 1500:
 			for i in range(tlen):
 				word1 = termList[i];
 				if word1 not in weightMatrix:
@@ -246,10 +246,11 @@ def main(argv):
 			gt10 = 0;
 			for x in sTerm:
 				gt10 += 1 if x[1] > 15 else 0;
-			if gt10 == 0 or (gt10 > (len(sTerm)/7)):
+			if gt10 <3 or (gt10 > (len(sTerm)/7)):
 				gt10 = len(sTerm)/7;
 				
 			clusters, means, noClus = findClusters(weightMatrix,wordList,gt10);
+			print 'CLUSTER ',clusters;
 			'''print 'CLUSTER ',clusters;
 			print 'Mean ',means;
 			print 'noCluster ',noClus;

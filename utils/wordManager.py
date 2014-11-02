@@ -3,9 +3,12 @@ from word import Word;
 class WordManager:
 	
 	
-	def __init__(self,fileName):
+	def __init__(self,fileName,isIndex):
 		self.wordFeat = {};
-		self.loadFeatures(fileName);
+		if not isIndex:
+			self.loadFeatures(fileName);
+		else:
+			self.loadFeaturesFromIndex(fileName);
 	
 	def loadFeatures(self,fileName,wfilter=None):
 		for line in open(fileName,'r'):
@@ -33,6 +36,16 @@ class WordManager:
 							print entry;
 		print len(self.wordFeat);
 	
+	#def loadFeaturesFromIndex(self,indexPath):
+		
+	#def getEntCatScore(self, ent, cat, term):
+	
+	
+	def hasWord(self, word):
+		if word in self.wordFeat:
+			return True;
+		return False;
+		
 	def getWordFeat(self, word):
 		if word in self.wordFeat:
 			return self.wordFeat[word];
@@ -70,4 +83,3 @@ class WordManager:
 		
 		else:
 			return {};
-			

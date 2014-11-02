@@ -205,7 +205,8 @@ def writeFeaturesFromDict(wordFeat,outFile):
 		oFile.write(entry+'\t'+ '\t'.join('{0}:{1}'.format(x,y) for x, y in featDict.items())+'\n');
 	oFile.close();
 			
-			
+def indexFeatures(fileName, indexPath, indexName):
+	
 '''
 [1] = query freq
 [2] = dexter tagged

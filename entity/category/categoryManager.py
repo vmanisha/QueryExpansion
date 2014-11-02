@@ -6,9 +6,9 @@ import sys;
 
 class CategoryManager:
 	
-	def __init__(self, vectFile, catDir, cclass):
+	def __init__(self, catVect, catDir, cclass):
 		self.catFileDict = getCats(catDir)
-		self.catVectors = loadCategoryVector(vectFile)
+		self.catVectors = catVect;
 		self.catObjDict = {}
 		self.catClass = cclass;
 	
@@ -56,7 +56,9 @@ class CategoryManager:
 	
 	def getSubclusters(self, cat):
 		#dictionary of lists. With inner lists containing (phrase, count) pair
-		return self.catObjDict[cat].getSubclusters();
+		if self.loadCategoryObject(cat):
+			return self.catObjDict[cat].getSubclusters();
+		return [];
 
 '''
 catVector = vectFile

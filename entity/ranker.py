@@ -8,14 +8,14 @@ class Ranker:
 		total = sum([x[1] for x in terms])*1.0
 		#tsorted = sorted (terms.items(),reverse = True , key = lambda x : x [1])
 		#print 'TermSet Size',len(tsorted)
-		
 		result = []
 		i = 0
-		for entry in terms:
-			result.append((entry[0],(entry[1]+1)/(total+1)))
-			i +=1
-			if i == limit:
-				break
+		if total > 0:
+			for entry in terms:
+				result.append((entry[0],round(entry[1]/total,5)))
+				i +=1
+				if i == limit:
+					break
 		
 		return result	
 	
@@ -42,4 +42,4 @@ class Ranker:
 			i +=1
 			if i == limit2:
 				break
-		return  self.getTopKAsDict(filtered, limit) #self.getTopK(filtered,limit)
+		return  self.getTopK(filtered,limit) #self.getTopKAsDict(filtered, limit)

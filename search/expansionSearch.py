@@ -8,18 +8,18 @@ from queryLog import getSessionWithNL, getSessionWithXML
 from entity.category.categoryManager import CategoryManager
 from entity.dexter import Dexter
 from entity.ranker import Ranker
-from entity.category.coOccurrence import CoOccurrence
-from entity.category.coOcManager import CoOcManager
+from utils.coOccurrence import CoOccurrence
+from utils.coOcManager import CoOcManager
 from tasks.taskExpansion import TaskExpansion
 #from entity.category.catSubManager import CategorySubtopicManager
 from randomwalk.randomWalk import RandomWalk
-from utils import getDocumentText
+from utils import getDocumentText, loadQueryList
 import ast
 #from nltk.stem import porter
 '''
 argv[1] = Session file
 argv[2] = index folder
-argv[3] = vector file / cat query folder / wikiIndex
+argv[3] = vector file / cat query folder / wikiIndex / (outfolder)
 argv[4] = category phrase folder / topic folder / queryIndex
 argv[5] = category Co-Occurrence file / term vector file
 arg[6] = Task index
@@ -28,12 +28,11 @@ def main(argv):
 	#open the index
 	searcher = SearchIndex(argv[2])
 	searcher.initializeAnalyzer()
-	
+	outFolder = argv[3];
 	#output file
-	oFile1 = open('Evaluation/session_track/Exp/14/baseline_12.RL1','w')
-	#oFile2 = open('Evaluation/session_track/Exp/13/random_11.RL1','w')
-	#oFile3 = open('Evaluation/session_track/Exp/13/task_12_htc.RL1','w')
-	#oFile4 = open('probExpansion_11.RL1','w')
+	oFile1 = open(outFolder+'/baseline_11.RL1','w')
+	oFiles = {};
+	
 	
 	#category vector
 	#catManage = CategoryManager(argv[3],argv[4])
@@ -46,7 +45,7 @@ def main(argv):
 	#dexter = Dexter(tagURL,catURL)
 	
 	#ranker
-	ranker = Ranker()
+	#ranker = Ranker()
 	
 	#load the Category co-occurrence bit
 	#catCoMan =	CoOcManager(argv[5],CoOccurrence(),' ')
@@ -65,53 +64,44 @@ def main(argv):
 	#taskExp100 = TaskExpansion(argv[6],ranker,100)
 	#taskInd = argv[6][argv[6].rfind('/')+1:]
 	#randomWalk
-	randWalk = RandomWalk(argv[3],argv[4],ranker)
+	#randWalk = RandomWalk(argv[3],argv[4],ranker)
 	#randWalk = RandomWalk(catManage,catCoMan,entTermVect, catTermVect,ranker)
 	
 	#result String
 	#entFile = {}
-	randFile = {}
+	#randFile = {}
 	#task50File = {}
 	#task100File = {}
 	#porter1 = porter.PorterStemmer()
 	#resStringAll = {}
 	
 	
-	'''
-	for line in open(argv[1],'r'):
-		split = line.strip().split('\t')
-		tDict = ast.literal_eval(split[1])
-		for entry in tDict.keys():
-			stem = porter1.stem(entry)
-			if entry in query or stem in query:
-				del tDict[entry]
-			else:
-				toScore[stem] = tDict[entry]
-				print i , query
-	for r in xrange(1,7,2):
-		scoredTerms[r] = ranker.getTopKWithFilter(toScore,r,r+5)
 	
-		
-	querySpotDict = {}
-	for line in open(argv[8],'r'):
-		split = line.strip().split('\t')
-		spotDict = ast.literal_eval(split[-1])
-		query = split[0].strip()
-		querySpotDict[query] = spotDict
-		print len(querySpotDict)
-	'''	
-	#for i, session in getSessionWithNL(argv[1]):
+	#query key terms
+	queryList = loadQueryList(argv[4]);
 	
-	viewedFileFolder =  argv[5]
+	#viewedFileFolder =  argv[5]
 	i=0
 	for session, viewDocs, clickDocs in getSessionWithXML(argv[1]):
 		i+=1
-		query = session[-1]
-		docList = searcher.getTopDocuments(query,1100,'content','id')
-		k =1
-		for dtuple  in docList:
-			oFile1.write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' baseline\n')
-			k+=1
+		query = session[0].strip();
+		if query in queryList:
+			for entry , terms in queryList[query].items():
+				if entry not in oFiles:
+					oFiles[entry] = open(outFolder+'/'+entry+'.RL1','w');
+				docList = searcher.getTopDocumentsWithExpansion(session[0],terms,1000,'content','id')
+				'''k = 1
+				for dtuple  in docList:
+					oFiles[entry].write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' '+entry+'\n')
+					k +=1
+				'''
+			
+			docList = searcher.getTopDocuments(query,1000,'content','id');
+			k =1;
+			for dtuple  in docList:
+				oFile1.write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' baseline\n')
+				k+=1;
+		
 		
 		##get max cat terms
 		#randExpTerms = randWalk.expandText(query,50)
@@ -219,14 +209,14 @@ def main(argv):
 	#for entry, fileP in task100File.iteritems():
 	#	fileP.close()
 	
-	oFile1.close()	
+	#oFile1.close()	
 	#oFile2.close()	
 	#oFile3.close()
 	#load the queries
 	#oFile1.write(resString1)
 	#oFile4.write(resString4)
 	#oFile4.close()
-	for entry, oFile in randFile.iteritems():
+	for entry, oFile in oFiles.iteritems():
 		oFile.close()
 	searcher.close()
 	

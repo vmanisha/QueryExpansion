@@ -6,6 +6,7 @@ from collections import Counter, defaultdict
 import math
 import html2text
 from nltk import stem;
+import ast;
 
 ashleelString = set (['sex','sexy','porn','horny','sexi','naked','pornstar','kiss','masturbation','porno','fucking','penis','shag', 'viagra','sexual'\
 				'dicks','dick','penus','boobs','breasts','boob','orgasm','pregnant','masturbate','fuck','nude','topless','boobs','nudes','vagina','xxx'\
@@ -200,7 +201,7 @@ def normalize(idict):
 	dmin = min(idict.values());
 	diff = max(idict.values()) - (dmin*1.0);
 	for entry in idict.keys():
-		idict[entry] = (idict[entry] - dmin)/diff;
+		idict[entry] = (idict[entry] - dmin)/diff if diff > 0 else 0.0;
 	return idict;
 	
 def stemFileContents(fileName):
@@ -229,7 +230,27 @@ def stemFileContents(fileName):
 			
 	for entry, val in toPrint.items():
 		print entry, val;
-			
+
+
+def loadQueryList(fileName):
+	queryList = {};
+	for line in open(fileName,'r'):
+		split = line.split('\t');
+		terms = []
+		allTerms = ast.literal_eval(split[3].strip());
+		for entry in allTerms:
+			if entry[1] > 0.01:
+				terms.append(entry);
+				
+		if len(terms) > 0:
+			key = split[0].strip()+'_'+split[4].strip();
+			query = split[2].strip();
+			if query not in queryList:
+				queryList[query] = {};
+			if key not in queryList[query]:
+				queryList[query][key] = terms;
+	return queryList;
+	
 def main(argv):
 	#replaceAlphaNum(argv[1],argv[2])
 	#removeFreqWords(argv[1],int(argv[2]))

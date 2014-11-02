@@ -118,6 +118,8 @@ def getSessionWithXML(fileName):
 		clicks = {}
 		i =0
 		k+=1
+		topicId = sess[0].get('num');
+		#print k,topicId;
 		for entry in sess.iter('interaction'):
 			for query in entry.iter('query'):
 				line = (query.text).lower()
@@ -148,7 +150,7 @@ def getSessionWithXML(fileName):
 				line = re.sub(SYMB,' ',query.text.lower())
 				line = re.sub('\s+',' ',line)
 				session.append(line)
-				print k, i, query.text
+				#print k, i, query.text
 		yield session, docs, clicks
 	yield session, docs, clicks
 	

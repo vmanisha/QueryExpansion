@@ -3,16 +3,34 @@ import urllib
 import json,os
 import time
 from queryLog import getSessionWithNL
-import sys
+import sys;
+import ast;
 
 class Dexter:
 	
-	def __init__(self,tURL, cURL):
-		self.tagURL = tURL
-		self.catURL = cURL
-		self.e = 0
+	def __init__(self,tURL, cURL,spotFile = None):
+		self.tagURL = tURL;
+		self.catURL = cURL;
+		self.e = 0;
+		self.spots = {};
+		if spotFile:
+			self.loadSpotFile(spotFile);
+		
+		
+	def loadSpotFile(self, spotFile):
+		for line in open(spotFile,'r'):
+			split = line.split('\t');
+			query = split[0].strip();
+			spotDict = ast.literal_eval(split[1].strip());
+			if query not in self.spots:
+				self.spots[query] = spotDict;
 	
 	def tagText(self, query):
+		
+		if self.spots and query in self.spots:
+			return self.spots[query];
+		else:
+			return {};
 		
 		try:
 			tagParam = {'text':''}
@@ -50,7 +68,7 @@ class Dexter:
 				print err, err.args
 			return {}
 		
-
+	
 def main(argv):
 	ipaddress = 'localhost'
 	#dexter object

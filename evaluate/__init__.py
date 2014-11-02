@@ -4,7 +4,7 @@ from nltk import stem
 
 porter = stem.porter.PorterStemmer()
 
-def addedAndRemovedTerms(bQuery, session):
+def addedAndRemovedTerms(bQuery, session,termVocab):
 	bset = set()
 	tset = set()
 	for entry in bQuery.split():
@@ -15,8 +15,10 @@ def addedAndRemovedTerms(bQuery, session):
 		query = re.sub(SYMB,' ',query.lower())
 		query = re.sub('\s+',' ',query)
 		for entry in query.strip().split():
-			if len(entry) > 2 and entry not in stopSet:
-				tset.add(porter.stem(entry))
+			stemd = porter.stem(entry);
+			if len(entry) > 2 and entry not in stopSet and stemd not in stopSet \
+			and entry not in termVocab:
+				tset.add(stemd)
 
 	#print 'bSet', bset, 'Tset ', tset, 'Add', tset - bset, 'Remove', bset - tset
 	return  tset - bset, bset - tset

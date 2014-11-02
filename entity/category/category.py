@@ -18,7 +18,7 @@ class Category:
 			split = line.split('\t');
 			term = split[0];
 			if term not in stopSet:
-				entDict = ast.literal_eval(split[1]);
+				entDict = ast.literal_eval(split[2]);
 				self.phrases[term] = sum(entDict.values());
 		self.phraseCount = 1.0*sum(self.phrases.values());
 				

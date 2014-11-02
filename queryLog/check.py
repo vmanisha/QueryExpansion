@@ -15,8 +15,27 @@ def main(argv):
 	#end = (index+1)*(len(files)/parts)
 	#for i in range(strt,end):
 		#ifile = files[i]
+	queryFreq = {};
+	for line in open(argv[1],'r'):
+		split = line.split('\t');
+		query = split[0].strip();
+		freq = float(split[1]);
+		queryFreq[query] = freq;
 		
-	getSessionWithXML(argv[1])
+	toPrint = {};
+	qid = 1;
+	for session, doc, click in getSessionWithXML(argv[2]):
+		query = session[0];
+		if query in queryFreq:
+			toPrint[str(qid)+'\t'+query] = queryFreq[query];
+		else:
+			toPrint[str(qid)+'\t'+query] = 0;
+		qid+=1;
+		
+	sort = sorted(toPrint.items() , reverse = True , key = lambda x : x[1]);
+	for entry in sort:
+		print entry[0],'\t', entry[1];
+		
 	#print getDocumentText('clueweb12-0817wb-00-27979','/media/Data/TREC_Session_Doc/cluewebdocs12/')
 	'''done = {}
 	for line in open(argv[1],'r'):

@@ -102,20 +102,31 @@ class CoOccurrence:
 			return 0.0#math.log((1.0/self.termTermTotal)/math.pow((1.0/self.termTotal),2))
 		
 		return math.log(num/den)
-		
-	#P(term2|term1)
-	def getProb(self,term2, term1):
-		
-		i = term1
-		j = term2
-		
+	
+	def getCoOcCount(self, term1, term2):
+		i , j = self.orderTerms(term1,term2)
 		if i in self.termTermFreq:
 			if j in self.termTermFreq[i]:
-				return self.termTermFreq[i][j]/sum(self.termTermFreq[i].values())
+				return self.termTermFreq[i][j], self.termTermFreq[i][j] ;
+		return 0.0, 0.0;
+	#P(term2|term1)
+	def getProb(self,term2, term1,thresh):
+		
+		i = j = -1;
+		if term1 in self.termId:
+			i = self.termId[term1];
+		if term2 in self.termId:
+			j = self.termId[term2];
+		
+		if i in self.termTermFreq:
+			total = sum(self.termTermFreq[i].values());
+			if j in self.termTermFreq[i] and total > thresh:
+				#print term1, term2, self.termTermFreq[i][j];
+				return self.termTermFreq[i][j]/total;
 			else:
-				return 0.0#1.0/sum(self.termTermFreq[i].values())
+				return 0.0;#1.0/sum(self.termTermFreq[i].values());
 		else:
-			return 0.0 # 1.0/ self.termTotal
+			return 0.0;#1.0/ self.termTotal
 			
 	def writeTermCo(self,fileName):	
 		#write the totals first
@@ -139,6 +150,7 @@ class CoOccurrence:
 	
 	
 	def getNeighbours(self, term):
+		
 		tid = None
 		if term in self.termId:
 			tid = self.termId[term]
@@ -150,7 +162,7 @@ class CoOccurrence:
 				toReturn.append(self.idTerm[entry])
 			return toReturn;
 		
-		return None;
+		return [];
 	
 	#def loadTermCo(self,fileName):
 	

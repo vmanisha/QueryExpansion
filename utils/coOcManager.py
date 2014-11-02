@@ -30,14 +30,20 @@ class CoOcManager:
 		#return 0.00001
 		return round(self.coOccur.getPMI(term1, term2,thresh),3);
 	
-	def getProb(self,term1,term2):
-		return self.coOccur.getProb(term1,term2)
+	def getProb(self,term2,term1,thresh):
+		return self.coOccur.getProb(term2,term1,thresh)
 	
 	def getUniqueTermCount(self):
 		return self.coOccur.getUniqueTermCount()
 		
 	def getUniqueTerms(self):
 		return self.coOccur.getUniqueTerms()	
+	
+	def getCoOcCount(self, phrase1, phrase2):
+		return self.coOccur.getCoOcCount(phrase1, phrase2);
+	
+	def getNeighbours(self, phrase1):
+		return self.coOccur.getNeighbours(phrase1);
 		
 def main(argv):
 	catM = CoOcManager(argv[1])

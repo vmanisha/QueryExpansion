@@ -28,6 +28,9 @@ class CategorySubcluster:
 				if 'NA' not in line:
 					print 'ERROR parsing ',line;
 	
+	def getTotalPhraseCount(self):
+		return self.phraseCount;
+		
 	def getPhrases(self):
 		toSend = [];
 		for phraseDict in self.subClusters.values():
