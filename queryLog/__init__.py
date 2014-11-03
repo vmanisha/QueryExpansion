@@ -151,10 +151,10 @@ def getSessionWithXML(fileName, storeTitle=False):
 				docs[i].append(result.text)
 			
 			for tit in entry.iter('title'):
-				title[i].append(tit);
+				title[i].append(tit.text.lower());
 			
 			for content in entry.iter('snippet'):
-				summary[i].append(content);
+				summary[i].append(content.text.lower());
 			
 				#print i,'result',result.text
 			for clicked in entry.iter('click'):
@@ -371,6 +371,28 @@ def getQueryTerms(query):
 
 	qset = set(query.strip().split())
 	qset -= stopSet		
+	return qset;#list(qset)
+
+#get term list from a query
+def getQueryTermsStemmed(query,stemmer):
+	
+	if hasWebsite(query):
+		return set();
+	#replace symbols
+	query = re.sub(SYMB,' ',query)
+	
+	#repace numbers
+	query = re.sub('\d+','',query)
+	
+	#fix spaces
+	query = re.sub('\s+',' ',query)
+
+	qset = set();
+	for entry in query.strip().split(' '):
+		qset.add(stemmer.stem(entry));	
+	
+	qset -= stopSet
+		
 	return qset;#list(qset)
 	
 #remove stop words from split

@@ -12,12 +12,13 @@ from utils.coOccurrence import CoOccurrence;
 from utils import loadFileInList;
 from tasks.taskExpansion import TaskExpansion
 from evaluate import addedAndRemovedTerms
-from randomwalk.randomWalk import RandomWalk
 from entity.category import loadCategoryVector;
 from  entity.category.category import Category;
 from entity.category.categorySubcluster import CategorySubcluster;
 from queryLog.coOccurExpansion import CoOccurExpansion;
 from plots import plotMultipleSys;
+from queryLog import getQueryTerms,getQueryTermsStemmed;
+from nltk import stem;
 '''
 argv[1] = Session file
 argv[2] = vector file / cat query folder / wikiIndex
@@ -35,7 +36,6 @@ def main(argv):
 	catURL = 'http://'+ipaddress+':8080/rest/graph/get-entity-categories'
 	dexter = Dexter(tagURL,catURL,argv[5]);
 	
-	
 	#load the Category co-occurrence bit
 	catCoMan =	CoOcManager(argv[4],CoOccurrence(),' ')
 
@@ -43,8 +43,6 @@ def main(argv):
 	catVect = loadCategoryVector(argv[2]);
 	catManage1 = CategoryManager(catVect,argv[3],Category);
 	catManage2 = CategoryManager(catVect,argv[7],CategorySubcluster);
-	
-	
 	
 	#ranker
 	ranker = Ranker()
@@ -55,7 +53,7 @@ def main(argv):
 	#taskK = argv[5][argv[5].rfind('/')+1:]
 	
 	totalVocab = loadFileInList(argv[6]);
-		
+	
 	#expansion
 	entExp1 = CatThesExpansion(dexter, catManage1, ranker,catCoMan);
 	entExp2 = CatThesExpansion(dexter, catManage2, ranker,catCoMan);
@@ -68,6 +66,7 @@ def main(argv):
 	
 	ent_prec = {'ent':{}, 'qccTask':{}, 'htcTask':{}, 'co':{} , 'entSub':{}};
 	ent_mrr = {'ent':{}, 'qccTask':{}, 'htcTask':{}, 'co':{} , 'entSub':{}};
+	
 	'''
 	sess_prec = {};
 	sess_mrr = {};
@@ -75,23 +74,28 @@ def main(argv):
 	covered = {};
 	
 	i = 0;
-	for session, doc, click in getSessionWithXML(argv[1]):
+	
+	porter = stem.porter.PorterStemmer();
+	
+	for session, doc, click, cTitle, cSummary in getSessionWithXML(argv[1]):
 		query = session[0]
-		aTerms,rTerms = addedAndRemovedTerms(query, session[1:], totalVocab)
-		ctitleTerms = getTitleTerms();
-		csummaryTerms = getSummaryTerms();
+		qSet = getQueryTerms(query);
+		#aTerms,rTerms = addedAndRemovedTerms(query, session[1:], totalVocab)
+		aTerms = getTerms(cTitle,qSet,totalVocab,porter, range(1,len(session)-1));
+		#csummaryTerms = getTerms(cSummary,qSet,totalVocab, range(1,len(session)));
 		
-		print i, 'Query' ,query, aTerms, rTerms, len(aTerms);
+		print i, 'Query' ,query, aTerms, len(aTerms);
 		
 		if len(aTerms) > 0 and query not in covered:
 			covered[query] = 1;
+			
 			coExpTerms = coOccExp.expandTextWithStep(query,0,55,5);
+			
 			entStatus1, entExpTerms1 = entExp1.expandTextWithStep(query,1,0,55,5);
 			entStatus2, entExpTerms2 = entExp2.expandTextWithStepAndSubcluster(query,'',1,0,55,5);
 			
 			qccTaskTerms = qccTask.expandTextWithStep(query,0,55,5)
 			htcTaskTerms = htcTask.expandTextWithStep(query,0,55,5)
-			#print entExpTerms, taskExpTerms50, taskExpTerms100
 			#randExpTerms = randWalk.expandTextWithStep(query,55,105,5)
 			if not entStatus1:
 				print i, 'Ent False' ,query;
@@ -100,18 +104,17 @@ def main(argv):
 			#if addLen not in sess_prec:
 			#	sess_prec[addLen] = {'ent':{}};#, 'qccTask':{}, 'htcTask':{}, 'co':{} };
 			#	sess_mrr[addLen] = {'ent':{}};#, 'qccTask':{}, 'htcTask':{}, 'co':{} };
-			
+
 			for noTerms in entExpTerms1.keys():
-				print 'ETerms\t',i,'\t',query,'\t',entExpTerms1[noTerms],'\t',noTerms
-				prec1 , mrr1 = getPrecRecall(entExpTerms1[noTerms],aTerms)
-				prec = updateStats(noTerms, 'ent',prec1, prec)
+				print 'ETerms\t',i,'\t',query,'\t',entExpTerms1[noTerms],'\t',noTerms;
+				prec1 , mrr1 = getPrecRecall(entExpTerms1[noTerms],aTerms);
+				prec = updateStats(noTerms, 'ent',prec1, prec);
 				mrr = updateStats(noTerms, 'ent',mrr1, mrr);
 				if entStatus1:
 					ent_prec = updateStats(noTerms, 'ent',prec1, ent_prec)
 					ent_mrr = updateStats(noTerms, 'ent',mrr1, ent_mrr);
 				#sess_prec[addLen] = updateStats(noTerms, 'ent',prec1, sess_prec[addLen])
 				#sess_mrr[addLen] = updateStats(noTerms, 'ent',mrr1, sess_mrr[addLen]);
-				
 				print 'EMetrics ',i,'\t',noTerms,'\t', len(aTerms), '\t', aTerms, '\t',prec1, '\t',mrr1;
 						
 			for noTerms in entExpTerms2.keys():
@@ -231,6 +234,19 @@ def main(argv):
 	
 	
 	'''
+def getTerms(termDict, qSet, totalVocab, stemmer, indices):
+	termSet = set();
+	for entry in indices:
+		for tList in termDict[entry]:
+			for text in tList:
+				terms = getQueryTermsStemmed(text,stemmer);
+				termSet |= terms;
+	print termSet, qSet;
+	
+	termSet = termSet - qSet;
+	termSet = termSet & totalVocab;
+	
+	return termSet;
 
 def printMetric(var, method,key):
 	nkey = method + key;
