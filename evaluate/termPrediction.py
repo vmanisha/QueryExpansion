@@ -78,6 +78,9 @@ def main(argv):
 	for session, doc, click in getSessionWithXML(argv[1]):
 		query = session[0]
 		aTerms,rTerms = addedAndRemovedTerms(query, session[1:], totalVocab)
+		ctitleTerms = getTitleTerms();
+		csummaryTerms = getSummaryTerms();
+		
 		print i, 'Query' ,query, aTerms, rTerms, len(aTerms);
 		
 		if len(aTerms) > 0 and query not in covered:

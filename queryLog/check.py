@@ -3,8 +3,19 @@ import sys, os
 from queryLog import getSessionWithNL, getSessionWithXML
 from utils import getDocumentText
 def main(argv):
-	#for session in getSessionWithNL(argv[1]):
+	completedDocs = {};
+	for session, docs, clicks in getSessionWithXML(argv[1]):
+		for i , docList in docs.items():
+			for docId in docList:
+				if docId not in completedDocs:
+					completedDocs[docId] = 1.0;
+	
+	
+	for entry in completedDocs.keys():
+		print entry;
+		
 	#	print session
+	
 	#get the entries for a particular query
 	#parts = int(argv[2])
 	#index = int(argv[3])
@@ -15,28 +26,30 @@ def main(argv):
 	#end = (index+1)*(len(files)/parts)
 	#for i in range(strt,end):
 		#ifile = files[i]
-	queryFreq = {};
-	for line in open(argv[1],'r'):
-		split = line.split('\t');
-		query = split[0].strip();
-		freq = float(split[1]);
-		queryFreq[query] = freq;
-		
-	toPrint = {};
-	qid = 1;
-	for session, doc, click in getSessionWithXML(argv[2]):
-		query = session[0];
-		if query in queryFreq:
-			toPrint[str(qid)+'\t'+query] = queryFreq[query];
-		else:
-			toPrint[str(qid)+'\t'+query] = 0;
-		qid+=1;
-		
-	sort = sorted(toPrint.items() , reverse = True , key = lambda x : x[1]);
-	for entry in sort:
-		print entry[0],'\t', entry[1];
-		
-	#print getDocumentText('clueweb12-0817wb-00-27979','/media/Data/TREC_Session_Doc/cluewebdocs12/')
+	#queryFreq = {};
+	#for line in open(argv[1],'r'):
+		#split = line.split('\t');
+		#query = split[0].strip();
+		#freq = float(split[1]);
+		#queryFreq[query] = freq;
+		#
+	#toPrint = {};
+	#qid = 1;
+	#for session, doc, click in getSessionWithXML(argv[2]):
+		#query = session[0];
+		#if query in queryFreq:
+			#toPrint[str(qid)+'\t'+query] = queryFreq[query];
+		#else:
+			#toPrint[str(qid)+'\t'+query] = 0;
+		#qid+=1;
+		#
+	#sort = sorted(toPrint.items() , reverse = True , key = lambda x : x[1]);
+	#for entry in sort:
+		#print entry[0],'\t', entry[1];
+		#
+	##print getDocumentText('clueweb12-0817wb-00-27979','/media/Data/TREC_Session_Doc/cluewebdocs12/')
+	
+	
 	'''done = {}
 	for line in open(argv[1],'r'):
 		split = line.split('\t')

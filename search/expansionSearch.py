@@ -2,110 +2,341 @@
 import sys
 from search.searchIndex import SearchIndex
 from entity.catThesExpansion import CatThesExpansion
-from entity.catWalkExpansion import CatWalkExpansion
-from entity.termVector import TermVector
-from queryLog import getSessionWithNL, getSessionWithXML
+from queryLog import getSessionWithXML
 from entity.category.categoryManager import CategoryManager
 from entity.dexter import Dexter
 from entity.ranker import Ranker
 from utils.coOccurrence import CoOccurrence
 from utils.coOcManager import CoOcManager
 from tasks.taskExpansion import TaskExpansion
-#from entity.category.catSubManager import CategorySubtopicManager
-from randomwalk.randomWalk import RandomWalk
-from utils import getDocumentText, loadQueryList
-import ast
+from entity.category.category import Category;
+from entity.category.categorySubcluster import CategorySubcluster;
+from plots import plotMultipleSys;
+from measures import loadRelJudgements, findAvgPrec, findDCG;
+from queryLog.coOccurExpansion import CoOccurExpansion;
+from entity.category import loadCategoryVector;
 #from nltk.stem import porter
 '''
 argv[1] = Session file
 argv[2] = index folder
 argv[3] = vector file / cat query folder / wikiIndex / (outfolder)
 argv[4] = category phrase folder / topic folder / queryIndex
-argv[5] = category Co-Occurrence file / term vector file
-arg[6] = Task index
+argv[5] = category cluster folder
+argv[6] = category Co-Occurrence file / term vector file
+argv[7] = dexter tagged file
+argv[8] = relevance judgements
+argv[9] = outFolder
 '''
 def main(argv):
 	#open the index
 	searcher = SearchIndex(argv[2])
 	searcher.initializeAnalyzer()
-	outFolder = argv[3];
-	#output file
-	oFile1 = open(outFolder+'/baseline_11.RL1','w')
-	oFiles = {};
+	
+	ipaddress = 'localhost'
+	#dexter object
+	tagURL = 'http://'+ipaddress+':8080/rest/annotate'
+	catURL = 'http://'+ipaddress+':8080/rest/graph/get-entity-categories'
+	dexter = Dexter(tagURL,catURL,argv[7]);
 	
 	
 	#category vector
-	#catManage = CategoryManager(argv[3],argv[4])
-	#catManage = CategorySubtopicManager(argv[3],argv[4])
-	
-	#ipaddress = 'localhost'
-	#dexter object
-	#tagURL = 'http://'+ipaddress+':8080/rest/annotate'
-	#catURL = 'http://'+ipaddress+':8080/rest/graph/get-entity-categories'
-	#dexter = Dexter(tagURL,catURL)
-	
-	#ranker
-	#ranker = Ranker()
+	catVect = loadCategoryVector(argv[3]);
+	catManage1 = CategoryManager(catVect,argv[4],Category);
+	catManage2 = CategoryManager(catVect,argv[5],CategorySubcluster);
 	
 	#load the Category co-occurrence bit
-	#catCoMan =	CoOcManager(argv[5],CoOccurrence(),' ')
-
+	catCoMan =	CoOcManager(argv[6],CoOccurrence(),' ')
+		
+	#ranker
+	ranker = Ranker()
 	
+	#task extraction
+	htcTask = TaskExpansion('Indexes/htcIndex',ranker,3000);
+	qccTask = TaskExpansion('Indexes/qccIndex',ranker,3000);
+	#taskK = argv[5][argv[5].rfind('/')+1:]
+	
+	#totalVocab = loadFileInList(argv[6]);
+		
 	#expansion
-	#entExp = CatThesExpansion(dexter, catManage, ranker,catCoMan)
-	#entTermVect = TermVector(argv[6])
-	#catTermVect = TermVector(argv[7])
-	#dexter  = None
-	#entExp = CatWalkExpansion(dexter, catManage, ranker,termVect)
+	entExp1 = CatThesExpansion(dexter, catManage1, ranker,catCoMan);
+	entExp2 = CatThesExpansion(dexter, catManage2, ranker,catCoMan);
+	#term expansion
+	coOccExp = CoOccurExpansion(catCoMan,None ,ranker);
 	
-	#taskExpansion
-	#taskExp = TaskExpansion(argv[6],ranker, 50)
-	#taskExp50 = TaskExpansion(argv[5],ranker,50)
-	#taskExp100 = TaskExpansion(argv[6],ranker,100)
-	#taskInd = argv[6][argv[6].rfind('/')+1:]
+	rel, noRel = loadRelJudgements(argv[8]);
+	
+	outFolder = argv[9];
+	
 	#randomWalk
 	#randWalk = RandomWalk(argv[3],argv[4],ranker)
 	#randWalk = RandomWalk(catManage,catCoMan,entTermVect, catTermVect,ranker)
 	
 	#result String
-	#entFile = {}
-	#randFile = {}
-	#task50File = {}
-	#task100File = {}
-	#porter1 = porter.PorterStemmer()
-	#resStringAll = {}
-	
-	
-	
 	#query key terms
-	queryList = loadQueryList(argv[4]);
-	
+	#queryList = loadQueryList(argv[4]);
+		
+	plotMap = {'baseline':{},'ent':{}, 'entSub':{}, 'qccTask':{}, 'htcTask':{},'co':{}};
+	plotNDCG = {'baseline':{},'ent':{}, 'entSub':{}, 'qccTask':{}, 'htcTask':{},'co':{}};
+
 	#viewedFileFolder =  argv[5]
 	i=0
+	qMap = [];
+	qNdcg = [];
+	meth = 'baseline'
+	oFile  = open(outFolder+'/baseline.RL1','w');
+	covered = {};
 	for session, viewDocs, clickDocs in getSessionWithXML(argv[1]):
 		i+=1
 		query = session[0].strip();
-		if query in queryList:
-			for entry , terms in queryList[query].items():
-				if entry not in oFiles:
-					oFiles[entry] = open(outFolder+'/'+entry+'.RL1','w');
-				docList = searcher.getTopDocumentsWithExpansion(session[0],terms,1000,'content','id')
-				'''k = 1
-				for dtuple  in docList:
-					oFiles[entry].write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' '+entry+'\n')
-					k +=1
-				'''
-			
+
+		if i in rel and query not in covered:
+			covered[query] = 1.0;
 			docList = searcher.getTopDocuments(query,1000,'content','id');
-			k =1;
-			for dtuple  in docList:
-				oFile1.write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' baseline\n')
-				k+=1;
+			qmap = findAvgPrec(docList,rel[i],noRel[i]);
+			dcg10, idcg10 = findDCG(docList[:10],rel[i]);
+			#print dcg10, idcg10, rel[i].values();
+			ndcg10 = 0.0;
+			if idcg10 > 0:
+				ndcg10 = dcg10/idcg10;
+			qMap.append(qmap);
+			qNdcg.append(ndcg10);
+			oFile.write('ndcg10 '+str(i)+' '+str(ndcg10)+'\n');
+			oFile.write('map '+str(i)+' '+str(qmap)+'\n');
+		else:
+			print 'No rel ', i, session[0];
+	
+	fmap = sum(qMap)/i;
+	fnd = sum(qNdcg)/i;
+	oFile.write('all map ' +str(fmap)+'\n');
+	oFile.write('all ndcg10 '+str(fnd)+'\n');
+	for val in range(0,55,5):
+		plotMap[meth][val] = fmap;
+		plotNDCG[meth][val] = fnd;
+	oFile.close();
+	
+	
+	
+	i=0
+	qMap = {};
+	qNdcg = {};
+	oFile = {};
+	meth = 'co';
+	covered = {};
+	for session, viewDocs, clickDocs in getSessionWithXML(argv[1]):
+		i+=1
+		query = session[0].strip();
+		if i in rel and query not in covered:
+			covered[query] = 1.0;
+			coExpTerms = coOccExp.expandTextWithStep(query,0,55,5);
+			for noTerms, terms in coExpTerms.items():
+				if noTerms not in qMap:
+					qMap[noTerms] = [];	
+					qNdcg[noTerms] = [];
+				if noTerms not in oFile:
+					oFile[noTerms]  = open(outFolder+'/'+meth+'_'+str(noTerms)+'.RL1','w');
+				docList = searcher.getTopDocumentsWithExpansion(query,terms,1000,'content','id');
+				qmap = findAvgPrec(docList,rel[i],noRel[i]);
+				dcg10, idcg10 = findDCG(docList[:10],rel[i]);
+				ndcg10 = 0.0;
+				if idcg10 > 0:
+					ndcg10 = dcg10/idcg10;
+				qMap[noTerms].append(qmap);
+				qNdcg[noTerms].append(ndcg10);
+				oFile[noTerms].write('ndcg10 '+str(i)+' '+str(ndcg10)+' '+str(dcg10)+' '+str(idcg10)+'\n');
+				oFile[noTerms].write('map '+str(i)+' '+str(qmap)+'\n');
 		
+	for entry, vlist in qMap.items():
+		i = len(vlist);
+		fmap = sum(vlist)/i;
+		fnd = sum(qNdcg[entry])/i;
+		print sum(vlist), len(vlist);
+		oFile[entry].write('all map ' +str(fmap)+'\n');
+		oFile[entry].write('all ndcg10 '+str(fnd)+'\n');
+		plotMap[meth][entry] = fmap;
+		plotNDCG[meth][entry] = fnd;
+		oFile[entry].close();
+
+	i=0
+	qMap = {};
+	qNdcg = {};
+	oFile = {};
+	meth = 'ent';
+	covered = {};
+	for session, viewDocs, clickDocs in getSessionWithXML(argv[1]):
+		i+=1
+		query = session[0].strip();
+
+		if i in rel and query not in covered:
+			covered[query] = 1.0;
+			entStatus1, entExpTerms1 = entExp1.expandTextWithStep(query,1,0,55,5);
+			for noTerms, terms in entExpTerms1.items():
+				if noTerms not in qMap:
+					qMap[noTerms] = [];	
+					qNdcg[noTerms] = [];
+				if noTerms not in oFile:
+					oFile[noTerms]  = open(outFolder+'/'+meth+'_'+str(noTerms)+'.RL1','w');
+				docList = searcher.getTopDocumentsWithExpansion(session[0],terms,1000,'content','id');
+				qmap = findAvgPrec(docList,rel[i],noRel[i]);
+				dcg10, idcg10 = findDCG(docList[:10],rel[i]);
+				ndcg10 = 0.0;
+				if idcg10 > 0:
+					ndcg10 = dcg10/idcg10;
+			
+				qMap[noTerms].append(qmap);
+				qNdcg[noTerms].append(ndcg10);
+				oFile[noTerms].write('ndcg10 '+str(i)+' '+str(ndcg10)+' '+str(dcg10)+' '+str(idcg10)+'\n');
+				oFile[noTerms].write('map '+str(i)+' '+str(qmap)+'\n');
 		
-		##get max cat terms
-		#randExpTerms = randWalk.expandText(query,50)
-		'''lastQueryIndex = len(session) - 2
+	for entry, vlist in qMap.items():
+		i = len(vlist);
+		fmap = sum(qMap[entry])/i;
+		fnd = sum(qNdcg[entry])/i;
+		oFile[entry].write('all map ' +str(fmap)+'\n');
+		oFile[entry].write('all ndcg10 '+str(fnd)+'\n');
+		plotMap[meth][entry] = fmap;
+		plotNDCG[meth][entry] = fnd;
+		oFile[entry].close();
+	
+	i=0
+	qMap = {};
+	qNdcg = {};
+	oFile = {};
+	meth = 'entSub';
+	covered = {};
+	for session, viewDocs, clickDocs in getSessionWithXML(argv[1]):
+		i+=1
+		query = session[0].strip();
+
+		if i in rel and query not in covered:
+			covered[query] = 1.0;
+			entStatus2, entExpTerms2 = entExp2.expandTextWithStepAndSubcluster(query,'',1,0,55,5);
+			for noTerms, terms in entExpTerms2.items():
+				if noTerms not in qMap:
+					qMap[noTerms] = [];	
+					qNdcg[noTerms] = [];
+				if noTerms not in oFile:
+					oFile[noTerms]  = open(outFolder+'/'+meth+'_'+str(noTerms)+'.RL1','w');
+				docList = searcher.getTopDocumentsWithExpansion(session[0],terms,1000,'content','id');
+				qmap = findAvgPrec(docList,rel[i],noRel[i]);
+				dcg10, idcg10 = findDCG(docList[:10],rel[i]);
+				ndcg10 = 0.0;
+				if idcg10 > 0:
+					ndcg10 = dcg10/idcg10;
+				
+				qMap[noTerms].append(qmap);
+				qNdcg[noTerms].append(ndcg10);
+				oFile[noTerms].write('ndcg10 '+str(i)+' '+str(ndcg10)+' '+str(dcg10)+' '+str(idcg10)+'\n');
+				oFile[noTerms].write('map '+str(i)+' '+str(qmap)+'\n');
+	
+	for entry, vlist in qMap.items():
+		i = len(vlist);
+		fmap = sum(qMap[entry])/i;
+		fnd = sum(qNdcg[entry])/i;
+		oFile[entry].write('all map ' +str(fmap)+'\n');
+		oFile[entry].write('all ndcg10 '+str(fnd)+'\n');
+		plotMap[meth][entry] = fmap;
+		plotNDCG[meth][entry] = fnd;
+		oFile[entry].close();
+		
+	i=0
+	qMap = {};
+	qNdcg = {};
+	oFile = {};
+	meth = 'qccTask';
+	covered = {};
+	for session, viewDocs, clickDocs in getSessionWithXML(argv[1]):
+		i+=1
+		query = session[0].strip();
+
+		if i in rel and query not in covered:
+			covered[query] = 1.0;
+			qccTaskTerms = qccTask.expandTextWithStep(query,0,55,5);
+			for noTerms, terms in qccTaskTerms.items():
+				if noTerms not in qMap:
+					qMap[noTerms] = [];	
+					qNdcg[noTerms] = [];
+				if noTerms not in oFile:
+					oFile[noTerms]  = open(outFolder+'/'+meth+'_'+str(noTerms)+'.RL1','w');
+				docList = searcher.getTopDocumentsWithExpansion(session[0],terms,1000,'content','id');
+				qmap = findAvgPrec(docList,rel[i],noRel[i]);
+				dcg10, idcg10 = findDCG(docList[:10],rel[i]);
+				ndcg10 = 0.0;
+				if idcg10 > 0:
+					ndcg10 = dcg10/idcg10;
+				
+				qMap[noTerms].append(qmap);
+				qNdcg[noTerms].append(ndcg10);
+				oFile[noTerms].write('ndcg10 '+str(i)+' '+str(ndcg10)+' '+str(dcg10)+' '+str(idcg10)+'\n');
+				oFile[noTerms].write('map '+str(i)+' '+str(qmap)+'\n');
+	
+	for entry, vlist in qMap.items():
+		i = len(vlist);
+		fmap = sum(qMap[entry])/i;
+		fnd = sum(qNdcg[entry])/i;
+		oFile[entry].write('all map ' +str(fmap)+'\n');
+		oFile[entry].write('all ndcg10 '+str(fnd)+'\n');
+		plotMap[meth][entry] = fmap;
+		plotNDCG[meth][entry] = fnd;
+		oFile[entry].close();
+		
+	i=0
+	qMap = {};
+	qNdcg = {};
+	oFile = {};
+	meth = 'htcTask';
+	covered = {};
+	for session, viewDocs, clickDocs in getSessionWithXML(argv[1]):
+		i+=1
+		query = session[0].strip();
+
+		if i in rel and query not in covered:
+			covered[query] = 1.0;
+			htcTaskTerms = htcTask.expandTextWithStep(query,0,55,5)
+			for noTerms, terms in htcTaskTerms.items():
+				if noTerms not in qMap:
+					qMap[noTerms] = [];	
+					qNdcg[noTerms] = [];
+				if noTerms not in oFile:
+					oFile[noTerms]  = open(outFolder+'/'+meth+'_'+str(noTerms)+'.RL1','w');
+				docList = searcher.getTopDocumentsWithExpansion(session[0],terms,1000,'content','id');
+				qmap = findAvgPrec(docList,rel[i],noRel[i]);
+				dcg10, idcg10 = findDCG(docList[:10],rel[i]);
+				ndcg10 = 0.0;
+				if idcg10 > 0:
+					ndcg10 = dcg10/idcg10;
+				qMap[noTerms].append(qmap);
+				qNdcg[noTerms].append(ndcg10);
+				oFile[noTerms].write('ndcg10 '+str(i)+' '+str(ndcg10)+' '+str(dcg10)+' '+str(idcg10)+'\n');
+				oFile[noTerms].write('map '+str(i)+' '+str(qmap)+'\n');
+		
+	for entry, vlist in qMap.items():
+		i = len(vlist);
+		fmap = sum(qMap[entry])/i;
+		fnd = sum(qNdcg[entry])/i;
+		oFile[entry].write('all map ' +str(fmap)+'\n');
+		oFile[entry].write('all ndcg10 '+str(fnd)+'\n');
+		plotMap[meth][entry] = fmap;
+		plotNDCG[meth][entry] = fnd;
+		oFile[entry].close();
+
+	plotMultipleSys(plotMap,'No of Terms', 'MAP',outFolder+'/map.png','Retrieval MAP Plot');
+	plotMultipleSys(plotNDCG,'No of Terms', 'NDCG@10',outFolder+'/ndcg10.png','Retrieval NDCG Plot');
+	
+	searcher.close();		
+				
+
+	
+'''
+def getWalkExpansion(query):
+def getTaskExpansion(query):
+'''
+
+
+if __name__ == '__main__':
+	main(sys.argv)
+	
+'''
+lastQueryIndex = len(session) - 2
 		
 		if lastQueryIndex > -1:
 			docText = ''
@@ -133,98 +364,17 @@ def main(argv):
 				for dtuple  in docList:
 					randFile[qtype].write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' rand\n')
 					k +=1
-		'''	
+		
+		
 			
-		'''
-		#if query in querySpotDict:
-		#entExpTerms = entExp.expandText(query,1, 50) #,querySpotDict[query])
-			#randExpTerms = randWalk.expandTextWithStep(query,25,55,25,querySpotDict[query])
-			#for noT , entry in randExpTerms.iteritems():
-			#	if noT not in randFile:
-			#		randFile[noT] = open(argv[9]+str(noT)+'.RL1','a')
-		#k=1
-			#	print 'RWQuery\t',i,'\t',noT,'\t',query,'\t',entry
-		#docList = searcher.getTopDocumentsWithExpansion(query,entExpTerms,1100,'content','id')
-		#for dtuple  in docList:
-		#	oFile2.write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' ent\n')
-			#randFile[noT].write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' ent\n')
-			
-		#	k+=1
-		#entExpTerms = entExp.expandText(query,1,1)
-		#k=0
-		#docList = searcher.getTopDocumentsWithExpansion(query,entExpTerms,2000,'content','id')
-		#for dtuple  in docList:
-		#	oFile2.write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' eexpansion_1_5\n')
-			#resStringAll[noT]+=str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' probExpansion_1_'+str(noT)+'\n'
-		#	k+=1
-			
-		
-		#taskExpTerms = taskExp100.expandText(query,50)
-		#for noT , entry in taskExpTerms50.iteritems():
-		#	if noT not in entFile:
-		#		task50File[noT] = open('task50_11_'+str(noT)+'.RL1','w')
-		#k=1
-		#docList = searcher.getTopDocumentsWithExpansion(query,taskExpTerms,1100,'content','id')
-		#for dtuple  in docList:
-			#entFile[noT].write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' task1\n')
-		#	oFile3.write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' task1\n')
-		#	k+=1
-		
-		
-		taskExpTerms100 = taskExp100.expandTextWithStep(query,25,55,25)
-		for noT , entry in taskExpTerms100.iteritems():
-			if noT not in task100File:
-				task100File[noT] = open(taskInd+'_100_11_'+str(noT)+'.RL1','w')
-			k=1
-			print 'TQuery\t',i,'\t',noT,'\t',query,'\t',entry
-			docList = searcher.getTopDocumentsWithExpansion(query,entry,2000,'content','id')
-			for dtuple  in docList:
-				task100File[noT].write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' task2\n')
-				k+=1
-		'''	
-		#taskExpTerms = taskExp.expandText(query,5)
-		#k=0
-		#docList = searcher.getTopDocumentsWithExpansion(query,taskExpTerms,2000,'content','id')
-		#for dtuple  in docList:
-			#oFile3.write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' texpansion_1_5\n')
-			#k+=1
-		
-		#randExpTerms = randWalk.expandText(query,5)
-		
-		
-		#k=0
-		#docList = searcher.getTopDocumentsWithExpansion(query,randExpTerms,2000,'content','id')
-		#for dtuple  in docList:
-		#	resString4+=str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' texpansion_1_5\n'
-		#	k+=1
-		#get top 3 cat terms
-		#expansionTerms = entExp.expandText(query,3,5)
-	#for entry, string in resStringAll.iteritems():
-	#	oFile2 = open('probExp_11_'+str(entry)+'.RL1','w')
-	#	oFile2.write(string)
-	#oFile1.close()
-	#for entry, fileP in randFile.iteritems():
-	#	fileP.close()
 	
-	#for entry, fileP in task100File.iteritems():
-	#	fileP.close()
+	for approach, docList in results.iteritems():
+		app = approach[:approach.rfind('_')];
+		ind = int(approach[approach.rfind('_')+1:]);
+		if app not in plotMap:
+			plotMap[app]={};
+			plotNDCG[app] = {};
+		plotMap[app][ind] = amap;
+		plotNDCG[app][ind] = andcg;
+'''	
 	
-	#oFile1.close()	
-	#oFile2.close()	
-	#oFile3.close()
-	#load the queries
-	#oFile1.write(resString1)
-	#oFile4.write(resString4)
-	#oFile4.close()
-	for entry, oFile in oFiles.iteritems():
-		oFile.close()
-	searcher.close()
-	
-'''
-def getWalkExpansion(query):
-def getTaskExpansion(query):
-'''
-
-
-if __name__ == '__main__':
-	main(sys.argv)

@@ -18,7 +18,7 @@ class CoOccurExpansion:
 		
 		termScore = {};
 		for entry in neigbhours:
-			if entry not in querySet:
+			if entry not in querySet and entry not in stemSet:
 				termScore[entry] = self.getCoOcScore(stemSet, entry);
 		
 		scoredTerms = self.ranker.getTopKWithFilter(termScore,limit,limit+50)
@@ -31,7 +31,7 @@ class CoOccurExpansion:
 		neigbhours = self.getCoOccuringTerms(stemSet);
 		termScore = {};
 		for entry in neigbhours:
-			if entry not in querySet:
+			if entry not in querySet and entry not in stemSet:
 				termScore[entry] = self.getCoOcScore(stemSet, entry);
 		scoredTerms = {}
 		for i in xrange(limit1,limit2,step):

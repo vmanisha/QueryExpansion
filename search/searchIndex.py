@@ -54,7 +54,7 @@ class SearchIndex:
 		#print type(reader)
 		for scoreDoc in scoreDocs:
 			doc = self.searcher.doc(scoreDoc.doc)
-			rresults.append((doc.get(dfield),scoreDoc.score))
+			rresults.append(doc.get(dfield));#,scoreDoc.score))
 			i+=1
 			if i == limit:
 				break
@@ -80,7 +80,7 @@ class SearchIndex:
 		
 		for scoreDoc in scoreDocs:
 			doc = self.searcher.doc(scoreDoc.doc)
-			rresults.append((doc.get(dfield),scoreDoc.score))
+			rresults.append(doc.get(dfield));#,scoreDoc.score))
 			i+=1
 			if i == limit:
 				break

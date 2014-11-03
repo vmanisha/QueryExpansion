@@ -105,20 +105,30 @@ def stemQuery(string, stemmer):
 	return ' '.join(stemmer.stem(x) for x in split)
 	
 
-def getSessionWithXML(fileName):
+def getSessionWithXML(fileName, storeTitle=False):
 	#content = open(fileName,'r').read()
 	root = etree.parse(fileName)
 	session = []
 	docs = {}
 	clicks = {}
+	title = {};
+	summary = {};
+	ctitle = {};
+	csummary = {};
 	k = 0
+	
 	for sess in root.iter('session'):
 		session = []
 		docs ={}
 		clicks = {}
+		title = {};
+		summary = {};
+		ctitle = {};
+		csummary = {};
+		
 		i =0
 		k+=1
-		topicId = sess[0].get('num');
+		#topicId = sess[0].get('num');
 		#print k,topicId;
 		for entry in sess.iter('interaction'):
 			for query in entry.iter('query'):
@@ -128,20 +138,33 @@ def getSessionWithXML(fileName):
 				session.append(line.strip())
 				docs[i] = []
 				clicks[i] = []
+				title[i] = [];
+				summary[i] = [];
+				ctitle[i] = [];
+				csummary[i] = [];
 				#print i,'query', line
+			
 			for result in entry.iter('clueweb12id'):
 				docs[i].append(result.text)
 			
 			for result in entry.iter('clueweb09id'):
 				docs[i].append(result.text)
-
+			
+			for tit in entry.iter('title'):
+				title[i].append(tit);
+			
+			for content in entry.iter('snippet'):
+				summary[i].append(content);
+			
 				#print i,'result',result.text
 			for clicked in entry.iter('click'):
 				for rank in clicked.iter('rank'):
 					index = int(rank.text)
 					#print i,'click', index, docs[i][index-1]
 					try:
-						clicks[i].append(docs[i][index-1])
+						clicks[i].append(docs[i][index-1]);
+						ctitle[i].append(title[i][index-1]);
+						csummary[i].append(summary[i][index-1]);
 					except:
 						print 'ERROR IN CLICK', index, i, docs[i]
 			i+=1
@@ -151,8 +174,8 @@ def getSessionWithXML(fileName):
 				line = re.sub('\s+',' ',line)
 				session.append(line)
 				#print k, i, query.text
-		yield session, docs, clicks
-	yield session, docs, clicks
+		yield session, docs, clicks, ctitle, csummary;
+	yield session, docs, clicks, ctitle, csummary;
 	
 #dont need index since new line marks the session
 def getSessionWithNL(fileName):
@@ -188,7 +211,7 @@ def getSessionWithQuery(fileName, timeCutoff = 1500):
 			if not ((lastTime == None) or (((currTime -lastTime).total_seconds()<timeCutoff
 			or subQuery(query,lastQuery,0.7)))): #and currUser == lastUser)):
 				if len(session) > 1:
-					yield session
+					yield session;
 					session = []
 			
 			if (lastTime != currTime or lastQuery != query) \

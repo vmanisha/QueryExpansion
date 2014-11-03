@@ -30,8 +30,11 @@ def plotMultipleSys(data,xlab, ylab,fileDest,tit):
 	for sys, points in data.iteritems():
 		
 		for a, plist in sorted(points.items(), key =lambda x : x[0]) :
-			val = (sum(plist)*1.0)/len(plist);
-			
+			val = None;
+			if	type(plist) is list:
+				val = (sum(plist)*1.0)/len(plist);
+			else:
+				val = plist;
 			x.append(a);
 			y.append(val);
 			
