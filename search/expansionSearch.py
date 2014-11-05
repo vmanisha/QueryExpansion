@@ -2,7 +2,7 @@
 import sys
 from search.searchIndex import SearchIndex
 from entity.catThesExpansion import CatThesExpansion
-from queryLog import getSessionWithXML
+from queryLog import getSessionWithXML, normalize;
 from entity.category.categoryManager import CategoryManager
 from entity.dexter import Dexter
 from entity.ranker import Ranker
@@ -15,7 +15,8 @@ from plots import plotMultipleSys;
 from measures import loadRelJudgements, findAvgPrec, findDCG;
 from queryLog.coOccurExpansion import CoOccurExpansion;
 from entity.category import loadCategoryVector;
-#from nltk.stem import porter
+from nltk import stem ;
+
 '''
 argv[1] = Session file
 argv[2] = index folder
@@ -85,14 +86,18 @@ def main(argv):
 	meth = 'baseline'
 	oFile  = open(outFolder+'/baseline.RL1','w');
 	covered = {};
-	for session, viewDocs, clickDocs in getSessionWithXML(argv[1]):
+	porter = stem.porter.PorterStemmer();
+	for session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
 		i+=1
 		query = session[0].strip();
-
 		if i in rel and query not in covered:
 			covered[query] = 1.0;
 			docList = searcher.getTopDocuments(query,1000,'content','id');
-			qmap = findAvgPrec(docList,rel[i],noRel[i]);
+			k = 1
+			for dtuple  in docList:
+				oFile.write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' baseline\n');
+				k +=1
+			'''qmap = findAvgPrec(docList,rel[i],noRel[i]);
 			dcg10, idcg10 = findDCG(docList[:10],rel[i]);
 			#print dcg10, idcg10, rel[i].values();
 			ndcg10 = 0.0;
@@ -102,32 +107,35 @@ def main(argv):
 			qNdcg.append(ndcg10);
 			oFile.write('ndcg10 '+str(i)+' '+str(ndcg10)+'\n');
 			oFile.write('map '+str(i)+' '+str(qmap)+'\n');
+			'''
 		else:
 			print 'No rel ', i, session[0];
-	
-	fmap = sum(qMap)/i;
-	fnd = sum(qNdcg)/i;
+	oFile.close();
+	'''
+	fmap = sum(qMap)/len(qMap);
+	fnd = sum(qNdcg)/len(qNdcg);
 	oFile.write('all map ' +str(fmap)+'\n');
 	oFile.write('all ndcg10 '+str(fnd)+'\n');
 	for val in range(0,55,5):
 		plotMap[meth][val] = fmap;
 		plotNDCG[meth][val] = fnd;
 	oFile.close();
+	'''
 	
-	
-	
+	'''
 	i=0
 	qMap = {};
 	qNdcg = {};
 	oFile = {};
 	meth = 'co';
 	covered = {};
-	for session, viewDocs, clickDocs in getSessionWithXML(argv[1]):
+	for session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
 		i+=1
 		query = session[0].strip();
+		
 		if i in rel and query not in covered:
 			covered[query] = 1.0;
-			coExpTerms = coOccExp.expandTextWithStep(query,0,55,5);
+			coExpTerms = coOccExp.expandTextWithStep(query,50,55,5);
 			for noTerms, terms in coExpTerms.items():
 				if noTerms not in qMap:
 					qMap[noTerms] = [];	
@@ -162,13 +170,13 @@ def main(argv):
 	oFile = {};
 	meth = 'ent';
 	covered = {};
-	for session, viewDocs, clickDocs in getSessionWithXML(argv[1]):
+	for session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
 		i+=1
 		query = session[0].strip();
-
+		cText = normalize(' '.join(cTitle[0]),porter);
 		if i in rel and query not in covered:
 			covered[query] = 1.0;
-			entStatus1, entExpTerms1 = entExp1.expandTextWithStep(query,1,0,55,5);
+			entStatus1, entExpTerms1 = entExp1.expandTextWithStep(query,cText,1,50,55,5);
 			for noTerms, terms in entExpTerms1.items():
 				if noTerms not in qMap:
 					qMap[noTerms] = [];	
@@ -203,13 +211,13 @@ def main(argv):
 	oFile = {};
 	meth = 'entSub';
 	covered = {};
-	for session, viewDocs, clickDocs in getSessionWithXML(argv[1]):
+	for session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
 		i+=1
 		query = session[0].strip();
-
+		cText = normalize(' '.join(cTitle[0]),porter);
 		if i in rel and query not in covered:
 			covered[query] = 1.0;
-			entStatus2, entExpTerms2 = entExp2.expandTextWithStepAndSubcluster(query,'',1,0,55,5);
+			entStatus2, entExpTerms2 = entExp2.expandTextWithStepAndSubcluster(query,cText,1,50,55,5);
 			for noTerms, terms in entExpTerms2.items():
 				if noTerms not in qMap:
 					qMap[noTerms] = [];	
@@ -244,13 +252,13 @@ def main(argv):
 	oFile = {};
 	meth = 'qccTask';
 	covered = {};
-	for session, viewDocs, clickDocs in getSessionWithXML(argv[1]):
+	for session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
 		i+=1
 		query = session[0].strip();
 
 		if i in rel and query not in covered:
 			covered[query] = 1.0;
-			qccTaskTerms = qccTask.expandTextWithStep(query,0,55,5);
+			qccTaskTerms = qccTask.expandTextWithStep(query,50,55,5);
 			for noTerms, terms in qccTaskTerms.items():
 				if noTerms not in qMap:
 					qMap[noTerms] = [];	
@@ -285,13 +293,13 @@ def main(argv):
 	oFile = {};
 	meth = 'htcTask';
 	covered = {};
-	for session, viewDocs, clickDocs in getSessionWithXML(argv[1]):
+	for session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
 		i+=1
 		query = session[0].strip();
 
 		if i in rel and query not in covered:
 			covered[query] = 1.0;
-			htcTaskTerms = htcTask.expandTextWithStep(query,0,55,5)
+			htcTaskTerms = htcTask.expandTextWithStep(query,50,55,5)
 			for noTerms, terms in htcTaskTerms.items():
 				if noTerms not in qMap:
 					qMap[noTerms] = [];	
@@ -321,7 +329,7 @@ def main(argv):
 
 	plotMultipleSys(plotMap,'No of Terms', 'MAP',outFolder+'/map.png','Retrieval MAP Plot');
 	plotMultipleSys(plotNDCG,'No of Terms', 'NDCG@10',outFolder+'/ndcg10.png','Retrieval NDCG Plot');
-	
+	'''
 	searcher.close();		
 				
 

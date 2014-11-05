@@ -393,7 +393,8 @@ def getQueryTermsStemmed(query,stemmer):
 
 	qset = set();
 	for entry in query.strip().split(' '):
-		qset.add([stemmer.stem(entry)]);	
+		if len(entry) > 2:
+			qset.add(stemmer.stem(entry));	
 	
 	qset -= stopSet
 		

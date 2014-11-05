@@ -79,6 +79,9 @@ def writeClusters(outFile, means, distance, words, entities, noClus):
 			maxDist = str(round(max(distance[i]),3)) if len(distance[i]) > 0 else 'NA';
 			minDist = str(round(min(distance[i]),3)) if len(distance[i]) > 0 else 'NA';
 			medDist = str(round(distance[i][len(distance[i])/2],3)) if len(distance[i]) > 0 else 'NA';
+			meanDist = 'NA';
+			if len(distance[i]) > 0:
+				meanDist = str(round(sum(distance[i])/len(distance[i]),3));
 			center = means[i];
 			wsort = sorted(words[i].items(),reverse = True, key = lambda x : x[1]);
 			wString = ' '.join('{0}:{1}'.format(x[0],x[1]) for x in wsort);
@@ -90,7 +93,7 @@ def writeClusters(outFile, means, distance, words, entities, noClus):
 				eString = ' '.join('{0}:{1}'.format(x[0],x[1]) for x in esort);
 			
 			outFile.write(str(i)+'\t'+center+'\t'+eString+'\t'+wString+
-			'\t'+minDist+'\t'+maxDist+'\t'+medDist+'\n');
+			'\t'+meanDist+'\t'+minDist+'\t'+maxDist+'\t'+medDist+'\n');
 		i+=1;
 	outFile.write('NA\t'+' '.join(noClus)+'\n');
 	
@@ -149,15 +152,17 @@ def findScore(featName, weightMatrix, func, man, thresh, weight):
 			if (not smax) or smax < s:
 				smax = s;
 	
-	print featName, smin, smax;	
+	#print featName, smin, smax;	
 	diff = smax - smin;
 	#normalize the scores;
 	for entry in score.keys():
 		space = entry.find(' ');
 		entry1 = entry[0:space];
 		entry2 = entry[space+1:];
-
-		weightMatrix[entry1][entry2]+= weight*(1.0-((score[entry] - smin)/diff));
+		if diff > 0:
+			weightMatrix[entry1][entry2]+= weight*(1.0-((score[entry] - smin)/diff));
+			
+				
 	return weightMatrix;
 		
 '''
@@ -187,7 +192,7 @@ def main(argv):
 	if not os.path.exists(outFolder):
 		os.mkdir(outFolder);
 	
-	ffilter = loadFileInList(argv[6]);
+	ffilter = [];#loadFileInList(argv[6]);
 	termList = [];
 	
 	#sFile = open('score-output.txt','w');
@@ -202,13 +207,14 @@ def main(argv):
 		for line in open(inFolder+'/'+ifile,'r'):
 			split = line.split('\t');
 			term = split[0].strip();
-			if term not in stopSet : #and featMan.hasWord(term):
+			freq = float(split[1]);
+			if term not in stopSet and featMan.hasWord(term) and freq > 5:
 				termList.append(term);
-				termFreq[term] = float(split[1]);
+				termFreq[term] = freq;
 		termList = sorted(termList);
 			
 		tlen = len(termList);
-		if tlen >= 10 and tlen < 1500:
+		if tlen >= 10 and tlen < 5000:
 			for i in range(tlen):
 				word1 = termList[i];
 				if word1 not in weightMatrix:

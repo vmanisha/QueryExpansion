@@ -4,11 +4,11 @@ from utils import get_cosine, getDictFromSet,stopSet;
 from queryLog import hasAlpha;
 
 from nltk import stem;
-from utils import normalize;
+from utils import combineDict;
 import math
+
+
 '''
-Import the query Index
-Search queries
 Get categories for entities
 Get the terms for each category
 Rank terms
@@ -23,7 +23,7 @@ class CatThesExpansion:
 		self.catCoMan = catCoM
 		self.porter = stem.porter.PorterStemmer()
 				
-	def expandText(self,text,topC,limit):
+	def expandText(self,text,clickText, topC,limit):
 		entStatus = False;
 		spotDict = self.dexter.tagText(text)
 		if len(spotDict) == 0:
@@ -34,13 +34,13 @@ class CatThesExpansion:
 		qsplit = text.split()
 		termSet = set(qsplit)
 		termDict = getDictFromSet(qsplit)
-		catList = self.scoreCategories(termSet,termDict,spotDict,topC)
+		catList = self.scoreCategories(termSet,termDict,clickText,spotDict,topC)
 		terms = self.aggregateTerms(text,termSet,catList)
 		#terms = self.aggregateTermsFromTopics(text,spotDict,topC)
 		scoredTerms = self.ranker.getTopKWithFilter(terms,limit,limit+50)
 		return entStatus, scoredTerms
 		
-	def expandTextWithSubClusters(self, qText,cDocText, topC, limit):
+	def expandTextWithSubClusters(self, qText,clickText,topC, limit):
 		
 		spotDict = self.dexter.tagText(qText);
 		entStatus = False;
@@ -54,7 +54,7 @@ class CatThesExpansion:
 		qSet = set(qSplit);
 		qDict = getDictFromSet(qSplit);
 		#Rank cateogories
-		catList = self.scoreCategories(qSet,qDict,spotDict,topC);
+		catList = self.scoreCategories(qSet,qDict,clickText, spotDict,topC);
 		print qText,'CatList ',catList;
 		#Rank subclusters
 		termSet = self.aggregateTermsFromSubclusters(qSet,catList, limit+100);
@@ -64,8 +64,8 @@ class CatThesExpansion:
 		return entStatus, scoredTerms
 		#send results
 	
-			
-	def expandTextWithStepAndSubcluster(self, qText,cDocText, topC, limit1, limit2, step):
+	
+	def expandTextWithStepAndSubcluster(self, qText,clickText,topC, limit1, limit2, step):
 		spotDict = self.dexter.tagText(qText);
 		entStatus = False;
 		scoredTerms = {};
@@ -78,7 +78,8 @@ class CatThesExpansion:
 		qSet = set(qSplit);
 		qDict = getDictFromSet(qSplit);
 		#Rank cateogories
-		catList = self.scoreCategories(qSet,qDict,spotDict,topC);
+		print 'Click Text ', clickText;
+		catList = self.scoreCategories(qSet,qDict,clickText,spotDict,topC);
 		print qText,'CatList ',catList;
 		#Rank subclusters
 		terms= self.aggregateTermsFromSubclusters(qSet,catList, limit2+400);
@@ -95,7 +96,7 @@ class CatThesExpansion:
 		
 			#Rank terms
 			
-	def expandTextWithStep(self,text,topC,limit1,limit2,step):
+	def expandTextWithStep(self,text,clickText,topC,limit1,limit2,step):
 		
 		spotDict = self.dexter.tagText(text)
 		entStatus = False;
@@ -107,7 +108,7 @@ class CatThesExpansion:
 		qsplit = text.split()
 		termSet = set(qsplit)
 		termDict = getDictFromSet(qsplit)
-		catList = self.scoreCategories(termSet,termDict,spotDict,topC)
+		catList = self.scoreCategories(termSet,termDict,clickText,spotDict,topC)
 		terms = self.aggregateTerms(text,termSet,catList)
 		#terms = self.aggregateTermsFromTopics(text,spotDict,topC)
 		scoredTerms = {}
@@ -120,6 +121,24 @@ class CatThesExpansion:
 		return entStatus, scoredTerms
 		
 	
+	def getTopSubclusters(self, qText, clickText,topC, limit):
+		spotDict = self.dexter.tagText(qText);
+		entStatus = False;
+		if len(spotDict) == 0:
+			print 'No Entitity Found\t', qText;
+		else:
+			print 'Tagged ',qText, '\t', spotDict;
+			entStatus = True;
+		qSplit = qText.split();
+		qSet = set(qSplit);
+		qDict = getDictFromSet(qSplit);
+		#Rank cateogories
+		catList = self.scoreCategories(qSet,qDict,clickText,spotDict,topC);
+		print qText,'CatList ',catList;
+		#Rank subclusters
+		topClusters = self.rankClusters(qSet,catList, limit);
+		return entStatus, topClusters;
+		
 	def aggregateTerms(self,query,querySet,entityCatScore):
 		#max -- Take the terms from max category
 		stemSet = [self.porter.stem(entry.strip()) for entry in querySet];
@@ -150,11 +169,17 @@ class CatThesExpansion:
 		return termDict
 		
 	
-	def scoreCategories(self,querySet,queryDict,spotDict, k):
+	def scoreCategories(self,querySet,queryDict,clickText,spotDict, k):
 		entityCatScore = {}
+		
+		cDict = getDictFromSet(clickText.split());
+		combDict= combineDict(cDict, queryDict);
+		cSet = set(cDict.keys());
+		print 'cDict ', cDict, ' combDict ', combDict;
 		for entry, eDict in spotDict.iteritems():
 			catList = eDict['cat'].lower().split()
-			queryTerms = querySet - set([entry])
+			queryTerms = (querySet | cSet);
+			queryTerms = queryTerms - set([entry]);
 			catScore = {}
 			for cat in catList:
 				pset =  self.catManager.getPhraseSet(cat)	#unique phrases in cat
@@ -169,7 +194,7 @@ class CatThesExpansion:
 				
 				#cosine score
 				cVector = self.catManager.getVector(cat)
-				cscore = get_cosine(queryDict, cVector)
+				cscore = get_cosine(combDict, cVector)
 			
 				#total score
 				catScore[cat] = (cscore + score)/2.0
@@ -198,7 +223,7 @@ class CatThesExpansion:
 					key = catS[0]+'_'+str(cid);
 					phraseScore = {};
 					for phrase, count in cluster.items():
-						if phrase not in querySet:
+						if phrase not in querySet and count > 5:
 							coOcScore = self.getCoOcScore(phrase,stemSet);
 							#print phrase, coOcScore, count, catS[1]
 							phraseScore[phrase] = coOcScore*(count / phraseCount );
@@ -228,15 +253,53 @@ class CatThesExpansion:
 					if phrase not in covered:
 						covered[phrase] = i;
 						i+=1;
-						toReturn.append((phrase,score));#*entry[1] ;
+						if score > 0:
+							toReturn.append((phrase,score));#*entry[1] ;
 					#else:
 					#	toReturn[covered[phrase]][1] += score;
 						
 		#print 'Returning terms ', len(toReturn);
 		return toReturn;
 		
-
+	def rankClusters(self, querySet,entityCatScore, limit):	
+		sScore = {};
+		sPhrases = {};
+		stemSet = [self.porter.stem(entry.strip()) for entry in querySet];
+		for entity, catScoreList in entityCatScore.items():
+			#get the subclusters
+			for catS in catScoreList:
+				phraseCount = self.catManager.getTotalPhraseCount(catS[0]);
+				for centry  in self.catManager.getSubclusters(catS[0]):
+					cid= centry[0];
+					cluster = centry[1];
+					key = catS[0]+'_'+str(cid);
+					phraseScore = {};
+					for phrase, count in cluster.items():
+						if phrase not in querySet:
+							coOcScore = self.getCoOcScore(phrase,stemSet);
+							#print phrase, coOcScore, count, catS[1]
+							phraseScore[phrase] = coOcScore*(count / phraseCount );
+							
+					#phraseScore = normalize(phraseScore);
+					#for phrase,count in cluster.items():
+					#	phraseScore[phrase] *= count;
+					sScore[key] = sum(phraseScore.values())/len(phraseScore);
+					sPhrases[key] = phraseScore;
+					#print key, sum(phraseScore.values()),sScore[key], len(phraseScore);
+				
+		#sort the subclusters with scores, and combine the phrases
+		sortS = sorted(sScore.items(), reverse=True, key = lambda x: x[1]);
+		toReturn = {};
+		for entry in sortS:
+			if len(toReturn) > limit:
+				break;
+			pSort = sorted(sPhrases[entry[0]].items(), reverse = True, key = lambda x:x[1]);
+			toReturn[entry[0]] = [pentry[0] for pentry in pSort];
+		
+		return toReturn;
 			
+			
+		
 	def getCoOcScore(self,phrase,stemSet):
 		total = 0.0
 		tCount = 0.0

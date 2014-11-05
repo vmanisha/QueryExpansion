@@ -4,14 +4,18 @@
 import matplotlib.pyplot as plt
 import sys
 
-def plot1(file1,xlabel1, ylabel1,fileDest):
+def plotLine(data,xlabel1, ylabel1,fileDest):
 	x = []
 	y = []
 	
-	for line in open(file1,'r'):
-		split = line.split('\t')
-		x.append(float(split[0]))
-		y.append(round(float(split[1]),3))
+	for entry in data.items():
+		x.append(entry[0]);
+		val = None;
+		if type(entry[1]) is list:
+			val = (sum(entry[1])*1.0)/len(entry[1]);
+		else:
+			val = entry[1];
+		y.append(val);
 	l, = plt.plot(x, y, 'r-')
 	plt.xlabel(xlabel1)	
 	plt.ylabel(ylabel1)	

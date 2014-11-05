@@ -19,6 +19,7 @@ from queryLog.coOccurExpansion import CoOccurExpansion;
 from plots import plotMultipleSys;
 from queryLog import getQueryTerms,getQueryTermsStemmed;
 from nltk import stem;
+from queryLog import normalize;
 '''
 argv[1] = Session file
 argv[2] = vector file / cat query folder / wikiIndex
@@ -27,6 +28,7 @@ argv[4] = category Co-Occurrence file
 argv[5] = spotFile  / Task Index
 argv[6] = File containing vocabulary (log dictionary/word counts);
 argv[7] = category clusterFolder
+argv[8] = outFolder;
 '''#
 
 def main(argv):
@@ -79,9 +81,11 @@ def main(argv):
 	
 	for session, doc, click, cTitle, cSummary in getSessionWithXML(argv[1]):
 		query = session[0]
-		qSet = getQueryTerms(query);
-		#aTerms,rTerms = addedAndRemovedTerms(query, session[1:], totalVocab)
-		aTerms = getTerms(cTitle,qSet,totalVocab,porter, range(1,len(session)-1));
+		#qSet = getQueryTerms(query);
+		print 'Title, Summary clicked ',cTitle[0], cSummary[0];
+		cText = normalize(' '.join(cTitle[0]),porter);
+		aTerms,rTerms = addedAndRemovedTerms(query, session[1:], totalVocab)
+		#aTerms = getTerms(cTitle,qSet,totalVocsab,porter, range(1,len(session)-1));
 		#csummaryTerms = getTerms(cSummary,qSet,totalVocab, range(1,len(session)));
 		
 		print i, 'Query' ,query, aTerms, len(aTerms);
@@ -91,8 +95,8 @@ def main(argv):
 			
 			coExpTerms = coOccExp.expandTextWithStep(query,0,55,5);
 			
-			entStatus1, entExpTerms1 = entExp1.expandTextWithStep(query,1,0,55,5);
-			entStatus2, entExpTerms2 = entExp2.expandTextWithStepAndSubcluster(query,'',1,0,55,5);
+			entStatus1, entExpTerms1 = entExp1.expandTextWithStep(query,cText,1,0,55,5);
+			entStatus2, entExpTerms2 = entExp2.expandTextWithStepAndSubcluster(query,cText,1,0,55,5);
 			
 			qccTaskTerms = qccTask.expandTextWithStep(query,0,55,5)
 			htcTaskTerms = htcTask.expandTextWithStep(query,0,55,5)
@@ -208,10 +212,10 @@ def main(argv):
 	printMetric(ent_prec,'co','EntPrec');
 	printMetric(ent_mrr,'co','EntMrr');
 	
-	plotMultipleSys(prec,'No of Terms', 'Prec',argv[1][:-4]+'_'+'prec.png','Term Prediction Prec Plot');
-	plotMultipleSys(mrr,'No of Terms', 'MRR',argv[1][:-4]+'_'+'mrr.png','Term Prediction MRR Plot');
-	plotMultipleSys(ent_prec,'No of Terms', 'Prec',argv[1][:-4]+'_'+'_ent_prec.png','Term Prediction Prec Plot (Ent queries)');
-	plotMultipleSys(ent_mrr,'No of Terms', 'MRR',argv[1][:-4]+'_'+'_ent_mrr.png','Term Prediction MRR Plot (Ent queries)');
+	plotMultipleSys(prec,'No of Terms', 'Prec',argv[8]+'/'+argv[1][argv[1].rfind('/')+1:-4]+'_'+'prec.png','Term Prediction Prec Plot');
+	plotMultipleSys(mrr,'No of Terms', 'MRR',argv[8]+'/'+argv[1][argv[1].rfind('/')+1:-4]+'_'+'mrr.png','Term Prediction MRR Plot');
+	plotMultipleSys(ent_prec,'No of Terms', 'Prec',argv[8]+'/'+argv[1][argv[1].rfind('/')+1:-4]+'_'+'_ent_prec.png','Term Prediction Prec Plot (Ent queries)');
+	plotMultipleSys(ent_mrr,'No of Terms', 'MRR',argv[8]+'/'+argv[1][argv[1].rfind('/')+1:-4]+'_'+'_ent_mrr.png','Term Prediction MRR Plot (Ent queries)');
 	
 	'''
 	for aLen, sprec in sess_prec.items():
@@ -237,15 +241,14 @@ def main(argv):
 def getTerms(termDict, qSet, totalVocab, stemmer, indices):
 	termSet = set();
 	for entry in indices:
-		for tList in termDict[entry]:
-			for text in tList:
+		tList= termDict[entry];
+		for text in tList:
 				terms = getQueryTermsStemmed(text,stemmer);
 				termSet |= terms;
 	print termSet, qSet;
 	
 	termSet = termSet - qSet;
 	termSet = termSet & totalVocab;
-	
 	return termSet;
 
 def printMetric(var, method,key):
@@ -291,3 +294,4 @@ def getBand(num):
 		
 if __name__ == '__main__':
 	main(sys.argv)
+	

@@ -172,7 +172,7 @@ def getDocumentText(fileName, dirPath):
 def loadFileInList(fileName):
 	eset = set();
 	for line in open(fileName,'r'):
-		split = line.strip().split('\t');
+		split = line.strip().split(' ');
 		eset.add(split[0].strip());		
 	return eset;
 
@@ -250,7 +250,11 @@ def loadQueryList(fileName):
 			if key not in queryList[query]:
 				queryList[query][key] = terms;
 	return queryList;
-	
+
+
+def combineDict(d1, d2):
+	return dict(d1.items() + d2.items() + [(k, d1[k] + d2[k]) for k in set(d1) & set(d2)]);
+
 def main(argv):
 	#replaceAlphaNum(argv[1],argv[2])
 	#removeFreqWords(argv[1],int(argv[2]))

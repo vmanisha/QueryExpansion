@@ -45,9 +45,11 @@ def findAvgPrec(results, rel, noRel):
 	avpTotal = 0.0;
 	for k in range(len(results)):
 		lab = 0;
-		if results[k] in rel:
+		try:
 			lab=rel[results[k]];
 			lab = min(1,lab);
+		except:
+			pass;
 			
 		pTotK += lab;	
 		pK  = pTotK/((k+1)*1.0);
@@ -78,8 +80,10 @@ def findDCG(results, rel):
 	idcgOrder = sorted(rel.values(), reverse = True);
 	for k in range(len(results)):
 		lab = 0.0;
-		if results[k] in rel:
+		try:
 			lab = rel[results[k]];
+		except:
+			pass;
 		logK = math.log(k+1,2);
 
 		ilab = idcgOrder[k];
