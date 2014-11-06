@@ -95,7 +95,7 @@ if __name__ == '__main__':
 		for entry in entExpTerms1:
 			oFile1.write('\t'+entry[0]);
 			k+=1;
-			if k%num == 0 and k < noTerms:
+			if (num > 0 and k%num == 0) and k < noTerms:
 				oFile1.write('\n'+str(i)+'\t'+query);
 		oFile1.write('\n');	
 	
