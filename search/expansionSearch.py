@@ -11,7 +11,7 @@ from utils.coOcManager import CoOcManager
 from tasks.taskExpansion import TaskExpansion
 from entity.category.category import Category;
 from entity.category.categorySubcluster import CategorySubcluster;
-from plots import plotMultipleSys;
+#from plots import plotMultipleSys;
 from measures import loadRelJudgements, findAvgPrec, findDCG;
 from queryLog.coOccurExpansion import CoOccurExpansion;
 from entity.category import loadCategoryVector;
@@ -76,13 +76,13 @@ def main(argv):
 	#query key terms
 	#queryList = loadQueryList(argv[4]);
 		
-	plotMap = {'baseline':{},'ent':{}, 'entSub':{}, 'qccTask':{}, 'htcTask':{},'co':{}};
-	plotNDCG = {'baseline':{},'ent':{}, 'entSub':{}, 'qccTask':{}, 'htcTask':{},'co':{}};
+	#plotMap = {'baseline':{},'ent':{}, 'entSub':{}, 'qccTask':{}, 'htcTask':{},'co':{}};
+	#plotNDCG = {'baseline':{},'ent':{}, 'entSub':{}, 'qccTask':{}, 'htcTask':{},'co':{}};
 
 	#viewedFileFolder =  argv[5]
 	i=0
-	qMap = [];
-	qNdcg = [];
+	#qMap = [];
+	#qNdcg = [];
 	meth = 'baseline'
 	oFile  = open(outFolder+'/baseline.RL1','w');
 	covered = {};
@@ -122,10 +122,9 @@ def main(argv):
 	oFile.close();
 	'''
 	
-	'''
 	i=0
-	qMap = {};
-	qNdcg = {};
+	#qMap = {};
+	#qNdcg = {};
 	oFile = {};
 	meth = 'co';
 	covered = {};
@@ -137,13 +136,18 @@ def main(argv):
 			covered[query] = 1.0;
 			coExpTerms = coOccExp.expandTextWithStep(query,50,55,5);
 			for noTerms, terms in coExpTerms.items():
-				if noTerms not in qMap:
-					qMap[noTerms] = [];	
-					qNdcg[noTerms] = [];
+				#if noTerms not in qMap:
+				#	qMap[noTerms] = [];	
+				#	qNdcg[noTerms] = [];
 				if noTerms not in oFile:
 					oFile[noTerms]  = open(outFolder+'/'+meth+'_'+str(noTerms)+'.RL1','w');
 				docList = searcher.getTopDocumentsWithExpansion(query,terms,1000,'content','id');
-				qmap = findAvgPrec(docList,rel[i],noRel[i]);
+				k = 1
+				for dtuple  in docList:
+					oFile[noTerms].write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' baseline\n');
+					k +=1
+			
+				'''qmap = findAvgPrec(docList,rel[i],noRel[i]);
 				dcg10, idcg10 = findDCG(docList[:10],rel[i]);
 				ndcg10 = 0.0;
 				if idcg10 > 0:
@@ -152,7 +156,8 @@ def main(argv):
 				qNdcg[noTerms].append(ndcg10);
 				oFile[noTerms].write('ndcg10 '+str(i)+' '+str(ndcg10)+' '+str(dcg10)+' '+str(idcg10)+'\n');
 				oFile[noTerms].write('map '+str(i)+' '+str(qmap)+'\n');
-		
+				'''
+	'''
 	for entry, vlist in qMap.items():
 		i = len(vlist);
 		fmap = sum(vlist)/i;
@@ -163,10 +168,13 @@ def main(argv):
 		plotMap[meth][entry] = fmap;
 		plotNDCG[meth][entry] = fnd;
 		oFile[entry].close();
-
+	'''
+	for entry in oFile.keys():
+		oFile[entry].close();
+	
 	i=0
-	qMap = {};
-	qNdcg = {};
+	#qMap = {};
+	#qNdcg = {};
 	oFile = {};
 	meth = 'ent';
 	covered = {};
@@ -178,12 +186,18 @@ def main(argv):
 			covered[query] = 1.0;
 			entStatus1, entExpTerms1 = entExp1.expandTextWithStep(query,cText,1,50,55,5);
 			for noTerms, terms in entExpTerms1.items():
-				if noTerms not in qMap:
-					qMap[noTerms] = [];	
-					qNdcg[noTerms] = [];
+				#if noTerms not in qMap:
+				#	qMap[noTerms] = [];	
+				#	qNdcg[noTerms] = [];
 				if noTerms not in oFile:
 					oFile[noTerms]  = open(outFolder+'/'+meth+'_'+str(noTerms)+'.RL1','w');
 				docList = searcher.getTopDocumentsWithExpansion(session[0],terms,1000,'content','id');
+				k = 1
+				for dtuple  in docList:
+					oFile[noTerms].write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' baseline\n');
+					k +=1
+			
+				'''
 				qmap = findAvgPrec(docList,rel[i],noRel[i]);
 				dcg10, idcg10 = findDCG(docList[:10],rel[i]);
 				ndcg10 = 0.0;
@@ -194,7 +208,7 @@ def main(argv):
 				qNdcg[noTerms].append(ndcg10);
 				oFile[noTerms].write('ndcg10 '+str(i)+' '+str(ndcg10)+' '+str(dcg10)+' '+str(idcg10)+'\n');
 				oFile[noTerms].write('map '+str(i)+' '+str(qmap)+'\n');
-		
+				
 	for entry, vlist in qMap.items():
 		i = len(vlist);
 		fmap = sum(qMap[entry])/i;
@@ -204,10 +218,13 @@ def main(argv):
 		plotMap[meth][entry] = fmap;
 		plotNDCG[meth][entry] = fnd;
 		oFile[entry].close();
+	'''
+	for entry in oFile.keys():
+		oFile[entry].close();
 	
 	i=0
-	qMap = {};
-	qNdcg = {};
+	#qMap = {};
+	#qNdcg = {};
 	oFile = {};
 	meth = 'entSub';
 	covered = {};
@@ -219,13 +236,18 @@ def main(argv):
 			covered[query] = 1.0;
 			entStatus2, entExpTerms2 = entExp2.expandTextWithStepAndSubcluster(query,cText,1,50,55,5);
 			for noTerms, terms in entExpTerms2.items():
-				if noTerms not in qMap:
-					qMap[noTerms] = [];	
-					qNdcg[noTerms] = [];
+				#if noTerms not in qMap:
+					#qMap[noTerms] = [];	
+					#qNdcg[noTerms] = [];
 				if noTerms not in oFile:
 					oFile[noTerms]  = open(outFolder+'/'+meth+'_'+str(noTerms)+'.RL1','w');
 				docList = searcher.getTopDocumentsWithExpansion(session[0],terms,1000,'content','id');
-				qmap = findAvgPrec(docList,rel[i],noRel[i]);
+				k =1;
+				for dtuple  in docList:
+					oFile[noTerms].write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' baseline\n');
+					k +=1
+	
+				'''qmap = findAvgPrec(docList,rel[i],noRel[i]);
 				dcg10, idcg10 = findDCG(docList[:10],rel[i]);
 				ndcg10 = 0.0;
 				if idcg10 > 0:
@@ -245,10 +267,13 @@ def main(argv):
 		plotMap[meth][entry] = fmap;
 		plotNDCG[meth][entry] = fnd;
 		oFile[entry].close();
+	'''
+	for entry in oFile.keys():
+		oFile[entry].close();
 		
 	i=0
-	qMap = {};
-	qNdcg = {};
+	#qMap = {};
+	#qNdcg = {};
 	oFile = {};
 	meth = 'qccTask';
 	covered = {};
@@ -260,36 +285,44 @@ def main(argv):
 			covered[query] = 1.0;
 			qccTaskTerms = qccTask.expandTextWithStep(query,50,55,5);
 			for noTerms, terms in qccTaskTerms.items():
-				if noTerms not in qMap:
-					qMap[noTerms] = [];	
-					qNdcg[noTerms] = [];
+				#if noTerms not in qMap:
+					#qMap[noTerms] = [];	
+					#qNdcg[noTerms] = [];
 				if noTerms not in oFile:
 					oFile[noTerms]  = open(outFolder+'/'+meth+'_'+str(noTerms)+'.RL1','w');
 				docList = searcher.getTopDocumentsWithExpansion(session[0],terms,1000,'content','id');
-				qmap = findAvgPrec(docList,rel[i],noRel[i]);
-				dcg10, idcg10 = findDCG(docList[:10],rel[i]);
-				ndcg10 = 0.0;
-				if idcg10 > 0:
-					ndcg10 = dcg10/idcg10;
-				
-				qMap[noTerms].append(qmap);
-				qNdcg[noTerms].append(ndcg10);
-				oFile[noTerms].write('ndcg10 '+str(i)+' '+str(ndcg10)+' '+str(dcg10)+' '+str(idcg10)+'\n');
-				oFile[noTerms].write('map '+str(i)+' '+str(qmap)+'\n');
+				k =1;
+				for dtuple  in docList:
+					oFile[noTerms].write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' baseline\n');
+					k +=1
 	
-	for entry, vlist in qMap.items():
-		i = len(vlist);
-		fmap = sum(qMap[entry])/i;
-		fnd = sum(qNdcg[entry])/i;
-		oFile[entry].write('all map ' +str(fmap)+'\n');
-		oFile[entry].write('all ndcg10 '+str(fnd)+'\n');
-		plotMap[meth][entry] = fmap;
-		plotNDCG[meth][entry] = fnd;
+				#qmap = findAvgPrec(docList,rel[i],noRel[i]);
+				#dcg10, idcg10 = findDCG(docList[:10],rel[i]);
+				#ndcg10 = 0.0;
+				#if idcg10 > 0:
+					#ndcg10 = dcg10/idcg10;
+				#
+				#qMap[noTerms].append(qmap);
+				#qNdcg[noTerms].append(ndcg10);
+				#oFile[noTerms].write('ndcg10 '+str(i)+' '+str(ndcg10)+' '+str(dcg10)+' '+str(idcg10)+'\n');
+				#oFile[noTerms].write('map '+str(i)+' '+str(qmap)+'\n');
+	#
+	#for entry, vlist in qMap.items():
+		#i = len(vlist);
+		#fmap = sum(qMap[entry])/i;
+		#fnd = sum(qNdcg[entry])/i;
+		#oFile[entry].write('all map ' +str(fmap)+'\n');
+		#oFile[entry].write('all ndcg10 '+str(fnd)+'\n');
+		#plotMap[meth][entry] = fmap;
+		#plotNDCG[meth][entry] = fnd;
+		#oFile[entry].close();
+		#
+	for entry in oFile.keys():
 		oFile[entry].close();
-		
+	
 	i=0
-	qMap = {};
-	qNdcg = {};
+	#qMap = {};
+	#qNdcg = {};
 	oFile = {};
 	meth = 'htcTask';
 	covered = {};
@@ -301,35 +334,42 @@ def main(argv):
 			covered[query] = 1.0;
 			htcTaskTerms = htcTask.expandTextWithStep(query,50,55,5)
 			for noTerms, terms in htcTaskTerms.items():
-				if noTerms not in qMap:
-					qMap[noTerms] = [];	
-					qNdcg[noTerms] = [];
+				#if noTerms not in qMap:
+					#qMap[noTerms] = [];	
+					#qNdcg[noTerms] = [];
 				if noTerms not in oFile:
 					oFile[noTerms]  = open(outFolder+'/'+meth+'_'+str(noTerms)+'.RL1','w');
 				docList = searcher.getTopDocumentsWithExpansion(session[0],terms,1000,'content','id');
-				qmap = findAvgPrec(docList,rel[i],noRel[i]);
-				dcg10, idcg10 = findDCG(docList[:10],rel[i]);
-				ndcg10 = 0.0;
-				if idcg10 > 0:
-					ndcg10 = dcg10/idcg10;
-				qMap[noTerms].append(qmap);
-				qNdcg[noTerms].append(ndcg10);
-				oFile[noTerms].write('ndcg10 '+str(i)+' '+str(ndcg10)+' '+str(dcg10)+' '+str(idcg10)+'\n');
-				oFile[noTerms].write('map '+str(i)+' '+str(qmap)+'\n');
-		
-	for entry, vlist in qMap.items():
-		i = len(vlist);
-		fmap = sum(qMap[entry])/i;
-		fnd = sum(qNdcg[entry])/i;
-		oFile[entry].write('all map ' +str(fmap)+'\n');
-		oFile[entry].write('all ndcg10 '+str(fnd)+'\n');
-		plotMap[meth][entry] = fmap;
-		plotNDCG[meth][entry] = fnd;
+				k =1;
+				for dtuple  in docList:
+					oFile[noTerms].write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' baseline\n');
+					k +=1
+				#qmap = findAvgPrec(docList,rel[i],noRel[i]);
+				#dcg10, idcg10 = findDCG(docList[:10],rel[i]);
+				#ndcg10 = 0.0;
+				#if idcg10 > 0:
+					#ndcg10 = dcg10/idcg10;
+				#qMap[noTerms].append(qmap);
+				#qNdcg[noTerms].append(ndcg10);
+				#oFile[noTerms].write('ndcg10 '+str(i)+' '+str(ndcg10)+' '+str(dcg10)+' '+str(idcg10)+'\n');
+				#oFile[noTerms].write('map '+str(i)+' '+str(qmap)+'\n');
+		#
+	#for entry, vlist in qMap.items():
+		#i = len(vlist);
+		#fmap = sum(qMap[entry])/i;
+		#fnd = sum(qNdcg[entry])/i;
+		#oFile[entry].write('all map ' +str(fmap)+'\n');
+		#oFile[entry].write('all ndcg10 '+str(fnd)+'\n');
+		#plotMap[meth][entry] = fmap;
+		#plotNDCG[meth][entry] = fnd;
+		#oFile[entry].close();
+	for entry in oFile.keys():
 		oFile[entry].close();
+	
 
-	plotMultipleSys(plotMap,'No of Terms', 'MAP',outFolder+'/map.png','Retrieval MAP Plot');
-	plotMultipleSys(plotNDCG,'No of Terms', 'NDCG@10',outFolder+'/ndcg10.png','Retrieval NDCG Plot');
-	'''
+	#plotMultipleSys(plotMap,'No of Terms', 'MAP',outFolder+'/map.png','Retrieval MAP Plot');
+	#plotMultipleSys(plotNDCG,'No of Terms', 'NDCG@10',outFolder+'/ndcg10.png','Retrieval NDCG Plot');
+	
 	searcher.close();		
 				
 
