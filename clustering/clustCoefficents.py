@@ -147,7 +147,7 @@ def main(argv):
 		#scindex[totalPhrases].append(sc);
 	
 	
-	plotValues(dindex, outFolder+'/'+'dindex.png','# terms in Cat file','Dunn Index');
+	#plotValues(dindex, outFolder+'/'+'dindex.png','# terms in Cat file','Dunn Index');
 	#plotValues(scindex, 'scindex.png');
 		
 

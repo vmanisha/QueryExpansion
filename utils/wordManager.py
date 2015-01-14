@@ -83,3 +83,9 @@ class WordManager:
 		
 		else:
 			return {};
+	
+	def getEntProb(self, word, ent):
+		if word in self.wordFeat:
+			return self.wordFeat[word].getEntProb(ent);
+		else:
+			return 0.0;

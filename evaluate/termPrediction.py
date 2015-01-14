@@ -16,9 +16,10 @@ from entity.category import loadCategoryVector;
 from  entity.category.category import Category;
 from entity.category.categorySubcluster import CategorySubcluster;
 from queryLog.coOccurExpansion import CoOccurExpansion;
-from plots import plotMultipleSys;
+from plots import plotMultipleSys, plotHist;
 from queryLog import getQueryTerms,getQueryTermsStemmed;
 from nltk import stem;
+from utils.wordManager import WordManager;
 from queryLog import normalize;
 '''
 argv[1] = Session file
@@ -28,7 +29,9 @@ argv[4] = category Co-Occurrence file
 argv[5] = spotFile  / Task Index
 argv[6] = File containing vocabulary (log dictionary/word counts);
 argv[7] = category clusterFolder
-argv[8] = outFolder;
+argv[8] = word features file
+argv[9] = outFolder
+argv[10] = type
 '''#
 
 def main(argv):
@@ -48,17 +51,19 @@ def main(argv):
 	
 	#ranker
 	ranker = Ranker()
-	
+	totalVocab = loadFileInList(argv[6]);
 	#task extraction
-	htcTask = TaskExpansion('Indexes/htcIndex',ranker,3000);
-	qccTask = TaskExpansion('Indexes/qccIndex',ranker,3000);
+	#htcTask = TaskExpansion('Indexes/htcIndex',ranker,3000);
+	qccTask = TaskExpansion('Indexes/qccIndex',ranker,3000,totalVocab);
 	#taskK = argv[5][argv[5].rfind('/')+1:]
 	
-	totalVocab = loadFileInList(argv[6]);
+	
+
+	wordFeatMan = None;# WordManager(argv[8],False);
 	
 	#expansion
-	entExp1 = CatThesExpansion(dexter, catManage1, ranker,catCoMan);
-	entExp2 = CatThesExpansion(dexter, catManage2, ranker,catCoMan);
+	#entExp1 = CatThesExpansion(dexter, catManage1, ranker,catCoMan,wordFeatMan);
+	entExp2 = CatThesExpansion(dexter, catManage2, ranker,catCoMan,wordFeatMan);
 	#term expansion
 	coOccExp = CoOccurExpansion(catCoMan,None ,ranker );
 	#randomWalk
@@ -79,27 +84,35 @@ def main(argv):
 	
 	porter = stem.porter.PorterStemmer();
 	
+	ttype = argv[10];
+
 	for session, doc, click, cTitle, cSummary in getSessionWithXML(argv[1]):
 		query = session[0]
-		#qSet = getQueryTerms(query);
-		print 'Title, Summary clicked ',cTitle[0], cSummary[0];
-		cText = normalize(' '.join(cTitle[0]),porter);
-		aTerms,rTerms = addedAndRemovedTerms(query, session[1:], totalVocab)
-		#aTerms = getTerms(cTitle,qSet,totalVocsab,porter, range(1,len(session)-1));
-		#csummaryTerms = getTerms(cSummary,qSet,totalVocab, range(1,len(session)));
+		qSet = getQueryTerms(query);
+		#print 'Title, Summary clicked ',cTitle[0], cSummary[0];
+		aTerms = None;
+		#cText = normalize(' '.join(cTitle[0]),porter);
+		if ttype == 'query':
+			aTerms,rTerms = addedAndRemovedTerms(query, session[1:], totalVocab)
+		elif ttype == 'title':
+			aTerms = getTerms(cTitle,qSet,totalVocab,porter, range(1,len(session)-1));
+		else:
+			aTerms = getTerms(cTitle,qSet,totalVocab,porter, range(1,len(session)-1));
+			bTerms = getTerms(cSummary,qSet,totalVocab,porter, range(1,len(session)-1));
+			aTerms = aTerms | bTerms;
 		
 		print i, 'Query' ,query, aTerms, len(aTerms);
 		
-		if len(aTerms) > 0 and query not in covered:
+		if len(aTerms) > 0:# and query not in covered:
 			covered[query] = 1;
 			
 			coExpTerms = coOccExp.expandTextWithStep(query,0,55,5);
 			
-			entStatus1, entExpTerms1 = entExp1.expandTextWithStep(query,cText,1,0,55,5);
-			entStatus2, entExpTerms2 = entExp2.expandTextWithStepAndSubcluster(query,cText,1,0,55,5);
+			#entStatus1, entExpTerms1 = entExp1.expandTextWithStep(query,'',1,0,55,5);
+			entStatus1, entExpTerms2 = entExp2.expandTextWithStepAndSubcluster(query,'',1,0,55,5);
 			
 			qccTaskTerms = qccTask.expandTextWithStep(query,0,55,5)
-			htcTaskTerms = htcTask.expandTextWithStep(query,0,55,5)
+			#htcTaskTerms = htcTask.expandTextWithStep(query,0,55,5)
 			#randExpTerms = randWalk.expandTextWithStep(query,55,105,5)
 			if not entStatus1:
 				print i, 'Ent False' ,query;
@@ -108,19 +121,19 @@ def main(argv):
 			#if addLen not in sess_prec:
 			#	sess_prec[addLen] = {'ent':{}};#, 'qccTask':{}, 'htcTask':{}, 'co':{} };
 			#	sess_mrr[addLen] = {'ent':{}};#, 'qccTask':{}, 'htcTask':{}, 'co':{} };
-
-			for noTerms in entExpTerms1.keys():
-				print 'ETerms\t',i,'\t',query,'\t',entExpTerms1[noTerms],'\t',noTerms;
-				prec1 , mrr1 = getPrecRecall(entExpTerms1[noTerms],aTerms);
-				prec = updateStats(noTerms, 'ent',prec1, prec);
-				mrr = updateStats(noTerms, 'ent',mrr1, mrr);
-				if entStatus1:
-					ent_prec = updateStats(noTerms, 'ent',prec1, ent_prec)
-					ent_mrr = updateStats(noTerms, 'ent',mrr1, ent_mrr);
-				#sess_prec[addLen] = updateStats(noTerms, 'ent',prec1, sess_prec[addLen])
-				#sess_mrr[addLen] = updateStats(noTerms, 'ent',mrr1, sess_mrr[addLen]);
-				print 'EMetrics ',i,'\t',noTerms,'\t', len(aTerms), '\t', aTerms, '\t',prec1, '\t',mrr1;
-						
+		
+			#for noTerms in entExpTerms1.keys():
+				#print 'ETerms\t',i,'\t',query,'\t',entExpTerms1[noTerms],'\t',noTerms;
+				#prec1 , mrr1 = getPrecRecall(entExpTerms1[noTerms],aTerms);
+				#prec = updateStats(noTerms, 'ent',prec1, prec);
+				#mrr = updateStats(noTerms, 'ent',mrr1, mrr);
+				#if entStatus1:
+					#ent_prec = updateStats(noTerms, 'ent',prec1, ent_prec)
+					#ent_mrr = updateStats(noTerms, 'ent',mrr1, ent_mrr);
+				##sess_prec[addLen] = updateStats(noTerms, 'ent',prec1, sess_prec[addLen])
+				##sess_mrr[addLen] = updateStats(noTerms, 'ent',mrr1, sess_mrr[addLen]);
+				#print 'EMetrics ',i,'\t',noTerms,'\t', len(aTerms), '\t', aTerms, '\t',prec1, '\t',mrr1;
+						#
 			for noTerms in entExpTerms2.keys():
 				print 'ESubTerms\t',i,'\t',query,'\t',entExpTerms2[noTerms],'\t',noTerms
 				prec1 , mrr1 = getPrecRecall(entExpTerms2[noTerms],aTerms)
@@ -148,20 +161,19 @@ def main(argv):
 				print 'qccTaskMetrics ',i,'\t',noTerms,'\t', len(aTerms), '\t', aTerms, '\t',prec1, '\t',mrr1
 			
 			
-			for noTerms in htcTaskTerms.keys():
-				print 'htcTaskTerms\t',i,'\t',query,'\t',htcTaskTerms[noTerms],'\t',noTerms
-				prec1 , mrr1 = getPrecRecall(htcTaskTerms[noTerms],aTerms)
-				prec = updateStats(noTerms, 'htcTask',prec1, prec)
-				mrr = updateStats(noTerms, 'htcTask',mrr1, mrr);
-				if entStatus1:
-					ent_prec = updateStats(noTerms, 'htcTask',prec1, ent_prec)
-					ent_mrr = updateStats(noTerms, 'htcTask',mrr1, ent_mrr);
-				'''
-				sess_prec[addLen] = updateStats(noTerms, 'htcTask',prec1, sess_prec[addLen])
-				sess_mrr[addLen] = updateStats(noTerms, 'htcTask',mrr1, sess_mrr[addLen]);
-				'''
-				print 'htcTaskMetrics ',i,'\t',noTerms,'\t', len(aTerms), '\t', aTerms, '\t',prec1, '\t',mrr1
-			
+			#for noTerms in htcTaskTerms.keys():
+				#print 'htcTaskTerms\t',i,'\t',query,'\t',htcTaskTerms[noTerms],'\t',noTerms
+				#prec1 , mrr1 = getPrecRecall(htcTaskTerms[noTerms],aTerms)
+				#prec = updateStats(noTerms, 'htcTask',prec1, prec)
+				#mrr = updateStats(noTerms, 'htcTask',mrr1, mrr);
+				#if entStatus1:
+					#ent_prec = updateStats(noTerms, 'htcTask',prec1, ent_prec)
+					#ent_mrr = updateStats(noTerms, 'htcTask',mrr1, ent_mrr);
+				##sess_prec[addLen] = updateStats(noTerms, 'htcTask',prec1, sess_prec[addLen])
+				##sess_mrr[addLen] = updateStats(noTerms, 'htcTask',mrr1, sess_mrr[addLen]);
+				#
+				#print 'htcTaskMetrics ',i,'\t',noTerms,'\t', len(aTerms), '\t', aTerms, '\t',prec1, '\t',mrr1
+
 			
 			for noTerms in coExpTerms.keys():
 				print 'CoTerms\t',i,'\t',query,'\t',coExpTerms[noTerms],'\t',noTerms
@@ -212,11 +224,13 @@ def main(argv):
 	printMetric(ent_prec,'co','EntPrec');
 	printMetric(ent_mrr,'co','EntMrr');
 	
-	plotMultipleSys(prec,'No of Terms', 'Prec',argv[8]+'/'+argv[1][argv[1].rfind('/')+1:-4]+'_'+'prec.png','Term Prediction Prec Plot');
-	plotMultipleSys(mrr,'No of Terms', 'MRR',argv[8]+'/'+argv[1][argv[1].rfind('/')+1:-4]+'_'+'mrr.png','Term Prediction MRR Plot');
-	plotMultipleSys(ent_prec,'No of Terms', 'Prec',argv[8]+'/'+argv[1][argv[1].rfind('/')+1:-4]+'_'+'_ent_prec.png','Term Prediction Prec Plot (Ent queries)');
-	plotMultipleSys(ent_mrr,'No of Terms', 'MRR',argv[8]+'/'+argv[1][argv[1].rfind('/')+1:-4]+'_'+'_ent_mrr.png','Term Prediction MRR Plot (Ent queries)');
+	plotMultipleSys(prec,'No of Terms', 'Prec',argv[9]+'/'+argv[1][argv[1].rfind('/')+1:-4]+'_'+'prec.png','Term Prediction Prec Plot');
+	plotMultipleSys(mrr,'No of Terms', 'MRR',argv[9]+'/'+argv[1][argv[1].rfind('/')+1:-4]+'_'+'mrr.png','Term Prediction MRR Plot');
+	plotMultipleSys(ent_prec,'No of Terms', 'Prec',argv[9]+'/'+argv[1][argv[1].rfind('/')+1:-4]+'_'+'_ent_prec.png','Term Prediction Prec Plot (Ent queries)');
+	plotMultipleSys(ent_mrr,'No of Terms', 'MRR',argv[9]+'/'+argv[1][argv[1].rfind('/')+1:-4]+'_'+'_ent_mrr.png','Term Prediction MRR Plot (Ent queries)');
 	
+	#htcTask.closeIndex();
+	qccTask.closeIndex();
 	'''
 	for aLen, sprec in sess_prec.items():
 		printMetric(sprec,'ent','SPrec'+str(aLen));
@@ -238,6 +252,8 @@ def main(argv):
 	
 	
 	'''
+	
+	
 def getTerms(termDict, qSet, totalVocab, stemmer, indices):
 	termSet = set();
 	for entry in indices:
@@ -291,6 +307,39 @@ def getBand(num):
 		return num;
 	else:
 		return '>5';
+
+def plotRareFreqDist(argv):	
+
+	data = [[],[],[]];
+	
+	toPlot = {};
+	for fileName in os.listdir(argv[1]):
+		name = fileName[:fileName.rfind('.')]
+	
+		if name not in toPlot:
+			toPlot[name] = {'rare':0.0, 'freq':0.0};
+			
+		for line in open(argv[1]+'/'+fileName,'r'):
+			split = line.split('\t');
+			freq = float(split[-1]);
+			if freq > 0:
+				toPlot[name]['freq'] += 1.0;
+			else:
+				toPlot[name]['rare'] += 1.0;
+	
+	#2011 2012 2013 2014
+	# Freq counts for 2011-2014
+	# Rare counts for 2011-2014
+	
+	for entry,dlist in sorted(toPlot.items()):
+		data[0].append(entry);
+		total = sum(dlist.values());
+		data[1].append(dlist['freq']/total);
+		data[2].append(dlist['rare']/total);
+		
+	plotHist(data, '% of Queries', 'Track Year')
+
+
 		
 if __name__ == '__main__':
 	main(sys.argv)

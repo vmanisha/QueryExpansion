@@ -16,13 +16,14 @@ Rank terms
 
 class CatThesExpansion:
 	
-	def __init__(self,dext,categoryM,rnker, catCoM):
+	def __init__(self,dext,categoryM,rnker, catCoM, wordM):
 		self.catManager = categoryM
 		self.dexter = dext
 		self.ranker = rnker
 		self.catCoMan = catCoM
 		self.porter = stem.porter.PorterStemmer()
-				
+		self.wordMan = wordM;
+		
 	def expandText(self,text,clickText, topC,limit):
 		entStatus = False;
 		spotDict = self.dexter.tagText(text)
@@ -133,10 +134,10 @@ class CatThesExpansion:
 		qSet = set(qSplit);
 		qDict = getDictFromSet(qSplit);
 		#Rank cateogories
-		catList = self.scoreCategories(qSet,qDict,clickText,spotDict,topC);
-		print qText,'CatList ',catList;
+		#catList = self.scoreCategories(qSet,qDict,clickText,spotDict,topC);
+		#print qText,'CatList ',catList;
 		#Rank subclusters
-		topClusters = self.rankClusters(qSet,catList, limit);
+		topClusters = None; #self.rankClusters(qSet,catList, limit);
 		return entStatus, topClusters;
 		
 	def aggregateTerms(self,query,querySet,entityCatScore):
@@ -151,7 +152,8 @@ class CatThesExpansion:
 					if phrase not in query:
 						coOcScore = self.getCoOcScore(phrase,stemSet)
 						#print phrase, coOcScore, count, catS[1],catTotal
-						termDict[phrase] = termDict.setdefault(phrase,0.0) + (count/catTotal)*coOcScore
+						termDict[phrase] = termDict.setdefault(phrase,0.0) + (count/catTotal)\
+						*(coOcScore);#+0.6*entScore)/2;
 											#(0.75*(count*catS[1])+0.25*(coOcScore*catS[1]))
 			
 		return termDict
@@ -213,58 +215,8 @@ class CatThesExpansion:
 		sScore = {};
 		sPhrases = {};
 		stemSet = [self.porter.stem(entry.strip()) for entry in querySet];
-		for entity, catScoreList in entityCatScore.items():
-			#get the subclusters
-			for catS in catScoreList:
-				phraseCount = self.catManager.getTotalPhraseCount(catS[0]);
-				for centry  in self.catManager.getSubclusters(catS[0]):
-					cid= centry[0];
-					cluster = centry[1];
-					key = catS[0]+'_'+str(cid);
-					phraseScore = {};
-					for phrase, count in cluster.items():
-						if phrase not in querySet and count > 5:
-							coOcScore = self.getCoOcScore(phrase,stemSet);
-							#print phrase, coOcScore, count, catS[1]
-							phraseScore[phrase] = coOcScore*(count / phraseCount );
-							
-					#phraseScore = normalize(phraseScore);
-					#for phrase,count in cluster.items():
-					#	phraseScore[phrase] *= count;
-					sScore[key] = sum(phraseScore.values())/len(phraseScore);
-					sPhrases[key] = phraseScore;
-					#print key, sum(phraseScore.values()),sScore[key], len(phraseScore);
-				
-		#sort the subclusters with scores, and combine the phrases
-		sortS = sorted(sScore.items(), reverse=True, key = lambda x: x[1]);
-		toReturn = [];
-		covered = {};
-		i = 0;
-		for entry in sortS:
-			if len(toReturn) > limit:
-				break;
-			print entry[0],	sPhrases[entry[0]].keys(), entry[1];
-			#print 'phrases to score ',len(sPhrases[entry[0]]);
-			pSort = sorted(sPhrases[entry[0]].items(), reverse = True, key = lambda x:x[1]);
-			for pentry in pSort:
-				phrase = pentry[0];
-				score = pentry[1];
-				if phrase not in querySet:
-					if phrase not in covered:
-						covered[phrase] = i;
-						i+=1;
-						if score > 0:
-							toReturn.append((phrase,score));#*entry[1] ;
-					#else:
-					#	toReturn[covered[phrase]][1] += score;
-						
-		#print 'Returning terms ', len(toReturn);
-		return toReturn;
+		#entSet = entityCatScore.keys();
 		
-	def rankClusters(self, querySet,entityCatScore, limit):	
-		sScore = {};
-		sPhrases = {};
-		stemSet = [self.porter.stem(entry.strip()) for entry in querySet];
 		for entity, catScoreList in entityCatScore.items():
 			#get the subclusters
 			for catS in catScoreList:
@@ -277,7 +229,71 @@ class CatThesExpansion:
 					for phrase, count in cluster.items():
 						if phrase not in querySet:
 							coOcScore = self.getCoOcScore(phrase,stemSet);
+							#entScore = self.getEntScore(phrase,entSet);
 							#print phrase, coOcScore, count, catS[1]
+							phraseScore[phrase] = coOcScore*(count / phraseCount );
+							
+					#phraseScore = normalize(phraseScore);
+					#for phrase,count in cluster.items():
+					#	phraseScore[phrase] *= count;
+					if len(phraseScore) > 0:
+						sScore[key] = sum(phraseScore.values())/len(phraseScore);
+						sPhrases[key] = phraseScore;
+					#print key, sum(phraseScore.values()),sScore[key], len(phraseScore);
+				
+		#sort the subclusters with scores, and combine the phrases
+		sortS = sorted(sScore.items(), reverse=True, key = lambda x: x[1]);
+		toReturn = [];
+		covered = {};
+		i = 0;
+		
+		for entry in sortS:
+			print entry[0],	sPhrases[entry[0]].keys(), entry[1];
+			#print 'phrases to score ',len(sPhrases[entry[0]]);
+			pSort = sorted(sPhrases[entry[0]].items(), reverse = True, key = lambda x:x[1]);
+			for pentry in pSort:
+				phrase = pentry[0];
+				score = pentry[1];
+				if phrase not in querySet:
+					if phrase not in covered:
+						covered[phrase] = score*entry[1];
+					else:
+						covered[phrase] += score*entry[1];
+						i+=1;
+					#else:						
+					#	toReturn[covered[phrase]][1] += score;
+
+					#	if score > 0:
+					#		toReturn.append((phrase,score));#*entry[1] ;
+					
+					
+		toReturn = sorted(covered.items(),reverse=True,key = lambda x : x[1]);				
+		#print 'Returning terms ', len(toReturn);
+		if limit > len(toReturn):
+			limit = len(toReturn);
+			
+		return toReturn[:limit];
+		
+	def rankClusters(self, querySet,entityCatScore, limit):	
+		sScore = {};
+		sPhrases = {};
+		stemSet = [self.porter.stem(entry.strip()) for entry in querySet];
+		#entSet = entityCatScore.keys();
+		for entity, catScoreList in entityCatScore.items():
+			#get the subclusters
+			for catS in catScoreList:
+				phraseCount = self.catManager.getTotalPhraseCount(catS[0]);
+				for centry  in self.catManager.getSubclusters(catS[0]):
+					cid= centry[0];
+					cluster = centry[1];
+					key = catS[0]+'_'+str(cid);
+					phraseScore = {};
+					for phrase, count in cluster.items():
+						if phrase not in querySet:
+							coOcScore = self.getCoOcScore(phrase,stemSet);
+							#entScore = self.getEntScore(phrase,entSet);
+							#print phrase, coOcScore, count, catS[1]
+							#phraseScore[phrase] = coOcScore*(count / phraseCount );
 							phraseScore[phrase] = coOcScore*(count / phraseCount );
 							
 					#phraseScore = normalize(phraseScore);
@@ -298,7 +314,14 @@ class CatThesExpansion:
 		
 		return toReturn;
 			
-			
+	
+	def getEntScore(self,phrase,entSet):
+		#get word Manager
+		total = 0.0;
+		for entry in entSet:
+			total+=self.wordMan.getEntProb(phrase, entry);
+		
+		return total/len(entSet);	
 		
 	def getCoOcScore(self,phrase,stemSet):
 		total = 0.0

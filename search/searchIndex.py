@@ -81,7 +81,7 @@ class SearchIndex:
 		
 		for scoreDoc in scoreDocs:
 			doc = self.searcher.doc(scoreDoc.doc)
-			rresults.append(doc.get(dfield));#,scoreDoc.score))
+			#rresults.append(doc.get(dfield));#,scoreDoc.score))
 			rresults.append((doc.get(dfield),scoreDoc.score));
 			
 			i+=1

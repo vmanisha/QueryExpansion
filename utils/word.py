@@ -7,6 +7,7 @@ class Word:
 		self.cat = {};
 		self.ent = {};
 		self.url = {};
+		self.entTotal = 0.0;
 		self.line = line1;
 	
 	def updateURLStats(self,u, count):
@@ -39,6 +40,7 @@ class Word:
 			self.ent[e] = 0.0;
 		
 		self.ent[e]+= count;
+		self.entTotal+=count;
 
 	def getCats(self):
 		return self.cat.keys();
@@ -56,7 +58,12 @@ class Word:
 		
 		return 0.0;
 	
-	
+	def getEntProb(self, ent):
+		if ent in self.ent:
+			return self.ent[ent];
+		
+		return 0.0;
+		
 	def getEntities(self):
 		return self.ent;
 		

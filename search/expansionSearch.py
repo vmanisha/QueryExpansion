@@ -42,7 +42,7 @@ def main(argv):
 	
 	#category vector
 	catVect = loadCategoryVector(argv[3]);
-	catManage1 = CategoryManager(catVect,argv[4],Category);
+	#catManage1 = CategoryManager(catVect,argv[4],Category);
 	catManage2 = CategoryManager(catVect,argv[5],CategorySubcluster);
 	
 	#load the Category co-occurrence bit
@@ -80,47 +80,47 @@ def main(argv):
 	#plotNDCG = {'baseline':{},'ent':{}, 'entSub':{}, 'qccTask':{}, 'htcTask':{},'co':{}};
 
 	#viewedFileFolder =  argv[5]
-	i=0
-	#qMap = [];
-	#qNdcg = [];
-	meth = 'baseline'
-	oFile  = open(outFolder+'/baseline.RL1','w');
-	covered = {};
-	porter = stem.porter.PorterStemmer();
-	for session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
-		i+=1
-		query = session[0].strip();
-		if i in rel and query not in covered:
-			covered[query] = 1.0;
-			docList = searcher.getTopDocuments(query,1000,'content','id');
-			k = 1
-			for dtuple  in docList:
-				oFile.write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' baseline\n');
-				k +=1
-			'''qmap = findAvgPrec(docList,rel[i],noRel[i]);
-			dcg10, idcg10 = findDCG(docList[:10],rel[i]);
-			#print dcg10, idcg10, rel[i].values();
-			ndcg10 = 0.0;
-			if idcg10 > 0:
-				ndcg10 = dcg10/idcg10;
-			qMap.append(qmap);
-			qNdcg.append(ndcg10);
-			oFile.write('ndcg10 '+str(i)+' '+str(ndcg10)+'\n');
-			oFile.write('map '+str(i)+' '+str(qmap)+'\n');
-			'''
-		else:
-			print 'No rel ', i, session[0];
-	oFile.close();
-	'''
-	fmap = sum(qMap)/len(qMap);
-	fnd = sum(qNdcg)/len(qNdcg);
-	oFile.write('all map ' +str(fmap)+'\n');
-	oFile.write('all ndcg10 '+str(fnd)+'\n');
-	for val in range(0,55,5):
-		plotMap[meth][val] = fmap;
-		plotNDCG[meth][val] = fnd;
-	oFile.close();
-	'''
+	#i=0
+	##qMap = [];
+	##qNdcg = [];
+	#meth = 'baseline'
+	#oFile  = open(outFolder+'/baseline.RL1','w');
+	#covered = {};
+	#porter = stem.porter.PorterStemmer();
+	#for session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
+		#i+=1
+		#query = session[0].strip();
+		#if i in rel and query not in covered:
+			#covered[query] = 1.0;
+			#docList = searcher.getTopDocuments(query,1000,'content','id');
+			#k = 1
+			#for dtuple  in docList:
+				#oFile.write(str(i)+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' baseline\n');
+				#k +=1
+			#'''qmap = findAvgPrec(docList,rel[i],noRel[i]);
+			#dcg10, idcg10 = findDCG(docList[:10],rel[i]);
+			##print dcg10, idcg10, rel[i].values();
+			#ndcg10 = 0.0;
+			#if idcg10 > 0:
+				#ndcg10 = dcg10/idcg10;
+			#qMap.append(qmap);
+			#qNdcg.append(ndcg10);
+			#oFile.write('ndcg10 '+str(i)+' '+str(ndcg10)+'\n');
+			#oFile.write('map '+str(i)+' '+str(qmap)+'\n');
+			#'''
+		#else:
+			#print 'No rel ', i, session[0];
+	#oFile.close();
+	#'''
+	#fmap = sum(qMap)/len(qMap);
+	#fnd = sum(qNdcg)/len(qNdcg);
+	#oFile.write('all map ' +str(fmap)+'\n');
+	#oFile.write('all ndcg10 '+str(fnd)+'\n');
+	#for val in range(0,55,5):
+		#plotMap[meth][val] = fmap;
+		#plotNDCG[meth][val] = fnd;
+	#oFile.close();
+	#'''
 	
 	i=0
 	#qMap = {};
