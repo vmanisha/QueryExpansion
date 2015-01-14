@@ -49,19 +49,21 @@ def plotMultipleSys(data,xlab, ylab,fileDest,tit):
 	i = 0;
 	x = [];
 	y = [];
+	#ppoints = ['rx','gx','bx','g+','r+','b+']
 	for sys, points in data.iteritems():
-		
-		for a, plist in sorted(points.items(), key =lambda x : x[0]) :
-			val = None;
-			if	type(plist) is list:
-				val = (sum(plist)*1.0)/len(plist);
-			else:
-				val = plist;
-			x.append(a);
-			y.append(val);
+		print sys,'\t', len(points)
+		if len(points) > 2:
+			for a, plist in sorted(points.items(), key =lambda x : x[0]) :
+				val = None;
+				if	type(plist) is list:
+					val = (sum(plist)*1.0)/len(plist);
+				else:
+					val = plist;
+				x.append(a);
+				y.append(val);
 			
 		if len(x) > 0 and len(y) > 0:
-			l, = plt.plot(x, y,label=sys);
+			l, = plt.plot(x, y,'o',label=sys);
 		
 		i+=1;
 		x = [];
