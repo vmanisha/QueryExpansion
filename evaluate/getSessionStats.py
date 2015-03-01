@@ -1,10 +1,11 @@
 import sys
 import re
 import time
-from entity import tagQueryWithDexter
-from category import getCats, loadPhrasesWithScore, loadCategoryVector
+from entity.category import getCats, loadPhrasesWithScore, loadCategoryVector
 from queryLog import getSessionWithNL
 from utils import get_cosine, SYMB, stopSet, getDictFromSet
+import os, ast
+from evaluate import addedAndRemovedTerms
 
 def getStatsPerQuery(argv):
 	tagURL = 'http://localhost:8080/rest/annotate'
@@ -29,7 +30,7 @@ def getStatsPerQuery(argv):
 		for query in session:
 			#find the entities in query
 			try:
-				spotDict = tagQueryWithDexter(query, tagURL,catURL)
+				spotDict = None #tagQueryWithDexter(query, tagURL,catURL)
 				querySpotList[query] = spotDict
 				for text in spotDict.keys():
 					for entry in spotDict[text]['cat'].split():
@@ -128,7 +129,7 @@ def getStatsPerSession(catVector, f1Dict, argv):
 		arMax = 0.0
 		apMax = 0.0
 		try:
-			spotDict = tagQueryWithDexter(bQuery, tagURL,catURL)
+			spotDict = None#tagQueryWithDexter(bQuery, tagURL,catURL)
 			time.sleep(1)
 			if aTerms:
 				sStat['aTerms'] +=1.0
@@ -268,13 +269,29 @@ def getPrecRecall(opt,catList,f1Dict,catVector,queryTerms,aTerms,index):
 #t = set (a , b , c , d , e)
 #b = set (a, b) 	
 
+def getCategoryCount(dirName):
+	catCount = {}
+	for fileName in os.listdir(dirName):
+		for line in open(dirName+'/'+fileName, 'r'):
+			split = line.split('\t');
+			spotDict = ast.literal_eval(split[1]);
+			for entity, edict in spotDict.items():
+				catList = edict['cat'].split();
+				for cat in catList:
+					catCount[cat] = catCount.setdefault(cat,0.0)+ 1.0;
+			
+	for entry in sorted(catCount.items(), reverse = True, key = lambda x : x[1]):
+		print entry;
+
+
 def main(argv):
 	
-	catVector = loadCategoryVector(argv[3])
-	f1Dict = getCats(argv[2]+'/list.txt')
-	for k in [1,3,5,10,20,30,40,50,60,100]:
-		argv[-1]=  str(k)
-		getStatsPerSession(catVector, f1Dict,argv)
+	#catVector = loadCategoryVector(argv[3])
+	#f1Dict = getCats(argv[2]+'/list.txt')
+	#for k in [1,3,5,10,20,30,40,50,60,100]:
+		#argv[-1]=  str(k)
+		#getStatsPerSession(catVector, f1Dict,argv)
+	getCategoryCount(argv[1])
 
 if __name__ == '__main__':
 	main(sys.argv)

@@ -12,7 +12,7 @@ class Ranker:
 		i = 0
 		if total > 0:
 			for entry in terms:
-				result.append((entry[0],round(entry[1]/total,5)))
+				result.append((entry[0],round(entry[1]/total,3)))
 				i +=1
 				if i == limit:
 					break

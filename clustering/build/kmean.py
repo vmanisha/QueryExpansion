@@ -3,7 +3,7 @@ class KMeans:
 	
 	def __init__(self,k1,data1,distMatrix,iteration,threshold):
 		self.k = k1;
-		self.data = data1;
+		self.data = data1; #list
 		self.distance = distMatrix;
 		self.mean = [];
 		self.meanDist = []; #stores the avg distance from mean
@@ -17,12 +17,16 @@ class KMeans:
 	
 	def initializeMean(self):
 		while len(self.mean) < self.k :		
-			index = random.randint(0,self.k);
+			#print len(self.mean), self.k
+			#index = random.randint(0,self.k);
+			index = random.randint(0,len(self.data)-1);
 			if self.data[index] not in self.mean:
 				self.mean.append(self.data[index]);
 				self.wasCenter[self.data[index]] = self.wasCenter.setdefault(self.data[index],0.0)+1.0;
 				self.meanDist.append(0.0);
 				self.maxDist.append(None);	
+		
+		print 'Done with initialization'
 		
 	def findCenters(self):
 		self.mean=[];
@@ -58,10 +62,12 @@ class KMeans:
 					for j in range(i+1,clen):
 						t2 = entry[j];
 						try:
-							tdist[t1] +=self.distance[t1][t2];
-							tdist[t2] +=self.distance[t1][t2];
+							a, b = self.order(t1,t2)
+							tdist[t1] +=self.distance[a][b];
+							tdist[t2] +=self.distance[a][b];
 						except:
-							pass;
+							pass
+							
 					if clen > 1.0:
 						tdist[t1] /= (clen-1.0);
 					if not minDist or minDist > tdist[t1]:
@@ -83,9 +89,9 @@ class KMeans:
 		#print check;
 		for entry in check:
 			try:
-				
-				dist = self.distance[word][entry];
-				if (not minDist) or (minDist > dist):
+				a, b = self.order(word,entry)
+				dist = self.distance[a][b];
+				if (not minDist) or (minDist > dist) and dist < self.maxDist[i]:
 					minDist = dist;
 					minEntry = entry;
 					minInd = i;
@@ -99,10 +105,11 @@ class KMeans:
 		
 		for i in range(len(self.clusters)):
 			self.clusters[i]=[self.mean[i]];
-		
+		i = 1;
 		for entry in self.data:
 			if entry not in self.mean:
 				minDist, minEntry, minInd = self.getEntryWithMinDist(entry, self.mean);
+				#print 'Assigning ', entry, minDist, minEntry, minInd
 				if minInd:
 					self.clusters[minInd].append(entry);
 					if (not self.maxDist[minInd]) or (self.maxDist[minInd] < minDist):
@@ -110,7 +117,9 @@ class KMeans:
 				else:
 					if entry not in self.noClass:
 						self.noClass.append(entry);
-							
+			i+=1
+			if i % 10000== 1:
+				print i			
 					
 	def cluster(self):
 		
@@ -118,7 +127,10 @@ class KMeans:
 		self.initializeMean();
 		
 		for i in range(self.itertn):
+			print 'Assigning Labels'
 			self.assignLabel();
+			print 'Assigned Labels'
+			print 'Iteration ',i
 			#print self.clusters;
 			oldCenters = self.meanDist;
 			oldMaxDist = self.maxDist;
@@ -161,12 +173,22 @@ class KMeans:
 	def findMostLikelyCluster(self, i):
 		clus = self.clusters[i];
 		clen = len(self.clusters);
+		minDist = 100
+		minIndex = -1
 		for j in range(i+1,clen):
 			for entry in clus:
-				if entry in self.distance and self.mean[j] in self.distance[entry] and \
-				self.distance[entry][self.mean[j]] < self.maxDist[j]:
-					return j;
-		return -1;
+				a, b = self.order(entry,self.mean[j])
+				try:
+					if self.distance[a][b] < self.maxDist[j] and self.distance[a][b] < minDist:
+						minIndex = j;
+						minDist = self.distance[a][b]
+				except:
+					pass
+				#if entry in self.distance and self.mean[j] in self.distance[entry] and \
+				#self.distance[entry][self.mean[j]] < self.maxDist[j]:
+				#	return j;
+		
+		return minIndex;
 		
 			
 	def findCenterDiff(self, v1, v2):
@@ -191,3 +213,8 @@ class KMeans:
 		
 	def getTermInNoCluster(self):
 		return self.noClass;
+
+	def order(self,a,b):
+		if a > b:
+			return b,a
+		return a,b

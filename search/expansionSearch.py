@@ -52,8 +52,8 @@ def main(argv):
 	ranker = Ranker()
 	
 	#task extraction
-	htcTask = TaskExpansion('Indexes/htcIndex',ranker,3000);
-	qccTask = TaskExpansion('Indexes/qccIndex',ranker,3000);
+	#htcTask = TaskExpansion('Indexes/htcIndex',ranker,3000);
+	#qccTask = TaskExpansion('Indexes/qccIndex',ranker,3000);
 	#taskK = argv[5][argv[5].rfind('/')+1:]
 	
 	#totalVocab = loadFileInList(argv[6]);

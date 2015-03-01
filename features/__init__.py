@@ -2,9 +2,17 @@
 from queryLog import parseLine, hasAlpha, QUERY, CLICKU
 from utils import stopSet, ashleelString
 import sys,  ast
-from word import Word
+from utils.word import Word
 from nltk.stem import porter
+from features.featureManager import FeatureManager
 
+						
+def toString(eset,featMan):
+	string = ''
+	for entry in eset:
+		string+='\t'+str(featMan.returnQuery(entry))
+	return string.strip()
+	
 def findClickQuery(fileName):
 	'''load clicked queries'''
 	porter1 = porter.PorterStemmer()
@@ -91,6 +99,33 @@ def mergeQueryCountS(file1, file2):
 			
 	for entry, freq in counts.iteritems():
 		print entry ,'\t',freq
+	
+
+def findPairwiseDistance(file1):	
+	featMan = FeatureManager()
+	
+	featMan.readFeatures(file1)
+	featDict = featMan.featureDict;
+	
+	ids = featDict.keys()
+	keys = sorted(ids);
+	for i in range(0,len(keys)):
+		qid1, qf1 = featMan.returnFeature(keys[i])
+		for j in range(i+1, len(keys)):
+			qid2, qf2 = featMan.returnFeature(keys[j])
+			qcos, ucos, userCos, ngramCos, entCos, catCos = qf1.findCosineDistance(qf2)
+			qjac = qf1.findJacardDistance(qf2)
+			#qedit = qf1.findEditDistance(qf2)
+			#normalized distance
+			#dist = (j - i)#*1.0/len(session)
+			
+			edgeScore = (.25*((qcos + qjac )/2.0) +\
+			.15*ngramCos + .15*ucos + \
+			.15*userCos + .15*entCos + .15*catCos)
+			if edgeScore > 0.15:
+				#print session[i], session[j], edgeScore, qcos, qjac, ucos, userCos, qedit
+				print keys[i], keys[j], edgeScore
+		
 		
 '''
 argv[1] = Query Log
@@ -99,7 +134,8 @@ argv[2] = tagged File
 def main(argv):
 	#clickedInfo = loadClickedTerms(argv[1])
 	#calWordFeatures(argv[2], clickedInfo)
-	mergeQueryCountS(argv[1],argv[2])
+	#mergeQueryCountS(argv[1],argv[2])
+	findPairwiseDistance(argv[1])
 	
 if __name__ == '__main__':
 	main(sys.argv)		

@@ -1,15 +1,15 @@
+# -*- coding: utf-8 -*-
 #!/usr/bin/env python
-__doc__="""
+"""
 N-Triples Parser
-License: GPL 2, W3C, BSD, or MIT
-Author: Sean B. Palmer, inamidst.com
-Documentation: http://inamidst.com/proj/rdf/ntriples-doc
+Copyright 2004, Sean B. Palmer, inamidst.com
+Licensed under GPL 2, W3C, BSD, MIT, or EFL 2
+Documentation:
+   http://inamidst.com/proj/rdf/ntriples-doc
 
-Command line usage::
-
-    ./ntriples.py <URI>    - parses URI as N-Triples
-    ./ntriples.py --help   - prints out this help message
-
+Command line usage:
+   ./ntriples.py <URI>    - parses URI as N-Triples
+   ./ntriples.py --help   - prints out this help message
 # @@ fully empty document?
 """
 
@@ -32,16 +32,12 @@ validate = False
 
 class Node(unicode): pass
 
-# class URI(Node): pass
-# class bNode(Node): pass
-# class Literal(Node):
-#    def __new__(cls, lit, lang=None, dtype=None):
-#       n = str(lang) + ' ' + str(dtype) + ' ' + lit
-#       return unicode.__new__(cls, n)
-
-from rdflib.term import URIRef as URI
-from rdflib.term import BNode as bNode
-from rdflib.term import Literal
+class URI(Node): pass
+class bNode(Node): pass
+class Literal(Node):
+   def __new__(cls, lit, lang=None, dtype=None):
+      n = str(lang) + ' ' + str(dtype) + ' ' + lit
+      return unicode.__new__(cls, n)
 
 class Sink(object):
    def __init__(self):
@@ -101,11 +97,9 @@ if not validate:
 
 class NTriplesParser(object):
    """An N-Triples Parser.
-   
-   Usage::
-
-        p = NTriplesParser(sink=MySink())
-        sink = p.parse(f) # file; use parsestring for a string
+      Usage:
+         p = NTriplesParser(sink=MySink())
+         sink = p.parse(f) # file; use parsestring for a string
    """
 
    def __init__(self, sink=None):
@@ -121,7 +115,7 @@ class NTriplesParser(object):
       self.file = f
       self.buffer = ''
       while True:
-         self.line = self.readline()
+         self.line = self.readline().lower()
          if self.line is None: break
          try: self.parseline()
          except ParseError:
@@ -143,9 +137,9 @@ class NTriplesParser(object):
       # N-Triples lines end in either CRLF, CR, or LF
       # Therefore, we can't just use f.readline()
       if not self.buffer:
-         buffer = self.file.read(bufsiz)
-         if not buffer: return None
-         self.buffer = buffer
+         buffer1 = self.file.read(bufsiz)
+         if not buffer1: return None
+         self.buffer = buffer1
 
       while True:
          m = r_line.match(self.buffer)
@@ -153,12 +147,10 @@ class NTriplesParser(object):
             self.buffer = self.buffer[m.end():]
             return m.group(1)
          else:
-            buffer = self.file.read(bufsiz)
-            if not buffer and not self.buffer.isspace():
+            buffer1= self.file.read(bufsiz)
+            if not buffer1:
                raise ParseError("EOF in line")
-            elif not buffer:
-               return None
-            self.buffer += buffer
+            self.buffer += buffer1
 
    def parseline(self):
       self.eat(r_wspace)
@@ -171,12 +163,12 @@ class NTriplesParser(object):
       predicate = self.predicate()
       self.eat(r_wspaces)
 
-      object = self.object()
+      object1 = self.object()
       self.eat(r_tail)
 
       if self.line:
          raise ParseError("Trailing garbage")
-      self.sink.triple(subject, predicate, object)
+      self.sink.triple(subject, predicate, object1)
 
    def peek(self, token):
       return self.line.startswith(token)
@@ -203,7 +195,7 @@ class NTriplesParser(object):
 
    def object(self):
       objt = self.uriref() or self.nodeid() or self.literal()
-      if objt is False:
+      if not objt:
          raise ParseError("Unrecognised object type")
       return objt
 
@@ -223,8 +215,6 @@ class NTriplesParser(object):
    def literal(self):
       if self.peek('"'):
          lit, lang, dtype = self.eat(r_literal).groups()
-         lang = lang or None
-         dtype = dtype or None
          if lang and dtype:
             raise ParseError("Can't have both a language and a datatype")
          lit = unquote(lit)
@@ -234,16 +224,18 @@ class NTriplesParser(object):
 def parseURI(uri):
    import urllib
    parser = NTriplesParser()
-   #u = urllib.urlopen(uri)
-   u =  open(uri,'r')
+   u = urllib.urlopen(uri)
    sink = parser.parse(u)
    u.close()
-   for triple in sink:
-         print triple
+   # for triple in sink:
+   #    print triple
    print 'Length of input:', sink.length
 
 def main():
-   parseURI('C:\\workspace\\Aol-Logs\\topical_concepts_en.nt')
-   
+   import sys
+   if len(sys.argv) == 2:
+      parseURI(sys.argv[1])
+   else: print __doc__
+
 if __name__=="__main__":
    main()

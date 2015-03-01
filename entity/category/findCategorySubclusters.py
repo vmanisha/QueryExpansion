@@ -13,7 +13,6 @@ from utils import stopSet, loadFileInList;
 #find Kmean clusters
 #re-write the clusters
 
-
 def compare(word1, word2):
     ss1 = wn.synsets(word1,wn.NOUN);
     ss2 = wn.synsets(word2,wn.NOUN);

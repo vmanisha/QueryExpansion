@@ -16,7 +16,7 @@ from org.apache.lucene.util import Version
 #from lucene.collections import JavaSet
 from utils import stopSet
 from entity.ranker import Ranker
-
+from queryLog import getSessionWithXML
 class SearchIndex:
 	
 	def __init__(self, indexPath):
@@ -107,14 +107,16 @@ class SearchIndex:
 def main(argv):
 	searcher = SearchIndex(argv[2])
 	searcher.initializeAnalyzer()
+	oFile = open('baseline-session-14.all','w')
 	#oFile = {}
-	for line in open(argv[1],'r'):
-		split = line.strip().split(' ')
-		did = split[2]
-		print did
-		for entry in searcher.getTopDocuments(did, 10, 'id','title'):
-			print entry
-		break;
+	qId = 1
+	for session, doc, click, cTitle, csummary in getSessionWithXML(argv[1]):
+		print session[-1]
+		k = 0
+		for entry in searcher.getTopDocuments(session[-1], 1000, 'content','id'):
+			oFile.write(str(qId)+' Q0 '+entry[0]+' '+str(k)+' '+str(round(entry[1],2))+' baseline\n')
+			k+=1
+		qId+=1
 		#qId = split[0]
 		#lenth = int(split[1])
 		#query = split[2]
@@ -139,6 +141,7 @@ def main(argv):
 	for i in oFile.keys():
 		oFile[i].close()
 	'''
+	oFile.close()
 	searcher.close()
 
 if __name__ == '__main__':

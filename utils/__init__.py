@@ -8,6 +8,7 @@ import html2text
 from nltk import stem;
 import ast;
 
+
 ashleelString = set (['sex','sexy','porn','horny','sexi','naked','pornstar','kiss','masturbation','porno','fucking','penis','shag', 'viagra','sexual'\
 				'dicks','dick','penus','boobs','breasts','boob','orgasm','pregnant','masturbate','fuck','nude','topless','boobs','nudes','vagina','xxx'\
 			'testicle','fucks','tits', 'boobies','whore','erotic', 'masturbating','nipple','nipples','cock','cocks','shagging','pussy','nudist'])
@@ -18,14 +19,14 @@ stopSet = set (['_CAT_','a','above','about','according','accordingly','after','a
 'essentially','ever','every','first','for','from','four','get','give','go','going','gonna',\
 'good','got','had','has','hate','have','he','her','here','hes','hey','him','his','how','http',\
 'i','get','getting','gets','great','if','ill','im','in','into','is','it','its','ive','just','know',\
-'kind','kinds','knows','keep','let','life','like','little','look','looking','love','made','make','making','man','many','may',\
+'kind','kinds','knows','keep','let','like','little','look','looking','love','made','make','making','man','many','may',\
 'maybe','me','mean','more','most','mostly','much','my','near','need','never','no','not','now','of',\
 'off','oh','ok','okay','on','one','only','or','other','our','out','over','put','people','please',\
 'read','really','regarding','relate','related','right','said','say','see','six','seven','she','shes','should','slow',\
-'small','so','some','something','sorry','still','stop','since','sure','such','take','ten','than',\
+'small','s','so','some','something','sorry','still','stop','since','sure','such','take','ten','than',\
 'that','thats','the','them','their','these','then','there','therefore','thereafter',\
 'themselves','theres','they','thing','think','this','thought','those','though','thus',\
-'through','throughout','three','till','time','to','too','todays','true','two','under',\
+'through','throughout','three','till','to','too','todays','true','two','under',\
 'uh','up','us','until','upon','use','using','usually','very','want','was','way','we','well',\
 'were','what','whats','whose','whatever','whereby','when','where','wherein','which',\
 'who','whi','while','whether','why','will','with','within','without','would','www','wwww','yeah',\
@@ -43,15 +44,18 @@ HTML = re.compile('<html')
 LEMR = re.compile('the lemur project')
 
 def getDictFromSet(qset):
-	d = defaultdict(int)
+	d = {}#defaultdict(int)
 	for word in qset:
-	    d[word] += 1
+		if word not in stopSet:
+			if word not in d:
+				d[word] = 0
+			d[word] += 1
 	return d
 
 def getTuplesFromSet(qset):
 	d = defaultdict(int)
 	for word in qset:
-	    d[word] += 1
+				d[word] += 1
 	return [(x,d[x]) for x in d.keys()]
 	
 #convert list to tabbed string
@@ -79,13 +83,15 @@ def text_to_vector(text):
 
 def getNGramsAsList(string, length):
 	split = string.split()
-	result = []
+	result = {}
 	#print split, len(split), length
 	for i in range(0,len(split)):
 		for j in range(i+1,i+length+1):
 			#print i, j , length
 			if j <= len(split):
-				result.append(' '.join(split[i:j]))
+				gram = ' '.join(split[i:j])
+				if gram not in result and gram not in stopSet:
+					result[gram] = 1.0
 	return result 	
 
 
@@ -138,12 +144,20 @@ def replaceAlphaNum(fileName,replace):
 		print
 
 
-def loadFileInDict(fileName):
+def loadFileInDict(fileName,sep='\t'):
 	content = {}
 	for line in open(fileName,'r'):
 		line = line.strip()
-		tokens = line.split()
-		content[tokens[0]] = tokens[1]
+		tokens = line.split(sep)
+		content[tokens[0].strip()] = int(tokens[1])
+	return content
+
+def loadFileInTuples(fileName,sep='\t'):
+	content = []
+	for line in open(fileName,'r'):
+		line = line.strip()
+		tokens = line.split(sep)
+		content.append[(tokens[0].strip(), tokens[1].strip())]
 	return content
 
 def plain_text(html):
@@ -169,10 +183,10 @@ def getDocumentText(fileName, dirPath):
 	else:
 		return ''
 
-def loadFileInList(fileName):
+def loadFileInList(fileName,sep='\t'):
 	eset = set();
 	for line in open(fileName,'r'):
-		split = line.strip().split(' ');
+		split = line.strip().split(sep);
 		eset.add(split[0].strip());		
 	return eset;
 
@@ -258,7 +272,21 @@ def combineDict(d1, d2):
 def main(argv):
 	#replaceAlphaNum(argv[1],argv[2])
 	#removeFreqWords(argv[1],int(argv[2]))
-	stemFileContents(argv[1]);
+	#stemFileContents(argv[1]);
+	ngramDict = {}
+	for line in open(argv[1],'r'):
+		line = line.strip().lower()
+		#line = normalizeWithoutStem(line);
+		for ngram in getNGramsAsList(line,2):
+			if ngram not in stopSet:
+				if ngram not in ngramDict:
+					ngramDict[ngram] = 1.0
+				else:
+					ngramDict[ngram] +=1.0
 	
+	for entry in sorted(ngramDict.items(),reverse=True,key = lambda x:x[1]):
+		print entry[0] , '\t', entry[1]
+		
+
 if __name__ == "__main__":
 	main(sys.argv)

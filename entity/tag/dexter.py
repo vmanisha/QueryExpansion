@@ -33,7 +33,7 @@ class Dexter:
 			return {};
 		
 		try:
-			tagParam = {'text':''}
+			tagParam = {'text':'', 'n':'50', 'dsb':'tagme','min-conf':'0.2' }
 			catParam = {'asWikiNames':'true', 'wid' : ''}
 			tagParam['text'] = query
 			url = self.tagURL + '?' + urllib.urlencode(tagParam)
@@ -72,8 +72,8 @@ class Dexter:
 def main(argv):
 	ipaddress = 'localhost'
 	#dexter object
-	tagURL = 'http://'+ipaddress+':8080/rest/annotate'
-	catURL = 'http://'+ipaddress+':8080/rest/graph/get-entity-categories'
+	tagURL = 'http://'+ipaddress+':8080/dexter-webapp/api/rest/annotate'
+	catURL = 'http://'+ipaddress+':8080/dexter-webapp/api/rest/get-entity-categories'
 	dexter = Dexter(tagURL,catURL)
 	
 	

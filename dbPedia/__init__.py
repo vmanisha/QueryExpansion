@@ -8,6 +8,7 @@ from whoosh.fields import Schema, ID, KEYWORD, TEXT
 import os
 import re
 from utils import SYMB
+import urllib
 
 '''
 Variables
@@ -141,7 +142,11 @@ def loadCategories(categoriesFile ):
         i = 0
 	for line in ifile:
                 split = line.lower().strip().split(' ')
-                cTitle = split[0][split[0].rfind(RSTR)+9:-1]
+                dbpediaURL = urllib.unquote_plus(split[0])
+                dbpediaURL = dbpediaURL.encode('UTF-8').encode('unicode-escape')
+				
+                cTitle = dbpediaURL[dbpediaURL.rfind(RSTR)+9:-1]
+
                 cCat = split[2][split[2].rfind(':')+1:-1]
                 if len(cTitle) > 1 and len(cCat) > 1:
                         if cTitle not in resourceCatDict:
@@ -154,6 +159,50 @@ def loadCategories(categoriesFile ):
 	print 'Completed', i , ' node categories'
         return resourceCatDict
 
+def loadSkosCategories(categoriesFile,filterCat = None):
+	broadSet = set()
+	relatedSet = set()
+	cats = set()
+        #print resourceOntDict
+        ifile = open(categoriesFile,'r')
+        i = 0
+	for line in ifile:
+                broad =  'core#broader' in line
+                related = 'core#related' in line
+				#if  broad:
+                split = line.lower().strip().split(' ')
+                c1 = split[0]
+                #c1 = urllib.unquote_plus(split[0])
+                #c1 = c1.encode('UTF-8').encode('unicode-escape')
+                c1 = c1[c1.rfind(RSTR)+9:-1]
+                c1 = c1[c1.rfind(':')+1:]
+				
+                c2 = split[2]
+                #c2 = urllib.unquote_plus(split[2])
+                #c2 = c2.encode('UTF-8').encode('unicode-escape')
+                c2 = c2[c2.rfind(RSTR)+9:-1]
+                c2 = c2[c2.rfind(':')+1:]
+                #print c1, c2
+
+                if len(c1) > 1 and len(c2) > 1 and filterCat and (c1 in filterCat or c2 in filterCat):
+                            if broad:
+                                        broadSet.add((c1, c2))
+                            if related:
+                                        relatedSet.add((c1,c2))
+                            cats.add(c1)
+                            cats.add(c2)		
+
+                        	
+                        #if cTitle not in resourceCatDict:
+                        #        resourceCatDict[cTitle] = []
+                        #resourceCatDict[cTitle].append(cCat)
+                                 #print line,
+                i += 1
+                #else:
+                #        print 'Error in Category :: ',line, cTitle, cCat
+        ifile.close()
+	#print 'Completed', i , ' node categories'
+        return cats, relatedSet, broadSet
 
 def loadCategoryTitles(categoriesFile ):
         resourceCatDict = {}

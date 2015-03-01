@@ -1,25 +1,4 @@
 # -*- coding: utf-8 -*-
-from entity.category.categorySubcluster import CategorySubcluster;
-from entity.category.findCategorySubclusters import findScore;
-from entity.category.findCategorySubclusters import findSessionDistance;
-from entity.category.findCategorySubclusters import findQueryDistance;
-from plots import plotLine;
-from utils.coOcManager import CoOcManager;
-from utils.coOccurrence import CoOccurrence;
-from utils.wordManager import WordManager;
-import os,sys;
-
-def findDiameter(weightMatrix):
-	keys = weightMatrix.keys();
-	nc = len(keys);
-	diam = 1.0 / (nc * (nc-1));
-	dsum = 0;
-	for i in range(nc):
-		for j in range(i+1, nc):
-			dsum+= weightMatrix[keys[i]][keys[j]];
-	return (dsum*diam);
-		
-
 def findWeightMatrix(featMan,coSessOcMan,coQueryOcMan, p1,p2=None ):
 	weightMatrix = {};
 	words1 = sorted(p1);
@@ -60,6 +39,8 @@ def findWeightMatrix(featMan,coSessOcMan,coQueryOcMan, p1,p2=None ):
 		findQueryDistance,coQueryOcMan,3.0,0.25);
 			
 	return weightMatrix;
+	
+
 
 def findCatIndexes(catObj,featMan,coSessOcMan,coQueryOcMan):
 	
@@ -92,64 +73,60 @@ def findCatIndexes(catObj,featMan,coSessOcMan,coQueryOcMan):
 			return minClusDist/maxDiam;
 	
 	return -1000;
-
-def findMinInDict(weightMatrix):
-	gmin = None;
-	for i , wordDict in weightMatrix.iteritems():
-		if not gmin:
-			gmin = min(wordDict.values());
-		else:
-			gmin = min(gmin, wordDict.values());
-	return gmin;
-
-def plotValues(indexList, fileName,xlabel, ylabel):
-
-	esorted = sorted(indexList.items(), key = lambda x : x[0]);
-	plotLine(esorted, xlabel,ylabel,fileName);
 	
-'''
-argv[1] = input directory of clusters
-argv[2] = query co-occurence file
-argv[3] = session co-occurence file
-argv[4] = features words
-argv[5] = outFolder;
 
-'''
+def loadCatQueries(fileName):
+	
+	iFile = open(fileName, 'r')
+	wordDict = {}
+	corpus = [[],[]]
+	#pattern frequency
+	while True:
+		line = iFile.readline()
+		split = line.strip().split('\t')	
+		if len(split)== 2:
+			wordDict[split[0]] = float(split[1])
+		else:
+			break
+	# remaining lines in file	
+	for line in iFile:
+		line = line.strip()
+		split = line.split('\t')
+		#patternDict[split[0]] = split[1]
+		corpus[0].append(line)
+		taskTokenDict = text_to_vector(split[0].replace('_CAT_',''))
+		corpus[1].append(taskTokenDict)
+	print len(corpus[0]), len(corpus[1])
+	return wordDict, corpus
+
 def main(argv):
 	
-	coQueryOccur = CoOccurrence();
-	coQueryOcMan = CoOcManager(argv[2],coQueryOccur,' ');
-	
-	coSessOccur = CoOccurrence();
-	coSessOcMan = CoOcManager(argv[3],coSessOccur,' ');
-	
-	featureFolder = argv[4];
-	featMan = WordManager(featureFolder,False);
-	
-	outFolder = argv[5];
-	
-	dindex = {};
-	#scindex = {};
-	#load the clusters
+	out = argv[3]
+	os.mkdir(out)
 	for ifile in os.listdir(argv[1]):
-		catClusters = CategorySubcluster(argv[1]+'/'+ifile);
-		dind = findCatIndexes(catClusters, featMan,coSessOcMan,coQueryOcMan);
-		
-		#sc = 0;
-		totalPhrases = catClusters.uniquePhrases;
-		
-		print 'CoEff', ifile, totalPhrases, dind;
-		
-		if totalPhrases not in dindex:
-			dindex[totalPhrases]= [];
-			#scindex[totalPhrases] = [];
-		dindex[totalPhrases].append(dind);
-		#scindex[totalPhrases].append(sc);
+		try:
+			k = int(ifile[ifile.rfind('_')+1:ifile.rfind('.')])/30
+			print ifile, k
+			if k > 0:
+				phraseDict, corpus = loadCatQueries(argv[1]+'/'+ifile)
+				X1,X2 = transformCorpus([],corpus[1])
+				clusterBaseline1 = clusterTasksAgglomerative(X2,k)
+				labels = clusterBaseline1.labels_
+				labelResult = {}
+				#scores = metrics.silhouette_score(X2, labels, metric='cosine')
+				#print ifile, scores	
+				for i in range(len(corpus[0])):
+					if labels[i] not in labelResult:
+						labelResult[labels[i]] = {}
+					pattern = corpus[0][i][:corpus[0][i].find('\t')]
+					freq = float(corpus[0][i][corpus[0][i].find('\t'):])
+					labelResult[labels[i]][pattern] = freq
+	
+				writeDict(labelResult,out+'/'+ifile[:ifile.rfind('.')]+'_'+str(k)+'.txt')
+		except Exception as err:
+			print err
 	
 	
-	#plotValues(dindex, outFolder+'/'+'dindex.png','# terms in Cat file','Dunn Index');
-	#plotValues(scindex, 'scindex.png');
-		
 
-if __name__ == '__main__':
-	main(sys.argv);
+if __name__ == "__main__":	
+	main(sys.argv)

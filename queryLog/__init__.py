@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-
+import sys
 '''
 Import statements go here
 '''
 import numpy as np
 import datetime
-from utils import SYMB, WEB, ashleelString, stopSet
+from utils import SYMB,SYMB2, WEB, ashleelString, stopSet
 import re
 import os
 from lxml import etree
@@ -74,12 +74,13 @@ def getAllAOLQueries(fileName, sep):
 def getQuery(filename, index):
 	for line in open(filename,'r'):
 		split = line.split('\t')
-        raw_split = re.sub(SYMB, ' ', split[index].lower()).split(' ')
-        query = filterStopWordsFromList(raw_split)
-        if hasManyChars(query,raw_split,1,4,70) \
-			and hasInapWords(raw_split) and hasManyWords(raw_split,15,40) \
-			and hasAlpha(query) and hasWebsite(query):
-				yield query
+		query1 = normalizeWithoutStem(split[index]);
+		query = filterStopWordsFromQuery(query1);
+		raw_split = query.split();
+		if (not hasManyChars(query,raw_split,1,4,70)) and (not hasInapWords(raw_split)) \
+        and (not hasManyWords(raw_split,15,40)) and hasAlpha(query) \
+        and (not hasWebsite(query)) and ('.com' not in query) and ('www.' not in query):
+			print line,
 
 def parseLine(line):
 	entry = {}
@@ -128,7 +129,7 @@ def getSessionWithXML(fileName, storeTitle=False):
 		
 		i =0
 		k+=1
-		#topicId = sess[0].get('num');
+		topicId = sess[0].get('num');
 		#print k,topicId;
 		for entry in sess.iter('interaction'):
 			for query in entry.iter('query'):
@@ -178,8 +179,8 @@ def getSessionWithXML(fileName, storeTitle=False):
 				line = re.sub('\s+',' ',line)
 				session.append(line)
 				#print k, i, query.text
-		yield session, docs, clicks, ctitle, csummary;
-	yield session, docs, clicks, ctitle, csummary;
+		yield topicId, session, docs, clicks, ctitle, csummary;
+	yield topicId, session, docs, clicks, ctitle, csummary;
 	
 #dont need index since new line marks the session
 def getSessionWithNL(fileName):
@@ -209,11 +210,11 @@ def getSessionWithQuery(fileName, timeCutoff = 1500):
 		split = line.strip().split('\t')
 		try :
 			currTime = datetime.datetime.strptime(split[TIND], "%Y-%m-%d %H:%M:%S") #np.datetime64(split[2])
-			query = split[QIND].lower()
+			query = split[QIND].strip().lower()
 			#currUser = split[UIND].lower()
-			raw_split = query.strip().split(' ')
+			raw_split = query.split(' ')
 			if not ((lastTime == None) or (((currTime -lastTime).total_seconds()<timeCutoff
-			or subQuery(query,lastQuery,0.7)))): #and currUser == lastUser)):
+			or subQuery(query,lastQuery,0.8)))): #and currUser == lastUser)):
 				if len(session) > 1:
 					yield session;
 					session = []
@@ -340,7 +341,7 @@ def normalize(query, stemmer):
 	#remove words less than 2 letters
 	for entry in query.split():
 		stemmed = stemmer.stem(entry)
-		if len(stemmed) >1:
+		if len(stemmed) > 1:
 			nQuery+= stemmed+' '
 	
 	return nQuery.strip()
@@ -413,7 +414,7 @@ def filterStopWordsFromQuery(query):
 	split = query.split()
 	string = ''
 	for entry in split:
-		if entry not in stopSet:
+		if entry not in stopSet and len(entry) > 1:
 			string += ' '+entry
 	return string.strip()
 
@@ -496,3 +497,7 @@ def findSessionStats(folderName):
                 print uId, count
 
 
+if __name__ == '__main__':
+	arg = sys.argv
+	getQuery(arg[1],0)
+	

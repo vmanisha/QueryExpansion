@@ -195,7 +195,7 @@ def formatResults(session, jsonObject, label, cTask, sc1):
 
 def getClusterFormat(taskList, lsession):
 	
-	labels = np.zeros(lsession)
+	labels = {}
 	k = 1
 	for cluster in taskList:
 		for entry in cluster:

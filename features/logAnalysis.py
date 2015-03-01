@@ -6,8 +6,6 @@ import re
 from utils import getNGrams
 from whoosh.index import create_in
 from whoosh.fields import Schema, TEXT
-from Whoosh import loadIndex, loadQueryParser, loadCollector
-from whoosh.collectors import TimeLimit
 from utils import get_cosine
 from queryLog import getQueryTerms;
 
@@ -23,6 +21,50 @@ def getQueryFreqValues(fileName):
 	for entry in sorted(queryCount.items(),reverse = True):
 		print entry[0],'\t', math.log(entry[1])
 
+def filterFeatures(queryFile, featFile):
+	queryList = {}
+	for line in open(queryFile,'r'):
+		queryList[line.strip()] = 1.0
+	
+	for line in open(featFile,'r'):
+		split = line.split('\t')
+		query = split[0].strip()
+		
+		if query in queryList:
+			#userFeat = ast.literal_eval(split[1]);
+			print line,;
+
+
+def extractFeatureTuple(string, url=False):
+	if url:
+		links = linkP.findall(string)#ast.literal_eval(split[3])
+ 		linkDict = {}
+ 		for tup in links:
+ 			entry = tup.split(',')
+			entry[0] = entry[0][1:].strip()
+			entry[1] = entry[1][:-1]
+ 			if len(entry[0]) < 3:
+ 				linkDict['None']=int(entry[1])	
+ 			else:
+ 				try:
+ 					linkDict[entry[0]] =int(entry[1])
+ 				except:
+ 					print entry
+ 					pass
+ 		return linkDict
+ 		
+ 	else:
+ 		userDict = {}
+ 		try:
+ 			userFeat = ast.literal_eval(string);
+ 			for tup in userFeat:
+ 				userDict[tup[0]] = tup[1]
+ 			return userDict
+ 		except:
+ 			print string
+ 			pass
+ 	return {}
+ 	
 def formatQueryFeatures(fileName):
 	#oFile = open(outFile,'w')
 	for line in open(fileName,'r'):
@@ -73,48 +115,6 @@ def getNString(string, glen):
  		gram[bi] = gram.setdefault(bi,0) + 1
  	gString = ' '.join('{0}:{1}'.format(x.replace(' ','_'),y) for x,y in gram.items())
  	return gString
-
-
-def indexFeatures(fileName,indexLocation,indexName):
-	ischema = Schema(query = TEXT(stored = True,phrase=False),
-	ent = TEXT(stored = False, phrase = False),
-	cat = TEXT(stored = False, phrase = False),
-	user = TEXT(stored = False, phrase = False),
-	links = TEXT(stored = False, phrase = False),
-	ngrams = TEXT(stored = False, phrase = False))
-	if not os.path.exists(indexLocation):
-		os.mkdir(indexLocation)
-        qindex = create_in(indexLocation,schema=ischema, indexname =indexName)
-        writer = qindex.writer()
-	i = 0
-	for line in open(fileName,'r'):
-		#load the string
-		#index the features seperately
-		# 1 == entity, 2 == category, 3 == users, 4 == links
-		split = line.strip().split('\t')
-		entString = getFeatString(split[1])
-		catString = getFeatString(split[2])
-		userString = getFeatString(split[3])
-		linkString = getFeatString(split[4])
-		ngramString = getFeatString(split[5])
-		try :
-			#print entString
-			writer.add_document(query=unicode(split[0].decode('unicode_escape').encode('ascii','ignore')),
-				ent=unicode(entString.decode('unicode_escape').encode('ascii','ignore')),
-				cat=unicode(catString.decode('unicode_escape').encode('ascii','ignore')),
-				user=unicode(userString.decode('unicode_escape').encode('ascii','ignore')),
-				ngrams=unicode(ngramString.decode('unicode_escape').encode('ascii','ignore')),
-				links=unicode(linkString.decode('unicode_escape').encode('ascii','ignore')))
-		except Exception as err :
-			print split[0], 'problem in indexing'
-			print err, err.args
-		i+=1
-		if i%100000==0:
-			print i
-
-	writer.commit()
-	qindex.close()
-		
 
 
 def getQuerySimilarity(featFile, indexName, indexLocation, parts , pindex):
@@ -195,50 +195,7 @@ def getQuerySimilarity(featFile, indexName, indexLocation, parts , pindex):
 	for entry, simValues in querySimilarity.iteritems():
 		print entry, str(simValues)
 
-
-def generatePairs(fileName, parts , pindex, leave):
-	oFile = open('similarity'+str(pindex)+'.txt','w')
-	i = 0
-	length = 3659819.0/ parts
-	strt = 	(pindex * length) + leave
-	end = (pindex+1) * length
-	query = entDict = catDict = userDict = linkDict = ngramDict = None	
-	query1 = entDict1 = catDict1 = userDict1 = linkDict1 = ngramDict1 = None	
-	for line1 in open(fileName,'r'):
-		if i >= strt and i < end:
-			print i	
-			split = line1.strip().split('\t')
-			query = split[0]
-			entDict = getFeatDict(split[1])
-			catDict = getFeatDict(split[2])
-			userDict = getFeatDict(split[3])
-			linkDict = getFeatDict(split[4])
-			ngramDict = getFeatDict(split[5])
-			j = 0
-			for line2 in open(fileName,'r'):
-				if j > i:
-					split = line2.strip().split('\t')
-					query1 = split[0]
-					entDict1 = getFeatDict(split[1])
-					catDict1 = getFeatDict(split[2])
-					userDict1 = getFeatDict(split[3])
-					linkDict1 = getFeatDict(split[4])
-					ngramDict1 = getFeatDict(split[5])
-					ec = get_cosine(entDict,entDict1)
-					cc = get_cosine(catDict,catDict1)
-					uc = get_cosine(userDict,userDict1)
-					lc = get_cosine(linkDict,linkDict1)
-					nc = get_cosine(ngramDict,ngramDict1)
-					total = ec + cc + uc + lc + nc
-					if total > 0:
-						oFile.write(query+ '\t'+ query1 +'\t'+ str(ec)+'\t'\
-						+ str(cc)+'\t'+ str(uc)+'\t'+ str(lc)+'\t'+ str(nc)+'\n')
-				j+=1
-		i+=1
-	oFile.close()
-
-		
-			
+	
 		
 def getFeatString(featString):
 		retString = ''
@@ -341,7 +298,8 @@ def main(argv):
 	#printNonEmptyRows(argv[1])
 	#filterWords(argv[1],3);
 	#calWordCount(argv[1]);
-	filterWordsFromList(argv[1],argv[2]);
+	#filterWordsFromList(argv[1],argv[2]);
+	filterFeatures(argv[1],argv[2]);
 	
 if __name__=='__main__':
 	main(sys.argv)
