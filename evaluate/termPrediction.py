@@ -13,13 +13,13 @@ from utils import loadFileInList;
 from tasks.taskExpansion import TaskExpansion
 from evaluate import addedAndRemovedTerms
 from entity.category import loadCategoryVector;
-from  entity.category.category import Category;
-from entity.category.categorySubcluster import CategorySubcluster;
+from  entity.category.ds.category import Category;
+from entity.category.ds.categorySubcluster import CategorySubcluster;
 from queryLog.coOccurExpansion import CoOccurExpansion;
 from plots import plotMultipleSys, plotHist;
 from queryLog import getQueryTerms,getQueryTermsStemmed;
 from nltk import stem;
-from utils.wordManager import WordManager;
+from utils.ds.wordManager import WordManager;
 from queryLog import normalize;
 '''
 argv[1] = Session file

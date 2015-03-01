@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from entity.category import getCats, loadCategoryVector;
-from entity.category.category import Category;
-from entity.category.categorySubcluster import CategorySubcluster;
+from entity.category.ds.categorySubcluster import CategorySubcluster;
 import sys;
 
 class CategoryManager:

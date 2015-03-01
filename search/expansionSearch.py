@@ -6,16 +6,17 @@ from queryLog import getSessionWithXML, normalize;
 from entity.category.categoryManager import CategoryManager
 from entity.dexter import Dexter
 from entity.ranker import Ranker
-from utils.coOccurrence import CoOccurrence
-from utils.coOcManager import CoOcManager
+from utils.ds.coOccurrence import CoOccurrence
+from utils.ds.coOcManager import CoOcManager
 from tasks.taskExpansion import TaskExpansion
-from entity.category.category import Category;
-from entity.category.categorySubcluster import CategorySubcluster;
+from entity.category.ds.categorySubcluster import CategorySubcluster;
+from entity.category.ds.category import Category;
+
 #from plots import plotMultipleSys;
 from measures import loadRelJudgements, findAvgPrec, findDCG;
 from queryLog.coOccurExpansion import CoOccurExpansion;
 from entity.category import loadCategoryVector;
-from nltk import stem ;
+from nltk.stem import porter ;
 
 '''
 argv[1] = Session file
@@ -42,7 +43,7 @@ def main(argv):
 	
 	#category vector
 	catVect = loadCategoryVector(argv[3]);
-	#catManage1 = CategoryManager(catVect,argv[4],Category);
+	catManage1 = CategoryManager(catVect,argv[4],Category);
 	catManage2 = CategoryManager(catVect,argv[5],CategorySubcluster);
 	
 	#load the Category co-occurrence bit
@@ -52,8 +53,8 @@ def main(argv):
 	ranker = Ranker()
 	
 	#task extraction
-	#htcTask = TaskExpansion('Indexes/htcIndex',ranker,3000);
-	#qccTask = TaskExpansion('Indexes/qccIndex',ranker,3000);
+	htcTask = TaskExpansion('Indexes/htcIndex',ranker,3000);
+	qccTask = TaskExpansion('Indexes/qccIndex',ranker,3000);
 	#taskK = argv[5][argv[5].rfind('/')+1:]
 	
 	#totalVocab = loadFileInList(argv[6]);

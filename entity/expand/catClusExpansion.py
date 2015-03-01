@@ -1,16 +1,33 @@
 # -*- coding: utf-8 -*-
 
-class ClusterExpansion:
+class ScoreClusterTerms:
 	
 	def __init__(self):
-		
+		print 'Initializing cluster expansion'
 	
-	def expandText(query, clustList, scorer, cText, limit):
+	def score(query, clustList, scorer, cText, limit):
 		i = 0
 		scores = {} #contains score of clusters
 		order = {}  #contains the order of terms
 		for clust in clustList:
-			scores[i], order[i]=scorer.score(query,clust)
+			clusScore = 0.0
+			tDict = {}
+			for entry in clust:
+				score, terms = scorer.score(query,entry)
+				clusScore+= score
+				
+				for t in terms.keys():
+					if t not in tDict:
+						tDict[t] = 0.0
+					tDict[t]+=terms[t]
+			
+			rTerms = sorted(tDict.items(),reverse = True, key = lambda x : x[1])	
+			order[i] = []
+			for entry in rTerms:
+				order[i].append(entry)
+				
+			clusScore/=(1.0*len(clust))
+			scores[i]= clusScore
 			i+=1
 			
 		topTerms = []
