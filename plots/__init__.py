@@ -63,7 +63,7 @@ def plotMultipleSys(data,xlab, ylab,fileDest,tit):
 				y.append(val);
 			
 		if len(x) > 0 and len(y) > 0:
-			l, = plt.plot(x, y,'o',label=sys);
+			l, = plt.plot(x, y,label=sys);
 		
 		i+=1;
 		x = [];

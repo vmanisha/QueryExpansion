@@ -126,9 +126,10 @@ def findPairwiseDistance(file1):
 	
 	ids = featDict.keys()
 	keys = sorted(ids);
-	for i in range(0,len(keys)):
+	print len(keys), keys[-5:]
+	for i in range(49952,49954):
 		qid1, qf1 = featMan.returnFeature(keys[i])
-		for j in range(i+1, len(keys)):
+		for j in range(64006, 64080):
 			qid2, qf2 = featMan.returnFeature(keys[j])
 			qcos, ucos, userCos, ngramCos, entCos, catCos = qf1.findCosineDistance(qf2)
 			qjac = qf1.findJacardDistance(qf2)
@@ -141,7 +142,7 @@ def findPairwiseDistance(file1):
 			.15*userCos + .15*entCos + .15*catCos)
 			if edgeScore > 0.15:
 				#print session[i], session[j], edgeScore, qcos, qjac, ucos, userCos, qedit
-				print keys[i], keys[j], edgeScore
+				print i, j,keys[i], keys[j], edgeScore
 		
 		
 '''
