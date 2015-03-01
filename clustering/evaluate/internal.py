@@ -105,7 +105,9 @@ def Dunn(clusters, weightMatrix, centers=None, points=None):
 	deltaList = []
 	if not centers:
 		diam = 0.0
+		
 		for clus in clusters:
+			found = 0;
 			nc = len(clus);
 			if nc > 1:
 				diam = 1.0 / (nc * (nc-1));
@@ -114,16 +116,17 @@ def Dunn(clusters, weightMatrix, centers=None, points=None):
 				for j in range(len(clus)):
 					try:
 						 dsum+=weightMatrix[clus[i]][clus[j]]
+						 found+=1						
 					except:
 						try:
 							dsum+=weightMatrix[clus[j]][clus[i]]	
+							found+=1
 						except:
 							print clus[i], clus[j]
 							pass
 						pass
-			if dsum!= 1.0:
-				print len(clus), diam, dsum
-						
+			if found > 0:
+				print 'Found', found
 			deltaList.append(dsum*diam);
 		maxDiam = max(deltaList);
 		print 'Max diameter ',maxDiam

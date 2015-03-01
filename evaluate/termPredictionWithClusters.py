@@ -33,15 +33,17 @@ def toTerms(clusters):
 
 
 def getTermList(queryList):
-	termList = set()
+	termList = {}
 	
 	for entry in queryList:
 		count = text_to_vector(entry)
-		termList.update(count.keys())
-	
+		for w, c in count.items():
+			if w not in termList:
+				termList[w] = 0.0
+			termList[w] += c	
 	
 	print 'TermList ',len(termList), termList
-	return termList
+	return termList.items()
 	
 def main(argv):
 	
