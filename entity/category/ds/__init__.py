@@ -20,7 +20,7 @@ def loadClusters(fileName):
 def loadClustersWithQueryFile(fileName, queryFile):
 	queryId = {}
 	
-	i=0
+	i=1
 	
 	for line in open(queryFile,'r'):
 		split = line.split('\t')

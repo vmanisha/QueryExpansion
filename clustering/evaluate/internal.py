@@ -125,9 +125,9 @@ def Dunn(clusters, weightMatrix, centers=None, points=None):
 							#print clus[i], clus[j]
 							pass
 						pass
-			if found > 0:
-				print 'Found', found
+			print 'Found', found
 			deltaList.append(dsum*diam);
+		
 		maxDiam = max(deltaList);
 		print 'Max diameter ',maxDiam
 		#find center
