@@ -18,7 +18,7 @@ def readWeightMatrix(fileName):
 			try:
 				weightMatrix[i][int(split[1])] = 1.0-round(float(split[-1]),2)
 			except:
-				print line
+				print 'Error reading ',line
 		if len(line) <10 and (not lbreak):
 			lbreak = True
 	
