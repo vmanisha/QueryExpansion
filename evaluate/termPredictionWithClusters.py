@@ -27,10 +27,11 @@ def main(argv):
 	
 	for iFile in os.listdir(argv[3]):
 		clusters = loadClusters(argv[3]+'/'+iFile)
+		print iFile, len(clusters)
 		prec[iFile] = {}
 		mrr[iFile] = {}
 		
-		for session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
+		for tid, session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
 			i+=1
 			query = session[0].strip();
 			aTerms,rTerms = addedAndRemovedTerms(query, session[1:], vocab )

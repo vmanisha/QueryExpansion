@@ -5,7 +5,7 @@ class ScoreClusterTerms:
 	def __init__(self):
 		print 'Initializing cluster expansion'
 	
-	def score(query, clustList, scorer, cText, limit):
+	def score(self,query, clustList, scorer, limit):
 		i = 0
 		scores = {} #contains score of clusters
 		order = {}  #contains the order of terms
@@ -14,6 +14,7 @@ class ScoreClusterTerms:
 			tDict = {}
 			for entry in clust:
 				score, terms = scorer.score(query,entry)
+				print clust, score, terms
 				clusScore+= score
 				
 				for t in terms.keys():
