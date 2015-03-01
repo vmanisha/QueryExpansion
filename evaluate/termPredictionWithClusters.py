@@ -10,6 +10,25 @@ from evaluate import addedAndRemovedTerms
 import os
 from termPrediction import getPrecRecall
 from plots import plotMultipleSys
+from utils import stopSet
+
+def toTerms(clusters):
+	
+	clustersWithTerms = []
+	
+	for clust in clusters:		
+		terms = {}
+		for entry in clust:
+			split = entry.split()
+			for st in split:
+				if len(st) > 2  and st not in stopSet:
+					if st not in terms:
+						terms[st]= 0.0
+					terms[st]+=1.0
+		if len(terms) > 0:
+			clustersWithTerms.append(terms)	
+	return clustersWithTerms
+
 
 def main(argv):
 	
@@ -26,7 +45,9 @@ def main(argv):
 	lim = 55
 	
 	for iFile in os.listdir(argv[3]):
-		clusters = loadClusters(argv[3]+'/'+iFile)
+		qclusters = loadClusters(argv[3]+'/'+iFile)
+		clusters = toTerms(qclusters)
+
 		print iFile, len(clusters)
 		prec[iFile] = {}
 		mrr[iFile] = {}

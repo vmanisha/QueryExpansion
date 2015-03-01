@@ -5,17 +5,6 @@ class ScoreClusterTerms:
 	def __init__(self):
 		print 'Initializing cluster expansion'
 	
-	def getTerms(self, clust):
-		terms = {}
-		for entry in clust:
-			split = entry.split()
-			for st in split:
-				if len(st) > 2:
-					if st not in terms:
-						terms[st]= 0.0
-					terms[st]+=1.0
-		return terms;
-
 	def score(self,query, clustList, scorer, limit):
 		i = 0
 		scores = {} #contains score of clusters
@@ -25,10 +14,7 @@ class ScoreClusterTerms:
 		for clust in clustList:
 			clusScore = 0.0
 			tDict = {}
-			cTerms = self.getTerms(clust)
-			if i % 5000 == 0:
-				print i,len(clust), len(cTerms)
-			score, terms = scorer.score(qSet,cTerms)
+			score, terms = scorer.score(qSet,clust)
 			#if score > 0:
 			#	print entry, score, terms
 			clusScore+= score
