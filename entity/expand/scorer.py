@@ -20,6 +20,7 @@ class CoOccurSimScore:
 		termScore = {}
 		for t1 in terms1:
 			for t2 in terms2:
+				print self.coMan.getCoOcCount(t1,t2)
 				score+= self.coMan.getCoOcCount(t1,t2)
 				if t2 not in termScore:
 					termScore[t2] = 0.0

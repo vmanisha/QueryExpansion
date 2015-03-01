@@ -19,7 +19,7 @@ def main(argv):
 	tScorer = CoOccurSimScore(coSessOcMan)
 	cScorer = ScoreClusterTerms()
 	
-	vocab = set()
+	#vocab = set()
 	i=0
 	prec = {}
 	mrr = {}
@@ -30,10 +30,10 @@ def main(argv):
 		prec[iFile] = {}
 		mrr[iFile] = {}
 		
-		for session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
+		for tid,session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
 			i+=1
 			query = session[0].strip();
-			aTerms,rTerms = addedAndRemovedTerms(query, session[1:], vocab )
+			aTerms,rTerms = addedAndRemovedTerms(query, session[1:], None )
 			terms = cScorer.score(query, clusters,tScorer, lim)
 			
 			for topk in range(5,lim,5):
