@@ -114,7 +114,6 @@ def Dunn(clusters, weightMatrix, centers=None, points=None):
 			dsum = 1.0;
 			for i in range(len(clus)-1):
 				for j in range(len(clus)):
-					print clus[i], clus[j]
 					try:
 						 dsum+=weightMatrix[clus[i]][clus[j]]
 						 found+=1						
@@ -153,6 +152,10 @@ def Dunn(clusters, weightMatrix, centers=None, points=None):
 						try:
 							total_i_j += weightMatrix[pi][pj]
 						except:
+							try:
+								total_i_j += weightMatrix[pj][pi]
+							except:
+								pass
 							pass
 							
 				avg_inter_ij[i][j] = avg_inter_ij[j][i] = total_i_j/(len(sorti)*len(sortj))
