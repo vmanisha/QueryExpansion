@@ -42,7 +42,7 @@ def getTermList(queryList):
 				termList[w] = 0.0
 			termList[w] += c	
 	
-	print 'TermList ',len(termList), termList
+	#print 'TermList ',len(termList), termList
 	return termList.items()
 	
 def main(argv):

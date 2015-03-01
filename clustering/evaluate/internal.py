@@ -122,7 +122,7 @@ def Dunn(clusters, weightMatrix, centers=None, points=None):
 							dsum+=weightMatrix[clus[j]][clus[i]]	
 							found+=1
 						except:
-							print clus[i], clus[j]
+							#print clus[i], clus[j]
 							pass
 						pass
 			if found > 0:
