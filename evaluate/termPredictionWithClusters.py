@@ -6,18 +6,12 @@ from utils.ds.coOccurrence import CoOccurrence
 from utils.ds.coOcManager import CoOcManager
 from entity.expand.catClusExpansion import ScoreClusterTerms
 from queryLog import getSessionWithXML, normalize;
+from evaluate import addedAndRemovedTerms
+import os
+from termPrediction import getPrecRecall
+from plots import plotMultipleSys
 
 def main(argv):
-	#load the clusters
-	
-	#QCC
-	qccClusters = loadClusters(argv[3])
-	#Kmeans
-	kmeansClusters = loadClusters(argv[4])
-	#CatDict
-	catDictClusters = loadClusters(argv[5])
-	#CatDictClust
-	catSubclusters = loadClusters(argv[6])
 	
 	#Scorer
 	coSessOccur = CoOccurrence();
@@ -25,22 +19,34 @@ def main(argv):
 	tScorer = CoOccurSimScore(coSessOcMan)
 	cScorer = ScoreClusterTerms()
 	
+	vocab = set()
 	i=0
+	prec = {}
+	mrr = {}
+	lim = 50
 	
-	for session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
-		i+=1
-		query = session[0].strip();
-		aTerms,rTerms = addedAndRemovedTerms(query, session[1:], totalVocab)
+	for iFile in os.listdir(argv[3]):
+		clusters = loadClusters(argv[3]+'/'+iFile)
+		prec[iFile] = {}
+		mrr[iFile] = {}
 		
-		qccTerms= cScorer.score(query, qccClusters,tScorer, lim)
-		catDictTerms = cScorer.score(query, catDictClusters,tScorer,lim)
-		kmeansTerms = cScorer.score(query, kmeansClusters,tScorer, lim)
-		catSubTerms = cScorer.score(query, catSubclusters,tScorer, lim)
-		
-		prec1 , mrr1 = getPrecRecall(,aTerms)
-		prec = updateStats(noTerms, 'entSub',prec1, prec)
-		mrr = updateStats(noTerms, 'entSub',mrr1, mrr);
-				
+		for session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
+			i+=1
+			query = session[0].strip();
+			aTerms,rTerms = addedAndRemovedTerms(query, session[1:], vocab )
+			terms = cScorer.score(query, clusters,tScorer, lim)
+			
+			for topk in range(5,lim,5):
+				prec1 , mrr1 = getPrecRecall(terms[:topk],aTerms)
+				prec[iFile][topk] = prec1
+				mrr[iFile][topk] = mrr1
+	
+	
+	print 'Plotting Precision and MRR'
+	
+	plotMultipleSys(prec,'No of Terms', 'Prec',argv[4]+'/prec.png','Term Prediction Prec Plot');
+	plotMultipleSys(mrr,'No of Terms', 'MRR',argv[4]+'/mrr.png','Term Prediction MRR Plot');
+	
 	#read the file and score clusters from each of the above
 	#Print the precision values and MRR values
 	#Plot if necessary
