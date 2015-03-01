@@ -285,8 +285,9 @@ def getPrecRecall(run, toCompare ):
 	#print 'pSet ',apset
 	aInt =  toCompare & apset
 	#print 'EXPANSION SET ',apset, 'ADDED SET ',toCompare, 'INTSCN ',aInt
-
-	prec = (1.0*len(aInt))/len(toCompare)	
+	prec = 0
+	if len(toCompare) > 0:
+		prec = (1.0*len(aInt))/len(toCompare)	
 	mrr = 0;
 	for i in range(len(apList)):
 		if apList[i] in toCompare:

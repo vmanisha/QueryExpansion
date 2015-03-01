@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class ScoreClusterTerm:
+class ScoreClusterTerms:
 	
 	def __init__(self):
 		print 'Initializing cluster expansion'
@@ -14,7 +14,8 @@ class ScoreClusterTerm:
 			tDict = {}
 			for entry in clust:
 				score, terms = scorer.score(query,entry)
-				print clust, score, terms
+				#if score > 0:
+				#	print entry, score, terms
 				clusScore+= score
 				
 				for t in terms.keys():
@@ -32,10 +33,16 @@ class ScoreClusterTerm:
 			i+=1
 			
 		topTerms = []
+		covered = {}
 		for entry in sorted(scores.items(), reverse = True, key = lambda x : x[1]):
-			topTerms.append(x for x in order[entry[0]])
+			#print entry
+			for x in order[entry[0]]:
+				if x[0] not in covered:
+					topTerms.append(x)
+					covered[x[0]] = 1
+				
 			if len(topTerms) > limit:
 				break
-		
+		print query, topTerms	
 		return topTerms
 	

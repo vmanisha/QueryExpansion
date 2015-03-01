@@ -23,26 +23,42 @@ def main(argv):
 	i=0
 	prec = {}
 	mrr = {}
-	lim = 50
+	lim = 55
 	
 	for iFile in os.listdir(argv[3]):
 		clusters = loadClusters(argv[3]+'/'+iFile)
 		print iFile, len(clusters)
 		prec[iFile] = {}
 		mrr[iFile] = {}
-		
+		added=0.0
 		for tid, session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
 			i+=1
 			query = session[0].strip();
 			aTerms,rTerms = addedAndRemovedTerms(query, session[1:], None )
-			terms = cScorer.score(query, clusters,tScorer, lim)
-			
-			for topk in range(5,lim,5):
-				prec1 , mrr1 = getPrecRecall(terms[:topk],aTerms)
-				prec[iFile][topk] = prec1
-				mrr[iFile][topk] = mrr1
+			if len(aTerms) > 0:
+				terms = cScorer.score(query, clusters,tScorer, lim)
+				
+				for topk in range(5,lim,5):
+					prec1 , mrr1 = getPrecRecall(terms[:topk],aTerms)
+					#print topk , prec1, mrr1
+					if topk not in prec[iFile]:
+						prec[iFile][topk] = 0.0
+						mrr[iFile][topk] = 0.0
+						
+					prec[iFile][topk] += prec1
+					mrr[iFile][topk] += mrr1
+				added +=1.0
 	
-	
+	for entry in prec.keys():
+		for t in prec[entry].keys():
+			print 'Prec',entry, t, prec[entry][t], prec[entry][t]/added
+			prec[entry][t]/=added
+
+	for entry in mrr.keys():
+		for t in mrr[entry].keys():
+			print 'Mrr',entry, t, mrr[entry][t], mrr[entry][t]/added
+			mrr[entry][t]/=added
+
 	print 'Plotting Precision and MRR'
 	
 	plotMultipleSys(prec,'No of Terms', 'Prec',argv[4]+'/prec.png','Term Prediction Prec Plot');
