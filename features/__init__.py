@@ -126,9 +126,9 @@ def findPairwiseDistance(file1):
 	
 	ids = featDict.keys()
 	keys = sorted(ids);
-	for i in range(0,len(keys)):
+	for i in range(49952,len(keys)):
 		qid1, qf1 = featMan.returnFeature(keys[i])
-		for j in range(i+1, len(keys)):
+		for j in range(64006, len(keys)):
 			qid2, qf2 = featMan.returnFeature(keys[j])
 			qcos, ucos, userCos, ngramCos, entCos, catCos = qf1.findCosineDistance(qf2)
 			qjac = qf1.findJacardDistance(qf2)
