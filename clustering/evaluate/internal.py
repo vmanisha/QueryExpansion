@@ -114,6 +114,7 @@ def Dunn(clusters, weightMatrix, centers=None, points=None):
 			dsum = 1.0;
 			for i in range(len(clus)-1):
 				for j in range(len(clus)):
+					print clus[i], clus[j]
 					try:
 						 dsum+=weightMatrix[clus[i]][clus[j]]
 						 found+=1						

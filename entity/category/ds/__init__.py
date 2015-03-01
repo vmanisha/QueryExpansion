@@ -36,6 +36,7 @@ def loadClustersWithQueryFile(fileName, queryFile):
 			split = line.split('\t')
 			for entry in split:
 				try:
+					print entry, queryId[entry.strip()]
 					cpoints.append(queryId[entry.strip()])
 				except:
 					print 'Cant find', entry
