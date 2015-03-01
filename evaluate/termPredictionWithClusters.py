@@ -40,7 +40,7 @@ def getTermList(queryList):
 		termList.update(count.keys())
 	
 	
-	print len(termList)
+	print 'TermList ',len(termList), termList
 	return termList
 	
 def main(argv):
@@ -71,7 +71,7 @@ def main(argv):
 			oracle_prec+= prec1
 			oracle_mrr+= mrr1
 			
-	print 'Oracle prec and recall ', oracle_prec, oracle_mrr
+	print 'Oracle prec and recall ', oracle_prec/added, oracle_mrr/added
 	
 	for iFile in os.listdir(argv[3]):
 		qclusters = loadClusters(argv[3]+'/'+iFile)
