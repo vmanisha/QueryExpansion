@@ -12,6 +12,8 @@ from termPrediction import getPrecRecall
 from plots import plotMultipleSys
 from utils import stopSet
 
+from utils import text_to_vector,loadFileInList
+
 def toTerms(clusters):
 	
 	clustersWithTerms = []
@@ -30,6 +32,17 @@ def toTerms(clusters):
 	return clustersWithTerms
 
 
+def getTermList(queryList):
+	termList = set()
+	
+	for entry in queryList:
+		count = text_to_vector(entry)
+		termList.update(count.keys())
+	
+	
+	print len(termList)
+	return termList
+	
 def main(argv):
 	
 	#Scorer
@@ -43,6 +56,22 @@ def main(argv):
 	prec = {}
 	mrr = {}
 	lim = 55
+	
+	queryList = loadFileInList(argv[5])
+	termList = getTermList(queryList)
+	added = 0
+	oracle_prec=0.0
+	oracle_mrr = 0.0
+	for tid, session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
+		query = session[0].strip();
+		aTerms,rTerms = addedAndRemovedTerms(query, session[1:], None )
+		if len(aTerms) > 0:
+			prec1 , mrr1 = getPrecRecall(termList,aTerms)
+			added+=1.0
+			oracle_prec+= prec1
+			oracle_mrr+= mrr1
+			
+	print 'Oracle prec and recall ', oracle_prec, oracle_mrr
 	
 	for iFile in os.listdir(argv[3]):
 		qclusters = loadClusters(argv[3]+'/'+iFile)

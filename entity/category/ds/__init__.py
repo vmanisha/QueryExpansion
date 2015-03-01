@@ -21,6 +21,7 @@ def loadClustersWithQueryFile(fileName, queryFile):
 	queryId = {}
 	
 	i=0
+	
 	for line in open(queryFile,'r'):
 		split = line.split('\t')
 		query = filterWords(split[0].strip())
