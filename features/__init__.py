@@ -6,6 +6,23 @@ from utils.word import Word
 from nltk.stem import porter
 from features.featureManager import FeatureManager
 
+def readWeightMatrix(fileName):
+	weightMatrix = {}
+	lbreak = False
+	for line in open(fileName,'r'):
+		if lbreak:
+			split = line.split()
+			i = int(split[0])
+			if i not in weightMatrix:
+				weightMatrix[i] = {}
+			try:
+				weightMatrix[i][int(split[1])] = 1.0-round(float(split[-1]),2)
+			except:
+				print line
+		if len(line) <10 and (not lbreak):
+			lbreak = True
+	
+	return weightMatrix
 						
 def toString(eset,featMan):
 	string = ''

@@ -4,6 +4,8 @@ from features.featureManager import FeatureManager
 import Pycluster as clust
 import numpy as np
 import random
+from clustering.build.kmean import KMeans
+from features import toString,readWeightMatrix
 
 def clusterAllWithKMeans(featMan, weightMatrix):
 	featMan = FeatureManager()
@@ -52,7 +54,7 @@ def clusterAllWithKMediods(argv):
 	oFile = open(argv[3],'w');
 	for entry in clusters.values():
 		qStr = toString(entry,featMan)	
-		oFile.write(qstr+'\n')
+		oFile.write(qStr+'\n')
 	oFile.close()
 
 def getWeightMatrixForKMedFromFile(count, fileName):
@@ -99,23 +101,7 @@ def getWeightMatrixForKMed(data, weightMatrix):
 	return weightList
 
 			
-def readWeightMatrix(fileName):
-	weightMatrix = {}
-	lbreak = False
-	for line in open(fileName,'r'):
-		if lbreak:
-			split = line.split()
-			i = int(split[0])
-			if i not in weightMatrix:
-				weightMatrix[i] = {}
-			try:
-				weightMatrix[i][int(split[1])] = 1.0-round(float(split[-1]),2)
-			except:
-				print line
-		if len(line) <10 and (not lbreak):
-			lbreak = True
-	
-	return weightMatrix
+
 	
 def clusterCatWithKMeans(featMan, weightMatrix, catQueryDist):
 	noClusSet = set()

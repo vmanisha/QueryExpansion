@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import sys, ast
+from entity.category.ds import loadClusters
+from features import readWeightMatrix
 
 def DB(clusters, weightMatrix, centers=None, points=None):
 	if not centers:
@@ -156,25 +158,11 @@ def Dunn(clusters, weightMatrix, centers=None, points=None):
 if __name__ == '__main__':
 	argv = sys.argv
 	lbreak = False
-	weightMatrix = {}
-	clusters = []
+	weightMatrix = readWeightMatrix(argv[2])
+	clusters = loadClusters(argv[1])
 	#load the cluster-assignments and points
-	for line in open(argv[1],'r'):
-		if lbreak:
-			split = line.split()
-			i = int(split[0])
-			if i not in weightMatrix:
-				weightMatrix[i] = {}
-			weightMatrix[i][int(split[1])] = 1.0-round(float(split[-1]),2)
-		else:
-			if len(line) <2:
-				lbreak = True
-				continue
-			try:
-				clusters.append(ast.literal_eval(line.strip()))
-			except:
-				print line,
-				pass
+	
+	
 	print len(clusters)
 	print len(weightMatrix)
 	
