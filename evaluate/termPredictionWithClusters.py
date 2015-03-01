@@ -30,11 +30,17 @@ def main(argv):
 	for session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
 		i+=1
 		query = session[0].strip();
+		aTerms,rTerms = addedAndRemovedTerms(query, session[1:], totalVocab)
 		
 		qccTerms= cScorer.score(query, qccClusters,tScorer, lim)
 		catDictTerms = cScorer.score(query, catDictClusters,tScorer,lim)
 		kmeansTerms = cScorer.score(query, kmeansClusters,tScorer, lim)
 		catSubTerms = cScorer.score(query, catSubclusters,tScorer, lim)
+		
+		prec1 , mrr1 = getPrecRecall(,aTerms)
+		prec = updateStats(noTerms, 'entSub',prec1, prec)
+		mrr = updateStats(noTerms, 'entSub',mrr1, mrr);
+				
 	#read the file and score clusters from each of the above
 	#Print the precision values and MRR values
 	#Plot if necessary
