@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import sys, ast
-from entity.category.ds import loadClusters
+from entity.category.ds import loadClustersWithQueryFile
 from features import readWeightMatrix
 
 def DB(clusters, weightMatrix, centers=None, points=None):
@@ -119,7 +119,7 @@ def Dunn(clusters, weightMatrix, centers=None, points=None):
 						
 			deltaList.append(dsum*diam);
 		maxDiam = max(deltaList);
-		
+		print 'Max diameter ',maxDiam
 		#find center
 		avg_inter_ij = {}
 		
@@ -159,7 +159,7 @@ if __name__ == '__main__':
 	argv = sys.argv
 	lbreak = False
 	weightMatrix = readWeightMatrix(argv[2])
-	clusters = loadClusters(argv[1])
+	clusters = loadClustersWithQueryFile(argv[1],argv[3])
 	#load the cluster-assignments and points
 	
 	

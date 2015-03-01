@@ -8,6 +8,7 @@ from nltk import stem
 import sys, math
 from utils import loadFileInTuples
 
+from utils import filterWords
 def Precision(tp, fp):
 	return tp/(1.0*(tp+fp))
 	
@@ -129,13 +130,7 @@ def printIndices(argv1,argv2,argv3):
 	print 'Precision', prec
 	print 'fMeasure', fMeasure(prec, recall)
 	
-def filterWords(query, wlen=1):
-		nQuery = ''
-		for entry in query.split():
-			if len(entry) > wlen:
-				nQuery +=' '+ entry
-		nQuery = nQuery.strip()
-		return nQuery
+
 
 #trueLabelFile,differentPairFile, predictedLabelFile, queryList
 if __name__ == '__main__':

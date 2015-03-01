@@ -43,6 +43,15 @@ WEB = re.compile("^(((ht|f)tp(s?))\://)?(www.|[a-zA-Z].)[a-zA-Z0-9\-\.]+\.([a-z]
 HTML = re.compile('<html')
 LEMR = re.compile('the lemur project')
 
+
+def filterWords(query, wlen=1):
+		nQuery = ''
+		for entry in query.split():
+			if len(entry) > wlen:
+				nQuery +=' '+ entry
+		nQuery = nQuery.strip()
+		return nQuery
+		
 def getDictFromSet(qset):
 	d = {}#defaultdict(int)
 	for word in qset:
