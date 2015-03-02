@@ -25,7 +25,10 @@ def loadClustersWithQueryFile(fileName, queryFile):
 	for line in open(queryFile,'r'):
 		split = line.split('\t')
 		query = filterWords(split[0].strip())
-		queryId[query] = str(i)
+		if query in queryId:
+			print 'Found query ',query
+		else:
+			queryId[query] = str(i)
 		i+=1
 	
 	clusters = []
