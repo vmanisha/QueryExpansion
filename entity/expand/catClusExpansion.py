@@ -43,8 +43,8 @@ class ScoreClusterTerms:
 					topTerms.append(x)
 					covered[x[0]] = 1
 				
-			if len(topTerms) > limit:
-				break
+				if len(topTerms) > limit:
+					break
 		#print query, topTerms	
 		return topTerms
 	
