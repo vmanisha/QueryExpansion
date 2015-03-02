@@ -31,6 +31,8 @@ def loadClustersWithQueryFile(fileName, queryFile):
 			queryId[query] = str(i)
 		i+=1
 	
+	keys = sorted(queryId.keys())
+	print len(keys), keys[-5:]
 	clusters = []
 	for line in open(fileName,'r'):
 		line = line.strip()
