@@ -25,24 +25,21 @@ def loadClustersWithQueryFile(fileName, queryFile):
 	for line in open(queryFile,'r'):
 		split = line.split('\t')
 		query = filterWords(split[0].strip())
-		if query in queryId:
-			print 'Found query ',query
-		else:
-			queryId[query] = str(i)
+		if query not in queryId:
+			queryId[query] = i
 		i+=1
 	
-	keys = sorted(queryId.keys())
-	print len(keys), keys[-5:]
 	clusters = []
 	for line in open(fileName,'r'):
 		line = line.strip()
 		cpoints = []
 		if len(line) > 0:
-			split = line.split('\t')
+			split = line.strip().split('\t')
 			for entry in split:
 				try:
-					print entry, queryId[entry.strip()]
-					cpoints.append(queryId[entry.strip()])
+					#print entry, queryId[entry.strip()]
+					if len(entry.strip()) > 0:
+						cpoints.append(queryId[entry.strip()])
 				except:
 					print 'Cant find', entry
 					pass

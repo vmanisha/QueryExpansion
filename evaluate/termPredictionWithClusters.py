@@ -74,6 +74,10 @@ def main(argv):
 			oracle_mrr+= mrr1
 			
 	print 'Oracle prec and recall ', oracle_prec/added, oracle_mrr/added
+
+	porter = stem.porter.PorterStemmer();
+	ttype = argv[5];
+	
 	
 	for iFile in os.listdir(argv[3]):
 		qclusters = loadClusters(argv[3]+'/'+iFile)
@@ -83,15 +87,27 @@ def main(argv):
 		prec[iFile] = {}
 		mrr[iFile] = {}
 		added=0.0
+		i=1
 		for tid, session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
 			i+=1
 			query = session[0].strip();
-			aTerms,rTerms = addedAndRemovedTerms(query, session[1:], None )
+			qSet = getQueryTerms(query);
+			if ttype == 'query':
+				aTerms,rTerms = addedAndRemovedTerms(query, session[1:], None)
+			elif ttype == 'title':
+				aTerms = getTerms(cTitle,qSet,None,porter, range(1,len(session)-1));
+			else:
+				aTerms = getTerms(cTitle,qSet,None,porter, range(1,len(session)-1));
+				bTerms = getTerms(cSummary,qSet,None,porter, range(1,len(session)-1));
+				aTerms = aTerms | bTerms;
+				#aTerms,rTerms = addedAndRemovedTerms(query, session[1:], None )
+			
 			if len(aTerms) > 0:
 				terms = cScorer.score(query, clusters,tScorer, lim)
 				
 				for topk in range(5,lim,5):
 					prec1 , mrr1 = getPrecRecall(terms[:topk],aTerms)
+					print 'METRIC',iFile, i, topk, prec1, mrr1
 					#print topk , prec1, mrr1
 					if topk not in prec[iFile]:
 						prec[iFile][topk] = 0.0
@@ -113,8 +129,8 @@ def main(argv):
 
 	print 'Plotting Precision and MRR'
 	
-	plotMultipleSys(prec,'No of Terms', 'Prec',argv[4]+'/prec.png','Term Prediction Prec Plot');
-	plotMultipleSys(mrr,'No of Terms', 'MRR',argv[4]+'/mrr.png','Term Prediction MRR Plot');
+	plotMultipleSys(prec,'No of Terms', 'Prec',argv[4]+'prec.png','Term Prediction Prec Plot');
+	plotMultipleSys(mrr,'No of Terms', 'MRR',argv[4]+'mrr.png','Term Prediction MRR Plot');
 	
 	#read the file and score clusters from each of the above
 	#Print the precision values and MRR values

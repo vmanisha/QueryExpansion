@@ -19,15 +19,14 @@ class CoOccurSimScore:
 		total = sum(terms2.values())
 		#print terms1, len(terms2)
 		for t1 in terms1:
-			if len(t1) > 2:
-				for t2 in terms2:
-					sc = self.coMan.getCoOcCount(t1,t2)[0]
-					#if sc > 0:
-					#	print t1, t2, sc 
-					score+= (sc*(terms2[t2]/total)) 
-					if t2 not in termScore:
-						termScore[t2] = 0.0
-					termScore[t2] += score
+			for t2 in terms2:
+				sc = self.coMan.getCoOcCount(t1,t2)[0]
+				#if sc > 0:
+				#	print t1, t2, sc
+				score+= (sc*(terms2[t2]/total))
+				if t2 not in termScore:
+					termScore[t2] = 0.0
+				termScore[t2] += score
 				
 		for entry in termScore.keys():
 			termScore[entry]/= len(terms1)

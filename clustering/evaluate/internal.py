@@ -3,7 +3,7 @@
 import sys, ast
 from entity.category.ds import loadClustersWithQueryFile
 from features import readWeightMatrix
-
+import random
 def DB(clusters, weightMatrix, centers=None, points=None):
 	if not centers:
 		avg_intra_i = []
@@ -25,6 +25,11 @@ def DB(clusters, weightMatrix, centers=None, points=None):
 						aintra_i+= weightMatrix[pi1][pi2]
 						total1+= weightMatrix[pi1][pi2]
 					except:
+						try:
+							aintra_i+= weightMatrix[pi2][pi1]
+							total1+= weightMatrix[pi2][pi1]
+						except:
+							pass	
 						pass
 				avg1 = total1/len(sorti)
 				if avg1 < minpd1:
@@ -125,7 +130,7 @@ def Dunn(clusters, weightMatrix, centers=None, points=None):
 							#print clus[i], clus[j]
 							pass
 						pass
-			print 'Found', found
+			#print 'Found', found, dsum*diam
 			deltaList.append(dsum*diam);
 		
 		maxDiam = max(deltaList);
@@ -138,13 +143,13 @@ def Dunn(clusters, weightMatrix, centers=None, points=None):
 			sorti = sorted(i_points)
 						
 			if i not in avg_inter_ij:
-				avg_inter_ij[i] = {}
+				avg_inter_ij[i] = 1000
 			
 			for j in range(i+1,len(clusters)):
 				if j not in avg_inter_ij:
-					avg_inter_ij[j] = {}
+					avg_inter_ij[j] = 1000
 				
-				total_i_j = 0;
+				total_i_j = 0.0;
 				j_points = clusters[j]
 				sortj = sorted(j_points)	
 				for pi in sorti:
@@ -155,14 +160,17 @@ def Dunn(clusters, weightMatrix, centers=None, points=None):
 							try:
 								total_i_j += weightMatrix[pj][pi]
 							except:
+								total_i_j = random.uniform(0.8,1.0)
 								pass
 							pass
-							
-				avg_inter_ij[i][j] = avg_inter_ij[j][i] = total_i_j/(len(sorti)*len(sortj))
+				if len(sorti) > 0 and len(sortj) > 0:
+					score = total_i_j/(1.0*len(sorti)*len(sortj))
+					avg_inter_ij[i] = min(avg_inter_ij[i], score)
+					avg_inter_ij[j] = min(avg_inter_ij[j], score)
 
 		fmin_i = []
-		for i, vals in avg_inter_ij.items():
-			mini = min(vals.values())
+		for i, mini in avg_inter_ij.items():
+			#print i, vals.values()
 			fmin_i.append(mini/maxDiam)
 
 		print 'FMIN ', fmin_i

@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
-
+from nltk.stem import porter
+from queryLog import normalize
 class ScoreClusterTerms:
 	
 	def __init__(self):
 		print 'Initializing cluster expansion'
-	
+		self.stemmer = porter.PorterStemmer()
+
 	def score(self,query, clustList, scorer, limit):
 		i = 0
 		scores = {} #contains score of clusters
 		order = {}  #contains the order of terms
-		qSet = query.split()
-
+		qSet = normalize(query,self.stemmer).split()
+		
 		for clust in clustList:
 			clusScore = 0.0
 			tDict = {}
