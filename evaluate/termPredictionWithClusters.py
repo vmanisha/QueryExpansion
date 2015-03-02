@@ -8,10 +8,11 @@ from entity.expand.catClusExpansion import ScoreClusterTerms
 from queryLog import getSessionWithXML, normalize;
 from evaluate import addedAndRemovedTerms
 import os
-from termPrediction import getPrecRecall
+from queryLog import getQueryTermsStemmed
+from termPrediction import getPrecRecall,getTerms
 from plots import plotMultipleSys
 from utils import stopSet
-
+from nltk import stem;
 from utils import text_to_vector,loadFileInList
 
 def toTerms(clusters):
@@ -76,8 +77,9 @@ def main(argv):
 	print 'Oracle prec and recall ', oracle_prec/added, oracle_mrr/added
 
 	porter = stem.porter.PorterStemmer();
-	ttype = argv[5];
+	ttype = argv[6];
 	
+	print ttype
 	
 	for iFile in os.listdir(argv[3]):
 		qclusters = loadClusters(argv[3]+'/'+iFile)
@@ -91,7 +93,8 @@ def main(argv):
 		for tid, session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
 			i+=1
 			query = session[0].strip();
-			qSet = getQueryTerms(query);
+			qSet = getQueryTermsStemmed(query, porter);
+			print 'Query ',query, qSet
 			if ttype == 'query':
 				aTerms,rTerms = addedAndRemovedTerms(query, session[1:], None)
 			elif ttype == 'title':
@@ -103,8 +106,8 @@ def main(argv):
 				#aTerms,rTerms = addedAndRemovedTerms(query, session[1:], None )
 			
 			if len(aTerms) > 0:
-				terms = cScorer.score(query, clusters,tScorer, lim)
-				
+				terms = cScorer.score(qSet, clusters,tScorer, lim)
+				print 'Terms', '\t',i,'\t', ttype,'\t', iFile,'\t', terms
 				for topk in range(5,lim,5):
 					prec1 , mrr1 = getPrecRecall(terms[:topk],aTerms)
 					print 'METRIC',iFile, i, topk, prec1, mrr1

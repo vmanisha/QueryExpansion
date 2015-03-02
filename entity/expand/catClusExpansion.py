@@ -7,11 +7,11 @@ class ScoreClusterTerms:
 		print 'Initializing cluster expansion'
 		self.stemmer = porter.PorterStemmer()
 
-	def score(self,query, clustList, scorer, limit):
+	def score(self,qSet, clustList, scorer, limit):
 		i = 0
 		scores = {} #contains score of clusters
 		order = {}  #contains the order of terms
-		qSet = normalize(query,self.stemmer).split()
+		
 		
 		for clust in clustList:
 			clusScore = 0.0
@@ -23,7 +23,7 @@ class ScoreClusterTerms:
 			for t in terms.keys():
 				if t not in tDict:
 					tDict[t] = 0.0
-				tDict[t]+=terms[t]
+				tDict[t]+=round(terms[t],2)
 			
 			rTerms = sorted(tDict.items(),reverse = True, key = lambda x : x[1])	
 			order[i] = []

@@ -261,10 +261,10 @@ def getTerms(termDict, qSet, totalVocab, stemmer, indices):
 		for text in tList:
 				terms = getQueryTermsStemmed(text,stemmer);
 				termSet |= terms;
-	print termSet, qSet;
+	#print 'TermSet ',termSet, qSet;
 	
 	termSet = termSet - qSet;
-	termSet = termSet & totalVocab;
+	#termSet = termSet & totalVocab;
 	return termSet;
 
 def printMetric(var, method,key):
