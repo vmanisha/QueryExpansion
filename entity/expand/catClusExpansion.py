@@ -14,37 +14,41 @@ class ScoreClusterTerms:
 		
 		
 		for clust in clustList:
-			clusScore = 0.0
-			tDict = {}
-			score, terms = scorer.score(qSet,clust)
-			#if score > 0:
-			#	print entry, score, terms
-			clusScore+= score
-			for t in terms.keys():
-				if t not in tDict:
-					tDict[t] = 0.0
-				tDict[t]+=round(terms[t],2)
 			
-			rTerms = sorted(tDict.items(),reverse = True, key = lambda x : x[1])	
+			score, terms = scorer.score(qSet,clust)
+			
+			#if score > 0 and len(terms) < 15:
+			#	print qSet, score, terms
+			sTerms = sorted(terms.items(),reverse = True, key = lambda x : x[1])	
+			#print qSet, score, clust, sTerms
 			order[i] = []
-			for entry in rTerms:
-				order[i].append(entry)
-				
-			clusScore/=(1.0*len(clust))
-			scores[i]= clusScore
+			for entry in sTerms:
+				if entry[0] not in qSet and entry[1] > 0.0:
+					order[i].append(entry)
+					if len(order[i]) > limit:
+						break
+					
+			#score/=(1.0*len(clust))
+			scores[i]= score
 			i+=1
 			
 		topTerms = []
 		covered = {}
 		for entry in sorted(scores.items(), reverse = True, key = lambda x : x[1]):
 			#print entry
+			#if entry[1] > 0.0 and len(order[entry[0]]) < 15:
+			#	print qSet, entry, order[entry[0]]
+				
 			for x in order[entry[0]]:
 				if x[0] not in covered:
+					#if x[1] > 0.0:
 					topTerms.append(x)
 					covered[x[0]] = 1
 				
 				if len(topTerms) > limit:
 					break
+			if len(topTerms) > limit:
+				break
 		#print query, topTerms	
 		return topTerms
 	

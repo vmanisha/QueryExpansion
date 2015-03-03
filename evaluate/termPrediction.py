@@ -264,7 +264,7 @@ def getTerms(termDict, qSet, totalVocab, stemmer, indices):
 	#print 'TermSet ',termSet, qSet;
 	
 	termSet = termSet - qSet;
-	#termSet = termSet & totalVocab;
+	termSet = termSet & totalVocab;
 	return termSet;
 
 def printMetric(var, method,key):

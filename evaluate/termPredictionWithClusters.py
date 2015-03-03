@@ -18,7 +18,7 @@ from utils import text_to_vector,loadFileInList
 def toTerms(clusters):
 	
 	clustersWithTerms = []
-	
+	clusterIndex = {}
 	for clust in clusters:		
 		terms = {}
 		for entry in clust:
@@ -28,6 +28,11 @@ def toTerms(clusters):
 					if st not in terms:
 						terms[st]= 0.0
 					terms[st]+=1.0
+	
+		total = sum(terms.values())
+		for entry in terms.keys():
+			terms[entry]/=total
+			
 		if len(terms) > 0:
 			clustersWithTerms.append(terms)	
 	return clustersWithTerms
@@ -44,7 +49,7 @@ def getTermList(queryList):
 			termList[w] += c	
 	
 	#print 'TermList ',len(termList), termList
-	return termList.items()
+	return termList.items(),set(termList.keys())
 	
 def main(argv):
 	
@@ -61,13 +66,14 @@ def main(argv):
 	lim = 55
 	
 	queryList = loadFileInList(argv[5])
-	termList = getTermList(queryList)
+	termList, termDict = getTermList(queryList)
+	print len(termList)
 	added = 0
 	oracle_prec=0.0
 	oracle_mrr = 0.0
 	for tid, session, viewDocs, clickDocs, cTitle, cSummary in getSessionWithXML(argv[1]):
 		query = session[0].strip();
-		aTerms,rTerms = addedAndRemovedTerms(query, session[1:], None )
+		aTerms,rTerms = addedAndRemovedTerms(query, session[1:], termDict )
 		if len(aTerms) > 0:
 			prec1 , mrr1 = getPrecRecall(termList,aTerms)
 			added+=1.0
@@ -96,18 +102,18 @@ def main(argv):
 			qSet = getQueryTermsStemmed(query, porter);
 			print 'Query ',query, qSet
 			if ttype == 'query':
-				aTerms,rTerms = addedAndRemovedTerms(query, session[1:], None)
+				aTerms,rTerms = addedAndRemovedTerms(query, session[1:], termDict)
 			elif ttype == 'title':
-				aTerms = getTerms(cTitle,qSet,None,porter, range(1,len(session)-1));
+				aTerms = getTerms(cTitle,qSet,termDict,porter, range(1,len(session)-1));
 			else:
-				aTerms = getTerms(cTitle,qSet,None,porter, range(1,len(session)-1));
-				bTerms = getTerms(cSummary,qSet,None,porter, range(1,len(session)-1));
+				aTerms = getTerms(cTitle,qSet,termDict,porter, range(1,len(session)-1));
+				bTerms = getTerms(cSummary,qSet,termDict,porter, range(1,len(session)-1));
 				aTerms = aTerms | bTerms;
 				#aTerms,rTerms = addedAndRemovedTerms(query, session[1:], None )
 			
 			if len(aTerms) > 0:
 				terms = cScorer.score(qSet, clusters,tScorer, lim)
-				print 'Terms', '\t',i,'\t', ttype,'\t', iFile,'\t', terms
+				print 'Terms', '\t',i,'\t', ttype,'\t', iFile,'\t', len(terms), terms
 				for topk in range(5,lim,5):
 					prec1 , mrr1 = getPrecRecall(terms[:topk],aTerms)
 					print 'METRIC',iFile, i, topk, prec1, mrr1
@@ -119,7 +125,9 @@ def main(argv):
 					prec[iFile][topk] += prec1
 					mrr[iFile][topk] += mrr1
 				added +=1.0
-	
+			#if i == 3:
+			#	break
+			
 	for entry in prec.keys():
 		for t in prec[entry].keys():
 			print 'Prec',entry, t, prec[entry][t], prec[entry][t]/added
