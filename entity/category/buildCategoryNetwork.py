@@ -9,7 +9,77 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from features.featureManager import FeatureManager
 import random
+from entity.category.findCategoryClusters import clusterCatWithMediods
 
+def buildNetwork(queryFile, skosFile):
+	catQueryDist = findCatQueryDist(queryFile, featMan)
+	catQueryDist['dow_jones_transportation_average'] = set()
+	
+	
+	total = set(catQueryDist.keys())
+	#found = set()
+	#i = 0
+	#for line in open(argv[2],'r'):
+
+	print len(catQueryDist)
+
+	found , related , broad = loadSkosCategories(skosFile, catQueryDist)
+	
+	notFound = total.difference(found)
+	categoryNetwork=nx.DiGraph()
+	#B parent of A
+	for entry in broad:
+		categoryNetwork.add_edge(entry[1],entry[0])
+	print len(notFound), len(related), len(broad)
+	
+	return catNetwork, catQueryDist
+
+def mergeCategories(catNetwork,catQueryDist):
+	
+	avoid = set()
+	for i in range(15):
+		for entry in categoryNetwork.nodes():
+			toDel = False
+			if entry in catQueryDist  and len(catQueryDist[entry]) < 60 and entry not in avoid:
+				#send the queries to inedges
+				merge = 0
+				parents = []
+			
+				for in_tup in categoryNetwork.in_edges_iter(entry):
+					parent = in_tup[0]
+					parents.append(parent)
+					if parent not in catQueryDist:
+						catQueryDist[parent] = set()
+					merge+=1
+					catQueryDist[parent].update(catQueryDist[entry])
+				
+				if merge == 0:
+					#print 'Lonely Node', entry, categoryNetwork.in_edges(entry)
+					avoid.add(entry)
+				else:
+					#add the outgoing to incoming
+					for out_tup in categoryNetwork.out_edges_iter(entry):
+						child = out_tup[1]
+						for par in parents:
+							if par != child:
+								categoryNetwork.add_edge(par,child)	
+					
+					categoryNetwork.remove_node(entry)
+					toDel = True
+	
+			if toDel:
+				#print 'Deleting ', entry, len(catQueryDist[entry])
+				del catQueryDist[entry]
+	
+	return catNetwork
+
+def returnFilteredNetwork(queryFile, skosFile):
+	
+	catNetwork, catQueryDist=buildNetwork(queryFile, skosFile)
+	catNetwork = mergeCategories(catNetwork,catQueryDist)
+	
+	return catNetwork
+	
 	
 def main(argv):	
 	
@@ -21,9 +91,6 @@ def main(argv):
 	
 	
 	total = set(catQueryDist.keys())
-	#found = set()
-	#i = 0
-	#for line in open(argv[2],'r'):
 
 	print len(catQueryDist)
 
@@ -38,20 +105,9 @@ def main(argv):
 	for entry in broad:
 		if 'illinois' == entry[1] or 'illinois' == entry[0]:
 			print 'BROAD', entry
-		#if 'history_of_the_united_states_by_state' == entry[0] or 'history_of_the_united_states_by_state' == entry[1]:
-		#	print 'BROAD', entry
 		
 		categoryNetwork.add_edge(entry[1],entry[0])
-				
-	
-	#for entry in related:
-	#	if 'illinois' == entry[1] or 'illinois' == entry[0]:
-	#		print 'RELATED', entry
-	
-	#	categoryNetwork.add_edge(entry[1],entry[0])
-	#	categoryNetwork.add_edge(entry[0],entry[1])
-	
-	
+		
 	print len(notFound), len(related), len(broad)
 	
 	avoid = set()
@@ -142,7 +198,7 @@ def main(argv):
 	oFile = open(argv[5],'w')
 	
 	
-	clusters, noClus, subset = clusterWithMediods(featMan, weightMatrix, catQueryDist, pairs)
+	clusters, noClus, subset = clusterCatWithMediods(featMan, weightMatrix, catQueryDist, pairs)
 	#clusters, noClus = clusterEachCategory(featMan, weightMatrix, catQueryDist)
 	for entry in clusters:
 		oFile.write(entry+'\n')

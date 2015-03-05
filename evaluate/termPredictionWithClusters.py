@@ -18,7 +18,9 @@ from utils import text_to_vector,loadFileInList
 def toTerms(clusters):
 	
 	clustersWithTerms = []
+
 	clusterIndex = {}
+	i = 0
 	for clust in clusters:		
 		terms = {}
 		for entry in clust:
@@ -32,10 +34,15 @@ def toTerms(clusters):
 		total = sum(terms.values())
 		for entry in terms.keys():
 			terms[entry]/=total
-			
+			if entry not in clusterIndex:
+				clusterIndex[entry] = []
+			clusterIndex[entry].append(i)
+		
 		if len(terms) > 0:
 			clustersWithTerms.append(terms)	
-	return clustersWithTerms
+		i+=1
+		
+	return clustersWithTerms, clusterIndex
 
 
 def getTermList(queryList):
@@ -89,7 +96,7 @@ def main(argv):
 	
 	for iFile in os.listdir(argv[3]):
 		qclusters = loadClusters(argv[3]+'/'+iFile)
-		clusters = toTerms(qclusters)
+		clusters, clusIndex = toTerms(qclusters)
 
 		print iFile, len(clusters)
 		prec[iFile] = {}
@@ -112,7 +119,7 @@ def main(argv):
 				#aTerms,rTerms = addedAndRemovedTerms(query, session[1:], None )
 			
 			if len(aTerms) > 0:
-				terms = cScorer.score(qSet, clusters,tScorer, lim)
+				terms = cScorer.scoreWithIndex(qSet, clusters,clusIndex,tScorer, lim)
 				print 'Terms', '\t',i,'\t', ttype,'\t', iFile,'\t', len(terms), terms
 				for topk in range(5,lim,5):
 					prec1 , mrr1 = getPrecRecall(terms[:topk],aTerms)

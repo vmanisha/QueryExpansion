@@ -111,7 +111,9 @@ def plotHist(data,xlab, ylab):
 	# Put a legend below current axis
 	plt.show()
 	#plt.savefig('paper/images/entity-head-tail-count.png')
-	
+
+
+def plotMultiplePlotsInOne()
 #plot the band of entity popularity
 if __name__ == '__main__':
 	argv = sys.argv;
