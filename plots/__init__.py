@@ -113,40 +113,88 @@ def plotHist(data,xlab, ylab):
 	#plt.savefig('paper/images/entity-head-tail-count.png')
 
 
-def plotMultiplePlotsInOne()
+def plotMultiplePlotsInOne(px,py, plotDict, xaxis, yaxis, fname):
+	f, axarr = plt.subplots(px, py)
+	i = 0;
+	j = 0;
+	
+	# {pNamei : {aname:([x1],[y1]), ([],[]), ([],[])} }
+	for pair in sorted(plotDict.items(),key = lambda x : x[0]):
+		ploti=pair[0]
+		plotiList = pair[1]
+		for name, entry in plotiList.items():
+			axarr[i,j].plot(entry[0],entry[1],label=name,lw=1.5)
+		axarr[i, j].set_title(ploti)
+		if i > 0:
+			axarr[i,j].set_xlabel(xaxis)
+		if j < 1:
+			axarr[i,j].set_ylabel(yaxis)
+		
+		j+=1
+		if j >= py:
+			j=0;
+			i+=1;
+	plt.legend(bbox_to_anchor=(-.7, -.15), loc=2, ncol = 4, borderaxespad=0., title='');
+	#plt.savefig(fname)
+	#plt.close();
+	plt.show()
+		
 #plot the band of entity popularity
 if __name__ == '__main__':
 	argv = sys.argv;
 	toPlot = {};
 	
-	for ifile in os.listdir(argv[1]):
-		name = '20'+ ifile[:ifile.find('.')];
-		if name not in toPlot:
-			toPlot[name] = {};
-		for line in open(argv[1]+'/'+ifile,'r'):
-			split = line.split(' ');
-			count = int(split[-1]);
-			lab = None;
-			if count == 0:
-				lab = '0';
-			elif count > 0 and count < 3:
-				lab = '1-2';
-			else :
-				lab = '3 or more';
+	for iFile in os.listdir(argv[1]):
+		sys = {}
+		suffix = '20'+iFile[0:2]
+		for line in open(argv[1]+'/'+iFile,'r'):
+			if line.startswith('Prec'):
+				split = line.split()
+				if split[1] not in sys:
+					sys[split[1]] = {}
+				sys[split[1]][int(split[2])] = round(float(split[-1]),3)
 			
-			if lab not in toPlot[name]:	
-				toPlot[name][lab]=0.0;
-			toPlot[name][lab]+=1.0;
-	data = [[],[],[],[]];
-	
-	for entry,dlist in sorted(toPlot.items()):
-		data[0].append(entry);
-		total = sum(dlist.values());
-		data[1].append(dlist['0']/total);
-		data[2].append(dlist['1-2']/total);
-		data[3].append(dlist['3 or more']/total);
+		toPlot[suffix] = {}
+		for name, rDict in sys.items():
+			toIns = tuple([[],[]])
+			
+			for entry in sorted(rDict.items(), key = lambda x : x[0]):
+				toIns[0].append(entry[0])
+				toIns[1].append(entry[1])
+			
+			toPlot[suffix][name] = toIns
+		print suffix, toPlot[suffix]
 		
-	plotHist(data, '% of Queries', 'Track Year')
+
+	plotMultiplePlotsInOne(2,2,toPlot,'#Terms','Precision',argv[2])
+	#for ifile in os.listdir(argv[1]):
+		#name = '20'+ ifile[:ifile.find('.')];
+		#if name not in toPlot:
+			#toPlot[name] = {};
+		#for line in open(argv[1]+'/'+ifile,'r'):
+			#split = line.split(' ');
+			#count = int(split[-1]);
+			#lab = None;
+			#if count == 0:
+				#lab = '0';
+			#elif count > 0 and count < 3:
+				#lab = '1-2';
+			#else :
+				#lab = '3 or more';
+			#
+			#if lab not in toPlot[name]:	
+				#toPlot[name][lab]=0.0;
+			#toPlot[name][lab]+=1.0;
+	#data = [[],[],[],[]];
+	#
+	#for entry,dlist in sorted(toPlot.items()):
+		#data[0].append(entry);
+		#total = sum(dlist.values());
+		#data[1].append(dlist['0']/total);
+		#data[2].append(dlist['1-2']/total);
+		#data[3].append(dlist['3 or more']/total);
+		#
+	#plotHist(data, '% of Queries', 'Track Year')
 
 #plot the ratios of head:tail with respect to number of entities in query
 

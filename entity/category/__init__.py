@@ -5,10 +5,28 @@ Imports
 import ast
 import os
 from utils import stopSet
-
+from features.featureManager import FeatureManager
 '''
 Function
 '''
+
+def findCatQueryDist(fileName,featMan):
+	catQueryCount = {}
+	for line in open(fileName,'r'):
+		split = line.strip().split('\t')
+		query = split[0].strip()
+		qid = featMan.returnId(query)
+		catList = ast.literal_eval(split[-1])
+		for entry in catList:
+			if entry not in catQueryCount:
+				catQueryCount[entry] = set()
+			catQueryCount[entry].add(qid)
+	
+	#for entry  in sorted(catQueryCount.items(), reverse=True, key = lambda x: len(x[1])):
+	#	print entry[0], len(entry[1])
+	return catQueryCount	
+	
+
 def loadCategoryVector(fileName):
 	catVector = {}
 	for line in open(fileName,'r'):
@@ -71,5 +89,5 @@ def loadPhrasesWithScore(fileName):
 			phrase = True
 
 	return phrases
-
+	
 

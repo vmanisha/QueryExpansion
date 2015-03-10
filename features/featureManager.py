@@ -16,21 +16,22 @@ class FeatureManager:
 		
 	def addFeature(self, query, qid, feat):
 		#merge Features
-		if query in self.idDict:
-			key = self.idDict[query]
-			#ngrams and query terms will remain the same
-			self.featureDict[key].mergeFeature(feat)
+		if len(query) > 0:
+			if query in self.idDict:
+				key = self.idDict[query]
+				#ngrams and query terms will remain the same
+				self.featureDict[key].mergeFeature(feat)
 			#print 'Mergin query ', query
 		#add new query
-		else:	
-			self.idDict[query] = qid;
-			#self.qDict[qid] = query;
-			
-			if qid not in self.featureDict:
-				self.featureDict[qid] = feat;
+			else:	
+				self.idDict[query] = qid;
+				#self.qDict[qid] = query;
+				
+				if qid not in self.featureDict:
+					self.featureDict[qid] = feat;
 		
-			if len(self.featureDict) % 100000==0:
-				print len(self.featureDict)
+				if len(self.featureDict) % 100000==0:
+					print len(self.featureDict)
 		
 		
 	def deleteFeature(self, key):

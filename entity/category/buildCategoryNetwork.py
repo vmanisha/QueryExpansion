@@ -3,15 +3,16 @@ import sys
 import os
 from dbPedia.ntriples import NTriplesParser
 from dbPedia.triple import MySink, Triple
-from scripts import findCatQueryDist
 from dbPedia import loadSkosCategories
 import networkx as nx
 import matplotlib.pyplot as plt
 from features.featureManager import FeatureManager
+from features import toString
+from entity.category import findCatQueryDist
 import random
 from entity.category.findCategoryClusters import clusterCatWithMediods
 
-def buildNetwork(queryFile, skosFile):
+def buildNetwork(queryFile, skosFile,featMan):
 	catQueryDist = findCatQueryDist(queryFile, featMan)
 	catQueryDist['dow_jones_transportation_average'] = set()
 	
@@ -32,9 +33,9 @@ def buildNetwork(queryFile, skosFile):
 		categoryNetwork.add_edge(entry[1],entry[0])
 	print len(notFound), len(related), len(broad)
 	
-	return catNetwork, catQueryDist
+	return categoryNetwork, catQueryDist
 
-def mergeCategories(catNetwork,catQueryDist):
+def mergeCategories(categoryNetwork,catQueryDist):
 	
 	avoid = set()
 	for i in range(15):
@@ -71,14 +72,14 @@ def mergeCategories(catNetwork,catQueryDist):
 				#print 'Deleting ', entry, len(catQueryDist[entry])
 				del catQueryDist[entry]
 	
-	return catNetwork
+	return categoryNetwork, catQueryDist
 
-def returnFilteredNetwork(queryFile, skosFile):
+def returnFilteredNetwork(queryFile, skosFile,featMan):
 	
-	catNetwork, catQueryDist=buildNetwork(queryFile, skosFile)
-	catNetwork = mergeCategories(catNetwork,catQueryDist)
+	catNetwork, catQueryDist=buildNetwork(queryFile, skosFile,featMan)
+	catNetwork , catQueryDist= mergeCategories(catNetwork,catQueryDist)
 	
-	return catNetwork
+	return catNetwork, catQueryDist
 	
 	
 def main(argv):	
