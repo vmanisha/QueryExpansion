@@ -124,26 +124,32 @@ def findPairwiseDistance(file1):
 	featMan.readFeatures(file1)
 	featDict = featMan.featureDict;
 	
+	oFile = open('simFileForTraining.txt','w')
+	
 	ids = featDict.keys()
 	keys = sorted(ids);
 	print len(keys), keys[-5:]
-	for i in range(49952,49954):
+	for i in range(0,len(keys)-1):
 		qid1, qf1 = featMan.returnFeature(keys[i])
-		for j in range(64006, 64080):
+		for j in range(i+1, len(keys)):
 			qid2, qf2 = featMan.returnFeature(keys[j])
 			qcos, ucos, userCos, ngramCos, entCos, catCos = qf1.findCosineDistance(qf2)
 			qjac = qf1.findJacardDistance(qf2)
 			#qedit = qf1.findEditDistance(qf2)
 			#normalized distance
 			#dist = (j - i)#*1.0/len(session)
-			
-			edgeScore = (.25*((qcos + qjac )/2.0) +\
-			.15*ngramCos + .15*ucos + \
-			.15*userCos + .15*entCos + .15*catCos)
-			if edgeScore > 0.15:
+			oFile.write(str(qid1)+'\t'+str(qid2)+'\t'+\
+			str(round(qcos,2))+'\t'+str(round(qjac,2))+'\t'+\
+			str(round(ngramCos,2))+'\t'+str(round(userCos,2))+'\t' + \
+			str(round(entCos,2))+'\t'+ str(round(catCos,2))+'\n')
+			edgeScore = (25*((qcos + qjac )/2.0) +\
+			15*ngramCos + 15*ucos + \
+			15*userCos + 15*entCos + 15*catCos)
+			if edgeScore > 25:
 				#print session[i], session[j], edgeScore, qcos, qjac, ucos, userCos, qedit
-				print i, j,keys[i], keys[j], edgeScore
-		
+				print qid1, qid2, round(edgeScore,3)
+	oFile.close()
+	
 		
 '''
 argv[1] = Query Log

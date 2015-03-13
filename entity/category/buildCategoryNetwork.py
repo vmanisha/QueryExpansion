@@ -10,7 +10,7 @@ from features.featureManager import FeatureManager
 from features import toString
 from entity.category import findCatQueryDist
 import random
-from entity.category.findCategoryClusters import clusterCatWithMediods
+#from findCategoryClusters import clusterCatWithMediods
 
 def buildNetwork(queryFile, skosFile,featMan):
 	catQueryDist = findCatQueryDist(queryFile, featMan)

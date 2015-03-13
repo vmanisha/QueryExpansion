@@ -16,7 +16,7 @@ def findCatQueryDist(fileName,featMan):
 		split = line.strip().split('\t')
 		query = split[0].strip()
 		qid = featMan.returnId(query)
-		catList = ast.literal_eval(split[-1])
+		catList = ast.literal_eval(split[6])
 		for entry in catList:
 			if entry not in catQueryCount:
 				catQueryCount[entry] = set()

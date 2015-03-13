@@ -444,7 +444,8 @@ def filterQueries(queryCountFile, queryFile, trainFile, sessionFile):
 	for entry in toPrint:
 		print entry
 
-
+def findDBPediaTypeIntersection(dbFile, entFile):
+	for line in open(entFile,'r')
 #argv[1] = catFile / bigram file
 #argv[2] = catFolder
 #argv[3] = tagged query file

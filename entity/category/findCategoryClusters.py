@@ -4,8 +4,10 @@ from features.featureManager import FeatureManager
 import Pycluster as clust
 import numpy as np
 import random
+from entity.category import findCatQueryDist
 from clustering.build.kmean import KMeans
 from features import toString,readWeightMatrix
+from buildCategoryNetwork import returnFilteredNetwork
 
 def clusterAllWithKMeans(featMan, weightMatrix):
 	featMan = FeatureManager()
@@ -139,13 +141,9 @@ def clusterCatWithKMeans(featMan, weightMatrix, catQueryDist):
 	
 	return fclusters, noClusSet
 
-
-def clusterCatWithMediods(featMan, weightMatrix, catQueryDist,pairs):
-	
-	noClusSet = set()
-	fclusters = []
-	subsets = {}
-	i = 0;
+def clusterCatWithMediodsAndNetwork(featMan, weightMatrix, catQueryDist,network):
+	#cluster each cat find the outliers
+	#move them to parents
 	for cat, qSet in catQueryDist.items():
 		if len(qSet) > 1: # and cat in pairs:
 			k = len(qSet)/5
@@ -163,18 +161,88 @@ def clusterCatWithMediods(featMan, weightMatrix, catQueryDist,pairs):
 				if clusId not in clusters:
 					clusters[clusId] = set()
 				clusters[clusId].add(qList[c])
-				
-			if cat in pairs:
-				subsets[cat] = []
+			outliers = getOutliers(qList,catDist)
 			for entry in clusters.values():
 				qStr = toString(entry,featMan)
 				fclusters.append(qStr)
-				if cat in pairs:
-					subsets[cat].append(qStr)
 							
 			print 'Clust ',cat, len(clusters), error, opt
-			#if i % 5 == 0:
-			#	print i
+			if i % 50 == 0:
+				print i
+				break
+			i+=1	
+		
+def getOutliers(queries, weightMatrix):
+	qdist = {}
+	for i in range(len(weightMatrix)):
+		qdist[queries[i]] = 0.0
+		for j in range(len(weightMatrix[i])):
+			qdist[queries[i]] += weightMatrix[i][j]
+			qdist[queries[j]] += weightMatrix[i][j]
+	qlen = len(qdist)
+	
+	avgDist = 0.0
+	for entry in qdist:
+		qdist[entry]/=qlen
+		avgDist+= qdist[entry]
+	avgDist/=len(qdist)
+	
+	print 'AvgDist' ,avgDist
+	outliers = []
+	
+	#sortd = sorted(qdist.items() , key = lambda x : x[1])
+	for query, entry in qdist.items():
+		ratio = 1.0 - (avgDist/entry)
+		if ratio > 0 and ratio > 0.21 :
+			outliers.append((query, entry))
+			print query, entry, ratio
+		
+		if ratio < 0 and ratio < -0.30:
+			outliers.append((query,entry))
+			print query, entry, ratio
+		
+	print 'Outlier ',len(qdist), len(outliers)
+	
+	return outliers
+			
+def clusterCatWithMediods(featMan, weightMatrix, catQueryDist,pairs, outFile = 'cat-clusters-with-med.txt'):
+	
+	noClusSet = set()
+	fclusters = []
+	subsets = {}
+	i = 0;
+	oFile = open(outFile,'w')
+	for cat, qSet in catQueryDist.items():
+		if len(qSet) > 1: # and cat in pairs:
+			k = len(qSet)/5
+			if k == 0:
+				k = 1
+			#print cat, len(qSet), k
+			qList = list(qSet)
+			catDist = getWeightMatrixForKMed(qList, weightMatrix)
+						
+			clusArray, error, opt = clust.kmedoids(catDist,k, 5, None)
+			#print 'Queries', qList
+			clusters = {}
+			for c in range(len(clusArray)):
+				clusId = clusArray[c]
+				if clusId not in clusters:
+					clusters[clusId] = set()
+				clusters[clusId].add(qList[c])
+			
+			outliers = getOutliers(qList, catDist)
+			#if cat in pairs:
+			#	subsets[cat] = []
+			for entry in clusters.values():
+				qStr = toString(entry,featMan)
+				fclusters.append(qStr)
+				oFile.write(cat+'\t'+qStr+'\n');
+				#if cat in pairs:
+				#	subsets[cat].append(qStr)
+							
+			print 'Clust ',cat, len(clusters), error, opt
+			if i % 5 == 0:
+				print i
 				#break
 			i+=1	
 			
@@ -251,6 +319,29 @@ def printCategoryQueryDictionary(fileName, clusFile, weightFile):
 
 if __name__ == '__main__':
 	argv = sys.argv
-	clusterAllWithKMediods(argv)
+	#clusterAllWithKMediods(argv)
+	featMan = FeatureManager()
+	featMan.readFeatures(argv[1])
+	weightMatrix = readWeightMatrix(argv[2])
 	
+	catQueryDist = findCatQueryDist(argv[1],featMan)
+	#CLUSTER PRE-MERGE
+	clusterCatWithMediods(featMan, weightMatrix, catQueryDist, catQueryDist.keys(),argv[3])
+	
+	#stemmer =  stem.porter.PorterStemmer()
+	#catNetwork, catQueryDist = returnFilteredNetwork(argv[3], argv[4], featMan)
+	#clusterCatWithMediods(featMan, weightMatrix, catQueryDist, catQueryDist.keys())
 	#printCategoryQueryDictionary(argv[1],argv[2],argv[3])
+	
+	
+	
+	
+	#PRE-MERGE
+	#oFile = open(argv[3],'w')
+	#catQueryDist = findCatQueryDist(argv[1],featMan)
+	#for cat, entry in catQueryDist.items():
+		#qStr = toString(entry,featMan)
+		#oFile.write(cat +'\t'+qStr+'\n')
+	#
+	#oFile.close()
+	
