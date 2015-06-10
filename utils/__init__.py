@@ -98,9 +98,11 @@ def getNGramsAsList(string, length):
 		for j in range(i+1,i+length+1):
 			#print i, j , length
 			if j <= len(split):
-				gram = ' '.join(split[i:j])
-				if gram not in result and gram not in stopSet:
-					result[gram] = 1.0
+				gram = '_'.join(split[i:j])
+				if gram not in stopSet and '_' in gram:
+					if gram not in result:
+						result[gram]=0.0
+					result[gram] += 1.0
 	return result 	
 
 
@@ -278,24 +280,50 @@ def loadQueryList(fileName):
 def combineDict(d1, d2):
 	return dict(d1.items() + d2.items() + [(k, d1[k] + d2[k]) for k in set(d1) & set(d2)]);
 
+def findInfo(file1, file2, index1, index2):
+	toSearch = []
+	for line in open(file1,'r'):
+		split = line.split('\t')
+		#print split[index1]
+		toSearch.append(split[index1])
+	
+	for line in open(file2,'r'):
+		split = line.split(' ')
+		#print split	
+		if split[index2] in toSearch:
+			print line.strip()
+
+	
+def encodeUTF(string):
+	newString  = ""
+	for ch in string:
+		try:
+			nch = ch.encode("ascii","ignore")
+		except UnicodeDecodeError, error:
+			#print error.args, error.start, error.end, ch
+			nch = ''
+		newString += nch
+	return newString
+
 def main(argv):
 	#replaceAlphaNum(argv[1],argv[2])
 	#removeFreqWords(argv[1],int(argv[2]))
 	#stemFileContents(argv[1]);
-	ngramDict = {}
-	for line in open(argv[1],'r'):
-		line = line.strip().lower()
-		#line = normalizeWithoutStem(line);
-		for ngram in getNGramsAsList(line,2):
-			if ngram not in stopSet:
-				if ngram not in ngramDict:
-					ngramDict[ngram] = 1.0
-				else:
-					ngramDict[ngram] +=1.0
+	#ngramDict = {}
+	#for line in open(argv[1],'r'):
+		#line = line.strip().lower()
+		##line = normalizeWithoutStem(line);
+		#for ngram in getNGramsAsList(line,2):
+			#if ngram not in stopSet:
+				#if ngram not in ngramDict:
+					#ngramDict[ngram] = 1.0
+				#else:
+					#ngramDict[ngram] +=1.0
+	#
+	#for entry in sorted(ngramDict.items(),reverse=True,key = lambda x:x[1]):
+		#print entry[0] , '\t', entry[1]
+	findInfo(argv[1],argv[2],int(argv[3]),int(argv[4]))
 	
-	for entry in sorted(ngramDict.items(),reverse=True,key = lambda x:x[1]):
-		print entry[0] , '\t', entry[1]
-		
 
 if __name__ == "__main__":
 	main(sys.argv)

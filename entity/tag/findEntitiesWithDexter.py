@@ -5,6 +5,7 @@ import urllib
 import time
 import sys
 import ast
+from dbPedia import loadCategories,loadInstancesInList
 def tagQueryWithDexter(query, tagURL):
 	
 	tagParam = {'text':'', 'n':'50', 'dsb':'tagme','min-conf':'0.2','wn':'true' }
@@ -74,6 +75,8 @@ def getEntityLinkWithDexter(spotFile, filterList=None):
 	args[1] = Logfile
 	args[2] = line to read queries from file
 	args[3] = index of query on each line (esp when format is ID QUERY TIME CLICK etc
+	argv[4] = category list file
+	argv[5] = instance type file
 '''
 def getEntitiesWithDexter(argv):
 	#find the entities with dexter
@@ -91,6 +94,8 @@ def getEntitiesWithDexter(argv):
 	i = 0
 	e = 0
 	
+	categoryList = loadCategories(argv[4])
+	instanceList = loadInstancesInList(argv[5])
 	
 	for line in open(argv[1],'r'):
 		#if already tagged
@@ -100,6 +105,7 @@ def getEntitiesWithDexter(argv):
 		query = split[index].lower()	#get the result with url
 		try:
 			spotDict = tagQueryWithDexter(query, tagURL)
+			spotDict = getCatAndTypeInfo(spotDict, categoryList, instanceList)
 			if len(spotDict) > 0:
 				outFile.write(str(spotDict)+'\n')
 			
@@ -146,16 +152,36 @@ def getEntitiesWithDexter(argv):
 	outFile.close()
 
 
+def getCatAndTypeInfo(spotDict,categoryList, instanceList):
+	spots = spotDict['spots']
+	i = 0
+	for spot in spots:
+		ename = (spot['wikiname']).encode('unicode-escape')
+		if ename in categoryList:
+			spotDict['spots'][i][u'cat'] = categoryList[ename]
+		else:
+			print 'Cat not Found ', ename
+			spotDict['spots'][i][u'cat'] = []
+		
+		if ename in instanceList:
+			spotDict['spots'][i][u'type'] = instanceList[ename]
+		else:
+			print 'Instance not Found ', ename
+			spotDict['spots'][i][u'type'] = []
+		i+=1
+	print spotDict
+
+
 if __name__ == '__main__':
 	argv = sys.argv
-	#getEntitiesWithDexter(argv)
+	getEntitiesWithDexter(argv)
 	#load queries
-	queryList = {}
-	for line in open(argv[1],'r'):
-		split = line.strip();
-		queryList[split] = 1
-		
-	print len(queryList)
-	
-	#send tagged file
-	getEntityLinkWithDexter(argv[2], queryList)
+	#queryList = {}
+	#for line in open(argv[1],'r'):
+		#split = line.strip();
+		#queryList[split] = 1
+		#
+	#print len(queryList)
+	#
+	##send tagged file
+	#getEntityLinkWithDexter(argv[2], queryList)

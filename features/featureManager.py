@@ -11,11 +11,13 @@ class FeatureManager:
 		#query --> id mapping
 		self.idDict = {}
 		#id --> query mapping
-		#self.qDict = {}
+		self.qDict = {}
 		self.featGCount = {}
+		self.lastId = None;
 		
 	def addFeature(self, query, qid, feat):
 		#merge Features
+
 		if len(query) > 0:
 			if query in self.idDict:
 				key = self.idDict[query]
@@ -31,8 +33,7 @@ class FeatureManager:
 					self.featureDict[qid] = feat;
 		
 				if len(self.featureDict) % 100000==0:
-					print len(self.featureDict)
-		
+					print len(self.featureDict)	
 		
 	def deleteFeature(self, key):
 		key = self.idDict[key];
@@ -101,8 +102,25 @@ class FeatureManager:
 				nQuery +=' '+ entry
 		nQuery = nQuery.strip()
 		return nQuery
+	
+	def loadQueries(self, fileName):
+		i = 1
+		for line in open(fileName,'r'):
+			split = line.strip().split('\t')
+			query = self.filterWords(split[0])
+			if len(query) > 0 and query not in self.idDict:
+				self.idDict[query] = i;
+				self.qDict[i] = query
+				
+			i+=1;
+	
+	def returnIdDict(self):
+		return self.idDict;
+	
+	def returnQueryDict(self):
+		return self.qDict;			
 		
-	def readFeatures(self, fileName,queryFilterFile = None):
+	def readFeatures(self, fileName,queryFilter = None):
 		
 		#if queryFilterFile:
 		#	toFilter = loadFileInList(queryFilterFile)
@@ -111,21 +129,24 @@ class FeatureManager:
 		for line in open(fileName,'r'):
 			split = line.strip().split('\t')
 			query = self.filterWords(split[0])
+			typeList = 	ast.literal_eval(split[7])
 			#if toFilter and query in toFilter:
 			queryFeat = QueryFeature(query, ast.literal_eval(split[1]),ast.literal_eval(split[2]),\
 			ast.literal_eval(split[3]),ast.literal_eval(split[4]),\
-			ast.literal_eval(split[5]),ast.literal_eval(split[6]))
-			self.addFeature(query, i, queryFeat);
-			#self.buildFeatCounts(i,queryFeat.ngrams)
-			#self.buildFeatCounts(i,queryFeat.queryVector)
-			#self.buildFeatCounts(i,queryFeat.urlDict)
+			ast.literal_eval(split[8]),	ast.literal_eval(split[5]),\
+			ast.literal_eval(split[6]),	typeList)
+			if len(typeList) > 0:
+			#if queryFilter and query in queryFilter and len(typeList) > 0:
+				self.addFeature(query, i, queryFeat);
+			
 			#self.buildFeatCounts(i,queryFeat.userDict)
 			#self.buildFeatCounts(i,queryFeat.catDict)
 			#self.buildFeatCounts(i,queryFeat.entDict)
-		
+			
 			i+=1
+			self.lastId = i
 		
-		print len(self.featureDict);
+		print 'Loading features ',len(self.featureDict);
 		
 		#print len(self.featGCount)
 		#self.filterFeatures(2);
@@ -136,7 +157,9 @@ class FeatureManager:
 		#
 		#self.writeFeatures('aol-session-filtered-features.all');
 
-
+	def returnLastId(self):
+		return self.lastId
+		
 def mergeSets(sets):
 	setDict =  sets.keys()
 	for i in range(len(setDict)):

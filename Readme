@@ -1,0 +1,65 @@
+Packages for entity tagged query analysis
+
+Requirements
+
+
+
+Entity Tagging and query clustering
+	Following python packages are required to run respective modules. 
+	1. NLTK (stemming)
+	2. cluster (k-mediods)
+	3. distance (jaccard)
+	5. numpy
+
+	Following resources have to be downloaded
+	1. dbpedia article category file 
+	2. dbpedia entity type file
+
+
+Files and input parameters
+
+ Feature generation 
+	Following features are calculated for each query pair
+	1. Session cosine
+	2. Ngrams cosine and jaccard
+	3. Users cosine
+	4. URls cosine
+	5. Entity Type cosine
+	6. Entity Category cosine
+	7. Entity cosine
+	
+	They are combined by weights (tuned on training dataset) 
+
+	Important files and functions
+	1. features/generateEntityFeatures.py : takes query file and tags queries with entity, category and their types
+	2. features/formatFeatures.py : takes different files  -- users and urls and sums up features
+	3. features/__init__.py : find out weight matrix -- findPairwiseDistance(featFile, outFile)
+	4. entity/entity/category/findCategoryClusters.py : finds out clusters per entity type. 
+
+
+	Steps followed to cluster
+	INPUT : Aol-type formated file (tab seperated)
+		<uid> query <timestamp> <curl>
+	
+	1. Tag queries with entities
+	2. accumulate all features with following options 
+		-- uid : true or false  (whether user id present or not, if not then put in dummy id there)
+		-- url : tru or false (whether clicked urls present or not)
+		-- wtype : token, phrase or queries
+	3. write the feature file
+	4. find pairwise similarity
+	5. output clusters with following options
+		--algo : kmeans or kmed
+		--type : wcat or etype
+		--wtype : token, phrase, queries
+		--csize : cluster size range (llimit , ulimit)
+		--out-file : output folder with clusters 
+	
+	OUTPUT : folder with clusters 
+		each file in folder has following format
+		-- algoTypeK.txt : number of final clusters (k) computed using algo (algoType)
+		-- <type> <wtype> <wtype> .... <wtype>  (tab seperated)  : Each line contains a type (wiki category or type file) and its cluster of wtypes (either words, phrases or queries)
+	
+	
+	
+

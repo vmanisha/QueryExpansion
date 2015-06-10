@@ -3,6 +3,9 @@
 import sys, ast
 from entity.category.ds import loadClustersWithQueryFile
 from features import readWeightMatrix
+from features.featureManager import FeatureManager
+import os
+
 import random
 def DB(clusters, weightMatrix, centers=None, points=None):
 	if not centers:
@@ -29,6 +32,8 @@ def DB(clusters, weightMatrix, centers=None, points=None):
 							aintra_i+= weightMatrix[pi2][pi1]
 							total1+= weightMatrix[pi2][pi1]
 						except:
+							aintra_i+= random.uniform(0.8,1.0)
+							total1+= random.uniform(0.8,1.0)
 							pass	
 						pass
 				avg1 = total1/len(sorti)
@@ -60,15 +65,17 @@ def DB(clusters, weightMatrix, centers=None, points=None):
 					else:
 						di+=weightMatrix[minpi[i]][pi]
 				except:
+					di+= random.uniform(0.8,1.0)
 					pass
 			di/=len(sorti)
 			
 			
 			db_i_j[i] = {}
 			dc_i_j = 0
-			for j in range(len(clusters)):
-				
-				if i!=j :
+			for k in range(10):
+				for j in random.sample(range(i+1,len(clusters)),min(len(clusters)-i,100)): #range(len(clusters)):
+					if j in db_i_j[i]:
+						continue
 					pj = minpi[j]
 					totj = 0.0
 					for pi in sorti:
@@ -78,6 +85,7 @@ def DB(clusters, weightMatrix, centers=None, points=None):
 							else:
 								totj+=weightMatrix[pj][pi]
 						except:
+							totj = random.uniform(0.8,1.0)
 							pass
 					totj/=len(sorti)
 					
@@ -87,7 +95,7 @@ def DB(clusters, weightMatrix, centers=None, points=None):
 						else:
 							dc_i_j = weightMatrix[minpi[j]][minpi[i]]
 					except:
-						dc_i_j = 0
+						dc_i_j = random.uniform(0.8,1.0)
 						pass
 					
 					if dc_i_j > 0:
@@ -137,37 +145,45 @@ def Dunn(clusters, weightMatrix, centers=None, points=None):
 		print 'Max diameter ',maxDiam
 		#find center
 		avg_inter_ij = {}
-		
-		for i in range(len(clusters)-1):
+		clen = len(clusters)
+		for i in range(clen-1):
 			i_points = clusters[i]
 			sorti = sorted(i_points)
 						
 			if i not in avg_inter_ij:
 				avg_inter_ij[i] = 1000
 			
-			for j in range(i+1,len(clusters)):
-				if j not in avg_inter_ij:
-					avg_inter_ij[j] = 1000
-				
-				total_i_j = 0.0;
-				j_points = clusters[j]
-				sortj = sorted(j_points)	
-				for pi in sorti:
-					for pj in sortj:
-						try:
-							total_i_j += weightMatrix[pi][pj]
-						except:
-							try:
-								total_i_j += weightMatrix[pj][pi]
-							except:
-								total_i_j = random.uniform(0.8,1.0)
-								pass
-							pass
-				if len(sorti) > 0 and len(sortj) > 0:
-					score = total_i_j/(1.0*len(sorti)*len(sortj))
-					avg_inter_ij[i] = min(avg_inter_ij[i], score)
-					avg_inter_ij[j] = min(avg_inter_ij[j], score)
-
+			
+			for k in range(50):
+				if (clen - (i+1)) > 0:
+					print i, clen, clen - i
+					for j in random.sample(range(i+1,clen),min(clen-(i+1),1000)): #range(i+1,len(clusters)):
+						
+						if j in avg_inter_ij:
+							#print 'covered ',j, 'for',i
+							continue
+						
+						avg_inter_ij[j] = 1000
+						
+						total_i_j = 0.0;
+						j_points = clusters[j]
+						sortj = sorted(j_points)	
+						for pi in sorti:
+							for pj in sortj:
+								try:
+									total_i_j += weightMatrix[pi][pj]
+								except:
+									try:
+										total_i_j += weightMatrix[pj][pi]
+									except:
+										total_i_j = random.uniform(0.8,1.0)
+										pass
+									pass
+						if len(sorti) > 0 and len(sortj) > 0:
+							score = total_i_j/(1.0*len(sorti)*len(sortj))
+							avg_inter_ij[i] = min(avg_inter_ij[i], score)
+							avg_inter_ij[j] = min(avg_inter_ij[j], score)
+		
 		fmin_i = []
 		for i, mini in avg_inter_ij.items():
 			#print i, vals.values()
@@ -181,15 +197,17 @@ if __name__ == '__main__':
 	argv = sys.argv
 	lbreak = False
 	weightMatrix = readWeightMatrix(argv[2])
-	clusters = loadClustersWithQueryFile(argv[1],argv[3])
-	#load the cluster-assignments and points
+	featMan = FeatureManager()
+	featMan.loadQueries(argv[3])
+	for ifile in os.listdir(argv[1]):
+		clusters = loadClustersWithQueryFile(argv[1]+'/'+ifile,featMan.returnIdDict())
+		print len(clusters), len(featMan.returnIdDict()), len(weightMatrix)
+		#load the cluster-assignments and points
 	
 	
-	print len(clusters)
-	print len(weightMatrix)
-	
+		Dunn(clusters, weightMatrix)	
 	#DB(clusters,weightMatrix)
-	Dunn(clusters, weightMatrix)	
+	
 	#load the weight matrix
 	
 	#load the centers

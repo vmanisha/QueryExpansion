@@ -141,6 +141,19 @@ def findSessionCountsOfNonEnt(netDict, queryFile,outFile):
 	coOccur.writeTermCo(outFile);
 
 
+def findBigramCoOccurence(sessionFile,outFile):
+	#generate all bigrams from session
+	# for every bigram get term and co-occurrence
+	
+	bigramCo = {}
+	for session in getSessionWithQuery(sessionFile):
+		for i in range(len(session)-1):
+			b1 = getNGramsAsList(session[i],2)
+			b2 = getNGramsAsList(session[i+1],2)
+			
+			
+			
+
 def mergeCounts(file1, file2, out):
 	print file1, file2;
 	

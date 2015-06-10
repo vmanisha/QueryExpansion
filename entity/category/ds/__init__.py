@@ -17,31 +17,21 @@ def loadClusters(fileName):
 	return clusters
 	
 
-def loadClustersWithQueryFile(fileName, queryFile):
-	queryId = {}
-	
-	i=1
-	
-	for line in open(queryFile,'r'):
-		split = line.split('\t')
-		query = filterWords(split[0].strip())
-		if query not in queryId:
-			queryId[query] = i
-		i+=1
+def loadClustersWithQueryFile(fileName, idDict):
 	
 	clusters = []
 	for line in open(fileName,'r'):
 		line = line.strip()
 		cpoints = []
 		if len(line) > 0:
-			split = line.strip().split('\t')
+			split = line.split('\t')
 			for entry in split:
 				try:
 					#print entry, queryId[entry.strip()]
 					if len(entry.strip()) > 0:
-						cpoints.append(queryId[entry.strip()])
+						cpoints.append(idDict[entry.strip()])
 				except:
-					print 'Cant find', entry
+					#print 'Cant find', entry
 					pass
 		clusters.append(cpoints)
 	return clusters

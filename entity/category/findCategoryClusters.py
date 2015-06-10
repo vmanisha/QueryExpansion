@@ -8,8 +8,8 @@ from entity.category import findCatQueryDist
 from clustering.build.kmean import KMeans
 from features import toString,readWeightMatrix
 from buildCategoryNetwork import returnFilteredNetwork
-
-def clusterAllWithKMeans(featMan, weightMatrix):
+from clustering.evaluate.external import getRecallPrecision
+def clusterAllWithKMeans(argv):
 	featMan = FeatureManager()
 	featMan.readFeatures(argv[1])
 	#sessCount = 0
@@ -18,48 +18,72 @@ def clusterAllWithKMeans(featMan, weightMatrix):
 	
 	#stemmer =  stem.porter.PorterStemmer()
 	weightMatrix = readWeightMatrix(argv[2])
-			
+	metrics = {}
 	print len(weightMatrix)
 
 	data = featMan.returnKeys()
-	kmeans = KMeans(15000,data,weightMatrix,5, 0.1)
-	kmeans.cluster();
-	clusters = kmeans.getClusters();
-	#means = kmeans.getMeans();
-	noClus =kmeans.getTermInNoCluster();
-
-	if clusters:
-		oFile = open(argv[3],'w');
-		for entry in clusters:
-			if len(entry) > 0:
-				oFile.write(toString(entry,featMan)+'\n')
-		oFile.write('NO CLUST\t'+toString(noClus,featMan)+'\n');
-		oFile.close()
+	for k in range(4,50,2):
+		i = len(data)/k
+		if i == 0:
+			i = 1
+		kmeans = KMeans(i,data,weightMatrix,5, 0.1)
+		kmeans.cluster();
+		clusters = kmeans.getClusters();
+		#means = kmeans.getMeans();
+		noClus =kmeans.getTermInNoCluster();
+	
+		if clusters:
+			fname = argv[5]+'_'+str(i)+'.txt'
+			oFile = open(fname,'w');
+			for entry in clusters:
+				if len(entry) > 0:
+					oFile.write(toString(entry,featMan)+'\n')
+			oFile.write('NO CLUST\t'+toString(noClus,featMan)+'\n');
+			oFile.close()
+			metrics[k] = getRecallPrecision(argv[6],argv[7],fname,argv[1])
+	for tcount, met in metrics.items():
+		print tcount, met
 
 def clusterAllWithKMediods(argv):
 	featMan = FeatureManager()
 	featMan.readFeatures(argv[1])
 	
-	data = list(featMan.returnKeys())
+	data = featMan.returnKeys()
 	#weightMatrix = readWeightMatrix(argv[2])
-	weightList = getWeightMatrixForKMedFromFile(len(data),argv[2])
+	weightList = getWeightMatrixForKMedFromFile(featMan.returnLastId(),argv[2],data)
 	#getWeightMatrixForKMed(data, weightMatrix)
+	print len(weightList)
+	metrics = {}
 	print 'Clustering'
-	clusArray, error, opt = clust.kmedoids(weightList,10000, 5, None)
-	clusters = {}
-	for c in range(len(clusArray)):
-		clusId = clusArray[c]
-		if clusId not in clusters:
-			clusters[clusId] = set()
-			clusters[clusId].add(data[c])	
-			
-	oFile = open(argv[3],'w');
-	for entry in clusters.values():
-		qStr = toString(entry,featMan)	
-		oFile.write(qStr+'\n')
-	oFile.close()
+	for k in range(4,50,2):
+		i = (len(weightList)+1)/k
+		if i == 0:
+			i = 1
+		clusArray, error, opt = clust.kmedoids(weightList,i, 10, None)
+		print error, len(clusArray)
+		clusters = {}
+		for c in range(len(clusArray)):
+			clusId = clusArray[c]
+			if clusId not in clusters:
+				clusters[clusId] = set()
+			try:
+				clusters[clusId].add(c)	
+			except:
+				print c #len(data)
+		fname = argv[5]+'_'+str(i)+'.txt'
+		oFile = open(fname,'w');
+		for entry in clusters.values():
+			#print len(entry)
+			qStr = toString(entry,featMan)	
+			oFile.write(qStr+'\n')
+		oFile.close()
+		metrics[k] = getRecallPrecision(argv[6],argv[7],fname,argv[1])
+	
+	for tcount, met in metrics.items():
+		print tcount, met
 
-def getWeightMatrixForKMedFromFile(count, fileName):
+		
+def getWeightMatrixForKMedFromFile(count, fileName,data):
 	weightList = []
 	weightList.append(np.array([]))
 	
@@ -72,14 +96,24 @@ def getWeightMatrixForKMedFromFile(count, fileName):
 	print 'Filling values'
 	lbreak = False
 	for line in open(fileName,'r'):
+		if len(line) <20 and (not lbreak):
+			lbreak = True
 		if lbreak:
 			split = line.split()
 			i = int(split[0])
 			j = int(split[1])
-			(weightList[i])[j] = 1.0-round(float(split[-1]),2)
-		if len(line) <10 and (not lbreak):
-			lbreak = True
-			
+			if i and j in data:
+				try:
+					score = float(split[-1])/100.0
+					#if score  > 0.80:
+					#	print featMan.returnQuery(i),  featMan.returnQuery(j), split[-1]
+					if i > j:
+						(weightList[i])[j] = 1.0-round(score,2)
+					else:
+						(weightList[j])[i] = 1.0-round(score,2)
+				except:
+					print i, j, split[-1]
+					
 	print 'Finished Values'
 	return weightList
 	
@@ -97,48 +131,52 @@ def getWeightMatrixForKMed(data, weightMatrix):
 				try:
 					i_arr[j] = weightMatrix[q2][q1]
 				except:
-					i_arr[j] = random.uniform(0.8,1.0)
+					i_arr[j] = random.uniform(0.75,1.0)
 		weightList.append(i_arr)
 	
 	return weightList
 
-			
 
-	
-def clusterCatWithKMeans(featMan, weightMatrix, catQueryDist):
+def clusterCatWithKMeans(termCount, featMan, weightMatrix, catQueryDist,outFile = 'cat-clusters-with-mean.txt'):
 	noClusSet = set()
 	fclusters = []
 
 	i = 1
 	#cat = 'illinois'
 	#qSet = catQueryDist[cat]
+	oFile = open(outFile,'w')
+	
 	for cat, qSet in catQueryDist.items():
 		if len(qSet) > 1:
-			k = len(qSet)/20
+			k = len(qSet)/termCount
 			if k == 0:
 				k = 1
 			print cat, len(qSet), k
-		
-			kmeans = KMeans(k,list(qSet),weightMatrix,5, 0.1)
-			kmeans.cluster();
-			clusters = kmeans.getClusters();
-			#means = kmeans.getMeans();
-			noClus =kmeans.getTermInNoCluster();
-			print 'Clust ',cat, len(clusters), len(noClus), len(qSet)
+			
+			if k > 1:
+				kmeans = KMeans(k,list(qSet),weightMatrix,5, 0.1)
+				kmeans.cluster();
+				clusters = kmeans.getClusters();
+				#means = kmeans.getMeans();
+				noClus =kmeans.getTermInNoCluster();
+				#print 'Clust ',cat, len(clusters), len(noClus), len(qSet)
 			
 			
-			for entry in clusters:
-				if len(entry) > 0:
-					cStr = toString(entry,featMan)
-					fclusters.append(cStr)
-					#print cat,'\t', cStr
-			for entry in noClus:
-				noClusSet.add(featMan.returnQuery(entry));
-				
+				for entry in clusters:
+					if len(entry) > 0:
+						cStr = toString(entry,featMan)
+						fclusters.append(cStr)
+						oFile.write(cat+'\t'+cStr+'\n');
+						#print cat,'\t', cStr
+				for entry in noClus:
+					noClusSet.add(featMan.returnQuery(entry));
+			else:
+				cStr = toString(qSet,featMan)
+				oFile.write(cat+'\t'+cStr+'\n');	
 			if i % 50 == 0:
 				print i
 			i+=1	
-	
+	oFile.close()
 	return fclusters, noClusSet
 
 def clusterCatWithMediodsAndNetwork(featMan, weightMatrix, catQueryDist,network):
@@ -205,7 +243,7 @@ def getOutliers(queries, weightMatrix):
 	
 	return outliers
 			
-def clusterCatWithMediods(featMan, weightMatrix, catQueryDist,pairs, outFile = 'cat-clusters-with-med.txt'):
+def clusterCatWithMediods(noTerms,featMan, weightMatrix, catQueryDist, outFile = 'cat-clusters-with-med.txt'):
 	
 	noClusSet = set()
 	fclusters = []
@@ -214,7 +252,7 @@ def clusterCatWithMediods(featMan, weightMatrix, catQueryDist,pairs, outFile = '
 	oFile = open(outFile,'w')
 	for cat, qSet in catQueryDist.items():
 		if len(qSet) > 1: # and cat in pairs:
-			k = len(qSet)/5
+			k = len(qSet)/noTerms
 			if k == 0:
 				k = 1
 			#print cat, len(qSet), k
@@ -230,7 +268,7 @@ def clusterCatWithMediods(featMan, weightMatrix, catQueryDist,pairs, outFile = '
 					clusters[clusId] = set()
 				clusters[clusId].add(qList[c])
 			
-			outliers = getOutliers(qList, catDist)
+			#outliers = getOutliers(qList, catDist)
 			#if cat in pairs:
 			#	subsets[cat] = []
 			for entry in clusters.values():
@@ -252,7 +290,7 @@ def clusterCatWithMediods(featMan, weightMatrix, catQueryDist,pairs, outFile = '
 					#fclusters.append(cStr)
 					##print cat,'\t', cStr
 				
-			
+	oFile.close()
 	return fclusters, noClusSet, subsets
 
 
@@ -323,25 +361,36 @@ if __name__ == '__main__':
 	featMan = FeatureManager()
 	featMan.readFeatures(argv[1])
 	weightMatrix = readWeightMatrix(argv[2])
-	
+	#clusterAllWithKMeans(argv)
 	catQueryDist = findCatQueryDist(argv[1],featMan)
-	#CLUSTER PRE-MERGE
-	clusterCatWithMediods(featMan, weightMatrix, catQueryDist, catQueryDist.keys(),argv[3])
+	#print len(catQueryDist)
+	#
+	#print argv[1],argv[3]
+	##stemmer =  stem.porter.PorterStemmer()
+	#catNetwork, catQueryDist = returnFilteredNetwork(argv[1], argv[3], featMan,\
+	#weightMatrix)
+	#print len(catQueryDist)
+	#
+	##PRE-MERGE  WRITE
+	#oFile = open(argv[4],'w')
+	#for cat, entry in catQueryDist.items():
+	#	qStr = toString(entry,featMan)
+	#	oFile.write(cat +'\t'+qStr+'\n')
+	#oFile.close()
+
+	##CLUSTER PRE-MERGE
+	metrics = {}
+	metrics['pre-merge'] = getRecallPrecision(argv[6],argv[7],argv[4],argv[1])
+	for termCount in range(3,10):
+		#clusterCatWithKMeans(termCount,featMan, weightMatrix, catQueryDist, argv[5])
+		clusterCatWithMediods(termCount,featMan, weightMatrix, catQueryDist,argv[5])
 	
-	#stemmer =  stem.porter.PorterStemmer()
-	#catNetwork, catQueryDist = returnFilteredNetwork(argv[3], argv[4], featMan)
-	#clusterCatWithMediods(featMan, weightMatrix, catQueryDist, catQueryDist.keys())
+		metrics[termCount] = getRecallPrecision(argv[6],argv[7],argv[5],argv[1])
+	
+	for tcount, met in metrics.items():
+		print tcount, met
 	#printCategoryQueryDictionary(argv[1],argv[2],argv[3])
 	
 	
 	
-	
-	#PRE-MERGE
-	#oFile = open(argv[3],'w')
-	#catQueryDist = findCatQueryDist(argv[1],featMan)
-	#for cat, entry in catQueryDist.items():
-		#qStr = toString(entry,featMan)
-		#oFile.write(cat +'\t'+qStr+'\n')
-	#
-	#oFile.close()
 	

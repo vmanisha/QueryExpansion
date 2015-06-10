@@ -7,8 +7,10 @@ from queryLog import normalize
 from nltk import stem
 import sys, math
 from utils import loadFileInTuples
-
 from utils import filterWords
+import ast
+stemmer = stem.porter.PorterStemmer()
+
 def Precision(tp, fp):
 	return tp/(1.0*(tp+fp))
 	
@@ -23,20 +25,44 @@ def fMeasure(prec, recall):
 	
 def RandIndex(tp,tn,totalPairs):
 	return (tp+tn)/(totalPairs*1.0)
+
+def loadPairs(queryId, fileName, labeledPoints, pairLabels):
 	
+	for line in open(fileName,'r'):
+		split = line.split('\t')
+		cpoints = set()
+		for entry in split:
+			normQuery = filterWords(entry.strip())
+			#normQuery = entry.strip()#normalize(entry,stemmer)
+			if normQuery in queryId:
+				qid = queryId[normQuery]
+				labeledPoints.add(qid)
+				cpoints.add(qid)
+			#else:
+				#if len(normQuery) > 0:
+				#	print normQuery
+			#		pass
+			#print 'True same ',normQuery
+			pairs = generatePairs(sorted(cpoints))
+		
+		for pair in pairs:
+			pairLabels.add(pair)
+		
 def calculateIndicies(trueLabelFile,differentPairFile, predictedLabelFile, queryList):
-	stemmer = stem.porter.PorterStemmer()
+	
 	queryId={}
 	idQuery = {}
 	i = 1
 	for line in open(queryList,'r'):
 		split = line.split('\t')
-		query = filterWords(split[0].strip())
-		queryId[query] = str(i)
-		idQuery[str(i)] = query
+		typeList = 	ast.literal_eval(split[7])
+		if len(typeList) > 0:
+			query = filterWords(split[0].strip())
+			if query not in queryId:
+				queryId[query] = str(i)
+				idQuery[str(i)] = query
 		i+=1
 		
-	c = 1
 	l_samePairs = set()
 	l_points = set()
 	l_diffPairs = set()
@@ -44,57 +70,26 @@ def calculateIndicies(trueLabelFile,differentPairFile, predictedLabelFile, query
 	
 	#load true label file
 	#Same cluster
-	for line in open(trueLabelFile,'r'):
-		split = line.split('\t')
-		cpoints = set()
-		for entry in split:
-			normQuery = normalize(entry,stemmer)
-			if normQuery in queryId:
-				qid = queryId[normQuery]
-				l_points.add(qid)
-				cpoints.add(qid)
-			else:
-				if len(normQuery) > 0:
-					pass
-					#print 'True same ',normQuery
-			pairs = generatePairs(sorted(cpoints))
-		
-		for pair in pairs:
-			l_samePairs.add(pair)
-		c+1
 	
-	#load differentPairs
-	for line in open(differentPairFile,'r'):
-		split = line.split('\t')
-		cpoints = set()
-		for entry in split:
-			normQuery = normalize(entry,stemmer)
-			if normQuery in queryId:
-				qid = queryId[normQuery]
-				cpoints.add(qid)
-			else:
-				if len(normQuery) > 0:
-					pass
-					#print 'True Diff ',normQuery
-			pairs = generatePairs(sorted(cpoints))
-		
-		for pair in pairs:
-			l_diffPairs.add(pair)
-		
-		
+	loadPairs(queryId,trueLabelFile,l_points,l_samePairs)
+	loadPairs(queryId,differentPairFile,l_points,l_diffPairs)
+
+	
 	total_pairs = len(l_samePairs) + len(l_diffPairs) #(len(l_points)*(len(l_points)-1))/2
 	#filter predicted label file
 	for line in open(predictedLabelFile,'r'):
 		line = line.strip()
 		cpoints = set()
-		if len(line) > 0:
+		if len(line) > 0 and 'NO CLUST'  not in line:
 			split = line.split('\t')
 			for entry in split:
 				try:
+					entry = filterWords(entry.strip())
 					qid = queryId[entry]
 					if qid in l_points:
 						cpoints.add(qid)
 				except:
+					#print entry
 					pass
 			pairs = generatePairs(sorted(cpoints))
 			for pair in pairs:
@@ -103,8 +98,16 @@ def calculateIndicies(trueLabelFile,differentPairFile, predictedLabelFile, query
 					#	s = pair.split()
 					#	print pair, idQuery[s[0]], idQuery[s[1]]
 					p_samePairs.add(pair)#
+					if pair in l_diffPairs:
+						p1 = pair[0:pair.find(' ')]
+						p2 = pair[pair.find(' ')+1:]
+						#if p1 in idQuery and p2 in idQuery:
+						#	print idQuery[p1], idQuery[p2]
+						#else:
+						#	print p1, 'sec', p2
 	
 	print len(l_samePairs), len(p_samePairs), total_pairs
+	#print l_samePairs
 	tp = len(l_samePairs & p_samePairs);
 	fp = len(p_samePairs & l_diffPairs)#len(p_samePairs) - tp ;
 	fn = len(l_samePairs) - tp ;
@@ -117,7 +120,8 @@ def generatePairs(elist):
 	pairList = []
 	for i in range(len(elist)-1):
 		for j in range(i+1, len(elist)):
-			pairList.append(elist[i]+' '+elist[j])
+			if elist[i]!=elist[j]:
+				pairList.append(elist[i]+' '+elist[j])
 	return pairList
 
 
@@ -132,6 +136,18 @@ def printIndices(argv1,argv2,argv3):
 	
 
 
+def getRecallPrecision(true,diff,predict,feat):
+	tp, fp, fn, tn, totalPairs = calculateIndicies(true,diff,predict,feat)
+	rand = RandIndex(tp,tn,totalPairs)
+	print 'Rand-Index ',
+	recall = Recall(tp,fn)
+	print 'Recall', recall
+	prec = Precision(tp, fp)
+	print 'Precision', prec
+	print 'fMeasure', fMeasure(prec, recall)
+	
+	return rand, recall, prec, fMeasure(prec, recall)
+	
 #trueLabelFile,differentPairFile, predictedLabelFile, queryList
 if __name__ == '__main__':
 	argv = sys.argv

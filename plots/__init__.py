@@ -51,8 +51,8 @@ def plotMultipleSys(data,xlab, ylab,fileDest,tit):
 	y = [];
 	#ppoints = ['rx','gx','bx','g+','r+','b+']
 	for sys, points in data.iteritems():
-		print sys,'\t', len(points)
-		if len(points) > 2:
+		print sys,'\t', len(points), points
+		if len(points) > 0:
 			for a, plist in sorted(points.items(), key =lambda x : x[0]) :
 				val = None;
 				if	type(plist) is list:
@@ -134,7 +134,7 @@ def plotMultiplePlotsInOne(px,py, plotDict, xaxis, yaxis, fname):
 		if j >= py:
 			j=0;
 			i+=1;
-	plt.legend(bbox_to_anchor=(-.7, -.15), loc=2, ncol = 4, borderaxespad=0., title='');
+	plt.legend(bbox_to_anchor=(-0.7, -0.11), loc=2, ncol = 3, borderaxespad=0., title='');
 	#plt.savefig(fname)
 	#plt.close();
 	plt.show()
@@ -148,11 +148,12 @@ if __name__ == '__main__':
 		sys = {}
 		suffix = '20'+iFile[0:2]
 		for line in open(argv[1]+'/'+iFile,'r'):
-			if line.startswith('Prec'):
+			if line.startswith('Prec') and 'all' not in line:
 				split = line.split()
 				if split[1] not in sys:
 					sys[split[1]] = {}
-				sys[split[1]][int(split[2])] = round(float(split[-1]),3)
+				print split
+				sys[split[1]][int(split[2])] = round(float(split[3]),3)
 			
 		toPlot[suffix] = {}
 		for name, rDict in sys.items():

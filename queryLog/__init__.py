@@ -171,7 +171,8 @@ def getSessionWithXML(fileName, storeTitle=False):
 						ctitle[i].append(title[i][index-1]);
 						csummary[i].append(summary[i][index-1]);
 					except:
-						print 'ERROR IN CLICK', index, i, docs[i]
+						#print 'ERROR IN CLICK', index, i, docs[i]
+						pass
 			i+=1
 		for curr in sess.iter('currentquery'):
 			for query in curr.iter('query'):
@@ -201,6 +202,37 @@ def getSessionWithNL(fileName):
 	session[0] = session[0][session[0].find(' ')+1:].strip()
 	yield sid, session
 
+
+def getSessionWithoutUser(fileName, timeCutoff = 1500):
+	session = []
+	lastTime = lastQuery = None
+
+	for line in open(fileName, 'r'):
+		split = line.strip().split('\t')
+		try :
+			currTime = datetime.datetime.strptime(split[TIND], "%Y-%m-%d %H:%M:%S") #np.datetime64(split[2])
+			query = split[QIND].strip().lower()
+			raw_split = query.split(' ')
+			if not ((lastTime == None) or \
+			((currTime -lastTime).total_seconds()<timeCutoff)):
+				#if len(session) > 1:
+					#print currTime, lastTime, (currTime - lastTime).total_seconds(), lastUser, currUser
+				yield session;
+				session = []
+
+			if (lastTime != currTime or lastQuery != query) \
+			and (not hasManyChars(query,raw_split,1,4,70) \
+			and not hasInapWords(raw_split) and not hasManyWords(raw_split,15,40) \
+			and hasAlpha(query)):# hasWebsite(query)):
+				session.append(query)
+				
+			lastTime = currTime
+			lastQuery = query
+		except Exception as err:
+		#	print line.strip(), query, err, err.args
+			pass
+	yield session
+	
 #get user sessions with time difference
 def getSessionWithQuery(fileName, timeCutoff = 1500):
 	session = []
@@ -211,25 +243,27 @@ def getSessionWithQuery(fileName, timeCutoff = 1500):
 		try :
 			currTime = datetime.datetime.strptime(split[TIND], "%Y-%m-%d %H:%M:%S") #np.datetime64(split[2])
 			query = split[QIND].strip().lower()
-			#currUser = split[UIND].lower()
+			currUser = split[UIND].lower()
 			raw_split = query.split(' ')
-			if not ((lastTime == None) or (((currTime -lastTime).total_seconds()<timeCutoff
-			or subQuery(query,lastQuery,0.8)))): #and currUser == lastUser)):
-				if len(session) > 1:
-					yield session;
-					session = []
-			
+			if not ((lastTime == None) or \
+			((currTime -lastTime).total_seconds()<timeCutoff \
+			 and currUser == lastUser)):
+				#if len(session) > 1:
+					#print currTime, lastTime, (currTime - lastTime).total_seconds(), lastUser, currUser
+				yield session;
+				session = []
+
 			if (lastTime != currTime or lastQuery != query) \
 			and (not hasManyChars(query,raw_split,1,4,70) \
 			and not hasInapWords(raw_split) and not hasManyWords(raw_split,15,40) \
-			and hasAlpha(query) and not hasWebsite(query)):
+			and hasAlpha(query)):# hasWebsite(query)):
 				session.append(query)
 				
-			#lastUser = currUser	
+			lastUser = currUser	
 			lastTime = currTime
 			lastQuery = query
 		except Exception as err:
-			# print line, err, err.args
+		#	print line.strip(), query, err, err.args
 			pass
 	
 	yield session
@@ -341,7 +375,7 @@ def normalize(query, stemmer):
 	#remove words less than 2 letters
 	for entry in query.split():
 		stemmed = stemmer.stem(entry)
-		if len(stemmed) > 1:
+		if len(stemmed) > 1 and stemmed not in stopSet:
 			nQuery+= stemmed+' '
 	
 	return nQuery.strip()

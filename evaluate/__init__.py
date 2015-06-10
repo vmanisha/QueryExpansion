@@ -8,7 +8,7 @@ def addedAndRemovedTerms(bQuery, session,termVocab):
 	bset = set()
 	tset = set()
 	for entry in bQuery.split():
-		bset.add(porter.stem(entry))
+		bset.add(entry)#porter.stem(entry))
 		
 	for query in session:
 		#print query
@@ -18,6 +18,8 @@ def addedAndRemovedTerms(bQuery, session,termVocab):
 			stemd = porter.stem(entry);
 			if len(entry) > 2 and (entry not in stopSet or stemd not in stopSet) \
 			and (entry in termVocab or stemd in termVocab) :
+				if entry in termVocab:
+					tset.add(entry)
 				tset.add(stemd)
 
 	#print 'bSet', bset, 'Tset ', tset, 'Add', tset - bset, 'Remove', bset - tset

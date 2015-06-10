@@ -3,7 +3,7 @@ import os, sys
 import math
 import ast
 import re
-from utils import getNGrams
+from utils import getNGrams,getNGramsAsList,getDictFromSet
 from whoosh.index import create_in
 from whoosh.fields import Schema, TEXT
 from utils import get_cosine
@@ -64,9 +64,114 @@ def extractFeatureTuple(string, url=False):
  			print string
  			pass
  	return {}
+
+def combineQueryFeatures(queryFile, spotFile, featFile,newFile):
+	#load features
+	featDict = {}
+	i = 1
+	urlDict = {}
+	
+	for line in open(featFile,'r'):
+		split = line.strip().split('\t')
+		featDict[split[0].strip()] = split[1:]
+	
+	querySpots  = {}
+	for line in open(spotFile,'r'):
+		spotDict = ast.literal_eval(line)
+		querySpots[spotDict['text']] = spotDict	
+	outF = open(newFile,'w')
+	
+	#all queries
+	for line in open(queryFile,'r'):
+		query = line.strip()
+		queryFeat = []
+		
+		#getNString(query,3).decode('utf-8')
+ 		#triString = str(triString.encode('ascii','ignore')).strip()
+ 		triString = getNGramsAsList(query,3)
+		if len(triString) > 0:
+			queryFeat.append(triString)
+		else:
+			queryFeat.append({})
+		
+		queryVect = getDictFromSet(query.split())
+		if len(queryVect) > 0:
+			queryFeat.append(queryVect)
+		else:
+			queryFeat.append({})
+		
+		if query in featDict:
+			#normalize the users
+			userString = getUserString(featDict[query][0])
+			if len(userString) > 0:
+				queryFeat.append(userString)
+			else:
+				queryFeat.append({})
+			
+			#normalize the urls
+			i,urlDict,linkString = getUrlString(featDict[query][1],urlDict,i)
+			if len(linkString) > 0:
+				queryFeat.append(linkString)
+			else:
+				queryFeat.append({})
+		else:
+			print 'Query not found ',query
+
+		if query in querySpots:
+			spotDict = querySpots[query]#ast.literal_eval(line)
+			#cat, ent and type info
+			result = getCatEntString(spotDict)
+			for entry in result:
+				if len(entry) > 0:
+					queryFeat.append(entry)
+				else:
+					queryFeat.append({})
+		else:
+			queryFeat+=[{},{},{}]
+			#print queryFeat
+		try:
+			outF.write(query);
+			for entry in queryFeat:
+				outF.write('\t'+str(entry));
+			outF.write('\n')
+		except:
+			print 'ERROR ',queryFeat
+	
+	outF.close()
+	
+
+def getCatEntString(spotDict):
+	#entString = ''
+	#catString = ''
+	#typeString = ''
+	entDict = {}
+	catDict = {}
+	instDict = {}
+	for spot in spotDict['spots']:
+		try:
+			ent = spot['wikiname']
+			catList = spot['cat']
+			typeList = spot['type']
+			entDict[ent] = entDict.setdefault(ent,0) + 1
+			#entString+= ent.replace(' ','_')+':1 '
+			for cat in catList:
+				catDict[cat]=catDict.setdefault(cat,0) + 1
+			
+			for typ in typeList:
+				instDict[typ]=instDict.setdefault(typ,0) + 1
+		except:
+			print 'ERROR ::: ',spot
+			
+			
+	#catString = ' '.join('{0}:{1}'.format(x,y) for x, y in catDict.items())
+	#typeString = ' '.join('{0}:{1}'.format(x,y) for x, y in instDict.items())
+	
+	return [entDict, catDict, instDict] #[entString,catString,typeString]
  	
 def formatQueryFeatures(fileName):
 	#oFile = open(outFile,'w')
+	i=1
+	urlDict={}
 	for line in open(fileName,'r'):
 		split = line.strip().split('\t')	
 		#split 1 =  spot
@@ -82,21 +187,11 @@ def formatQueryFeatures(fileName):
  			catString = ' '.join('{0}:{1}'.format(x,y) for x, y in catDict.items())
  		
  		#split 2 users
- 		users = ast.literal_eval(split[2])
- 		userString = ' '.join('{0}:{1}'.format(x[0],str(x[1])) for x in users )
+ 		userString = getUserString(split[2])
  		
  		#split 3 = links
- 		links = linkP.findall(split[3])#ast.literal_eval(split[3])
- 		linkString = ''
- 		for tup in links:
- 			entry = tup.split(',')
-			entry[0] = entry[0][1:].strip()
-			entry[1] = entry[1][:-1]
- 			if len(entry[0]) < 3:
- 				linkString += 'None:'+str(entry[1])+' '	
- 			else:
- 				linkString += entry[0]+':'+str(entry[1])+' '
- 				
+ 		i,urlDict,linkString = getUrlString(split[3],urlDict,i)
+ 		
  		#biString = getNString(split[0],2)
  		triString = getNString(split[0],3).decode('utf-8')
  		triString = str(triString.encode('ascii','ignore'))
@@ -108,14 +203,47 @@ def formatQueryFeatures(fileName):
 
 def getNString(string, glen):
 	string = string.strip()
-	gram = {}
+	
 	gString = ''
-	for bi, other, ind in getNGrams(string,glen):
+	ngrams= getNGramsAsList(string,glen)
 		#print glen, string, bi, ind
- 		gram[bi] = gram.setdefault(bi,0) + 1
- 	gString = ' '.join('{0}:{1}'.format(x.replace(' ','_'),y) for x,y in gram.items())
- 	return gString
+ 	
+ 	gString = ' '.join('{0}:{1}'.format(x.replace(' ','_'),y) for x,y in ngrams.items())
 
+ 	queryVect = getDictFromSet(string.split())
+	qVectString = ' '.join('{0}:{1}'.format(x,y) for x,y in queryVect.items())
+	
+ 	return gString+'\t'+qVectString
+
+def getUserString(string):
+	users = ast.literal_eval('['+string[1:-1]+']')  #for file Features/userUrlCounts
+	userDict = {}
+	for entry in users:
+		userDict[entry[0]] = entry[1]
+	#userString = ' '.join('{0}:{1}'.format(x[0],str(x[1])) for x in users )
+	return userDict#String
+
+def getUrlString(string, urlDict,i):
+	links = linkP.findall(string)#ast.literal_eval(split[3])
+ 	linkDict={}
+ 	#linkString = ''
+ 	for tup in links:
+ 		entry = tup.rsplit(',')
+		entry[0] = entry[0][1:].strip()
+		entry[1] = entry[1][:-1]
+ 		if len(entry[0]) < 3:
+ 			#linkString += 'None:'+str(entry[1])+' '	
+ 			linkDict['None'] = int(entry[1])
+ 		else:
+ 			if entry[0] not in urlDict:
+ 				urlDict[entry[0]] = i
+ 				i+=1
+ 			#linkString += str(urlDict[entry[0]])+':'+str(entry[1])+' '
+ 			try:
+ 				linkDict[urlDict[entry[0]]] = int(entry[1])
+ 			except:
+ 				print 'Error url ',tup
+ 	return i,urlDict, linkDict #linkString
 
 def getQuerySimilarity(featFile, indexName, indexLocation, parts , pindex):
 	# load the queries in the dictionary
@@ -299,7 +427,7 @@ def main(argv):
 	#filterWords(argv[1],3);
 	#calWordCount(argv[1]);
 	#filterWordsFromList(argv[1],argv[2]);
-	filterFeatures(argv[1],argv[2]);
-	
+	#filterFeatures(argv[1],argv[2]);
+	combineQueryFeatures(argv[1],argv[2],argv[3],argv[4])
 if __name__=='__main__':
 	main(sys.argv)

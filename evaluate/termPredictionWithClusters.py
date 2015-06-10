@@ -9,7 +9,7 @@ from queryLog import getSessionWithXML, normalize;
 from evaluate import addedAndRemovedTerms
 import os
 from queryLog import getQueryTermsStemmed
-from termPrediction import getPrecRecall,getTerms
+from termPrediction import getPrecRecall,getTerms, getClustPrecRecall
 from plots import plotMultipleSys
 from utils import stopSet
 from nltk import stem;
@@ -21,10 +21,11 @@ def toTerms(clusters):
 
 	clusterIndex = {}
 	i = 0
-	for clust in clusters:		
+	for clust in clusters:	
+		#print clust	
 		terms = {}
 		for entry in clust:
-			split = entry.split()
+			split = entry.strip().split()
 			for st in split:
 				if len(st) > 2  and st not in stopSet:
 					if st not in terms:
@@ -40,7 +41,7 @@ def toTerms(clusters):
 		
 		if len(terms) > 0:
 			clustersWithTerms.append(terms)	
-		i+=1
+			i+=1
 		
 	return clustersWithTerms, clusterIndex
 
@@ -51,6 +52,7 @@ def getTermList(queryList):
 	for entry in queryList:
 		count = text_to_vector(entry)
 		for w, c in count.items():
+			#w = porter.stem(w)
 			if w not in termList:
 				termList[w] = 0.0
 			termList[w] += c	
@@ -107,6 +109,7 @@ def main(argv):
 			i+=1
 			query = session[0].strip();
 			qSet = getQueryTermsStemmed(query, porter);
+			
 			print 'Query ',query, qSet
 			if ttype == 'query':
 				aTerms,rTerms = addedAndRemovedTerms(query, session[1:], termDict)
@@ -120,30 +123,48 @@ def main(argv):
 			
 			if len(aTerms) > 0:
 				terms = cScorer.scoreWithIndex(qSet, clusters,clusIndex,tScorer, lim)
-				print 'Terms', '\t',i,'\t', ttype,'\t', iFile,'\t', len(terms), terms
-				for topk in range(5,lim,5):
-					prec1 , mrr1 = getPrecRecall(terms[:topk],aTerms)
-					print 'METRIC',iFile, i, topk, prec1, mrr1
+				#terms = cScorer.scoreWithClustPos(qSet, clusters,tScorer, lim)
+				print 'TERMS', '\t',i,'\t', ttype,'\t', iFile,'\t', len(terms), terms
+				#for topk in range(1,lim,5):
+				prec1 , mrr1 = getClustPrecMrr(terms,aTerms) # returns a list
+				print 'METRIC',iFile, i, prec1, mrr1
 					#print topk , prec1, mrr1
+				for topk in prec1.keys():	
 					if topk not in prec[iFile]:
-						prec[iFile][topk] = 0.0
-						mrr[iFile][topk] = 0.0
-						
-					prec[iFile][topk] += prec1
-					mrr[iFile][topk] += mrr1
+						prec[iFile][topk] = []
+						mrr[iFile][topk] = []
+					
+					prec[iFile][topk].append(prec1[topk])
+					mrr[iFile][topk].append(mrr1[topk])
+					
+					#prec[iFile][topk] += prec1
+					#mrr[iFile][topk] += mrr1
 				added +=1.0
 			#if i == 3:
 			#	break
-			
-	for entry in prec.keys():
-		for t in prec[entry].keys():
-			print 'Prec',entry, t, prec[entry][t], prec[entry][t]/added
-			prec[entry][t]/=added
 
-	for entry in mrr.keys():
-		for t in mrr[entry].keys():
-			print 'Mrr',entry, t, mrr[entry][t], mrr[entry][t]/added
-			mrr[entry][t]/=added
+	for fName, scoreDict in prec.items():
+		for pos in scoreDict.keys():
+			print 'Prec all',fName, pos, len(scoreDict[pos])
+			total = sum(scoreDict[pos])
+			prec[fName][pos]= total/added #len(scoreDict[pos])
+			print 'Prec',fName, pos, prec[fName][pos], total
+			
+	for fName, scoreDict in mrr.items():
+		for pos in scoreDict.keys():
+			print 'Mrr all',fName, pos, len(scoreDict[pos])
+			total = sum(mrr[fName][pos])
+			mrr[fName][pos]= total/added#len(scoreDict[pos])
+			print 'MRR',fName, pos, mrr[fName][pos], total
+	#for entry in prec.keys():
+		#for t in prec[entry].keys():
+			#print 'Prec',entry, t, prec[entry][t], prec[entry][t]/added
+			#prec[entry][t]/=added
+
+	#for entry in mrr.keys():
+		#for t in mrr[entry].keys():
+			#print 'Mrr',entry, t, mrr[entry][t], mrr[entry][t]/added
+			#mrr[entry][t]/=added
 
 	print 'Plotting Precision and MRR'
 	

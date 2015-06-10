@@ -16,11 +16,12 @@ def findCatQueryDist(fileName,featMan):
 		split = line.strip().split('\t')
 		query = split[0].strip()
 		qid = featMan.returnId(query)
-		catList = ast.literal_eval(split[6])
-		for entry in catList:
-			if entry not in catQueryCount:
-				catQueryCount[entry] = set()
-			catQueryCount[entry].add(qid)
+		if qid:
+			catList = ast.literal_eval(split[7])
+			for entry in catList:
+				if entry not in catQueryCount:
+					catQueryCount[entry] = set()
+				catQueryCount[entry].add(qid)
 	
 	#for entry  in sorted(catQueryCount.items(), reverse=True, key = lambda x: len(x[1])):
 	#	print entry[0], len(entry[1])

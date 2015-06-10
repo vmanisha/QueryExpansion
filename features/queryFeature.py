@@ -4,7 +4,9 @@ import distance
 from queryLog import filterStopWordsFromQuery
 class QueryFeature:
 	
-	def __init__(self, query1, ngrams1, qVect, urlDict1, userDict1, entDict1 = None, catDict1 = None):
+	def __init__(self, query1, ngrams1, qVect, urlDict1, \
+	userDict1, sessionDict1, entDict1 = {}, \
+	catDict1 = {},typeDict1 = {}):
 		self.query = query1
 		self.ngrams = ngrams1;
 		self.filterNgrams()
@@ -12,9 +14,10 @@ class QueryFeature:
 		self.filterQVector()
 		self.urlDict = urlDict1;
 		self.userDict = userDict1;
+		self.sessionDict = sessionDict1;
 		self.catDict = catDict1;
 		self.entDict = entDict1;
-	
+		self.typeDict = typeDict1;
 	
 	def filterNgrams(self):
 		for entry in self.ngrams.keys():
@@ -27,43 +30,49 @@ class QueryFeature:
 			if len(entry) < 3:
 				del self.queryVector[entry]
 				
-	def returnFeature(self,name):
-		if name == 'cat':
-			return self.catDict;
-			
+	def returnEntities(self):
+		return self.entDict;
+	
+	def returnUsers(self):
+		return self.userDict;
+		
+	def returnCategories(self):
+		return self.catDict;
+
+	def returnSessions(self):
+		return self.sessionDict;
+
+	def returnType(self):
+		return self.typeDict;
+		
+	def returnUrl(self):
+		return self.urlDict;
+		
 	def mergeFeature(self, feat):
-		self.updateURLDict(feat.urlDict)
-		self.updateUserDict(feat.userDict)
-		
-	def updateURLDict(self, urlDict1):
+		self.updateDict(feat.urlDict, self.urlDict)
+		self.updateDict(feat.userDict,self.userDict)
+		self.updateDict(feat.sessionDict,self.userDict)
+		self.updateDict(feat.entDict,self.entDict)
+		self.updateDict(feat.catDict,self.catDict)
+		self.updateDict(feat.typeDict,self.typeDict)
+				
+	def updateDict(self, urlDict1,tdict):
 		for entry, val in urlDict1.iteritems():
-			self.addURL(entry, val);
-	
-	def updateUserDict(self, userDict1):
-		for entry, val in userDict1.iteritems():
-			self.addUser(entry, val);
-	
-	def addURL(self, url, count):
-		if url not in self.urlDict:
-			self.urlDict[url] = 0;
-		
-		self.urlDict[url] += count;
-	
-	def addUser(self, user, count):
-		if user not in self.userDict:
-			self.userDict[user] = 0;
+			if entry not in tdict:
+				tdict[entry]= 0;
 			
-		self.userDict[user] += count;
+			tdict[entry] += val;
 
 	def findCosineDistance(self, qFeat):
 		qCos = get_cosine(self.queryVector, qFeat.queryVector);
 		uCos = get_cosine(self.urlDict, qFeat.urlDict);
 		userCos = get_cosine(self.userDict, qFeat.userDict);
+		sessionCos = get_cosine(self.sessionDict, qFeat.sessionDict);
 		ngramsCos = get_cosine(self.ngrams, qFeat.ngrams);
 		entCos = get_cosine(self.entDict, qFeat.entDict);
 		catCos = get_cosine(self.catDict, qFeat.catDict);
-		
-		return (qCos,uCos, userCos, ngramsCos,entCos,catCos);
+		typeCos = get_cosine(self.typeDict, qFeat.typeDict);
+		return (qCos,uCos, userCos, sessionCos, ngramsCos,entCos,catCos,typeCos);
 		
 	def findEditDistance(self, qFeat):
 		#print self.query, qFeat.query, distance.nlevenshtein(self.query, qFeat.query,method=1), distance.nlevenshtein(self.query, qFeat.query,method=2)
@@ -80,7 +89,8 @@ class QueryFeature:
 	def toString(self):
 		return str(self.ngrams)+'\t'+str(self.queryVector)+\
 		'\t'+str(self.urlDict)+'\t'+str(self.userDict)+\
-		'\t'+str(self.catDict)+'\t'+str(self.entDict)
+		'\t'+str(self.catDict)+'\t'+str(self.entDict)+'\t'+str(self.typeDict)+\
+		'\t'+str(self.sessionDict)
 		
 	
 	def keepFeatKey(self,feat, toKeep):

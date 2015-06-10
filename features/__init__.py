@@ -10,17 +10,19 @@ def readWeightMatrix(fileName):
 	weightMatrix = {}
 	lbreak = False
 	for line in open(fileName,'r'):
+		if len(line) <20 and (not lbreak):
+			lbreak = True
+			
 		if lbreak:
 			split = line.split()
 			i = int(split[0])
 			if i not in weightMatrix:
 				weightMatrix[i] = {}
 			try:
-				weightMatrix[i][int(split[1])] = 1.0-round(float(split[-1]),2)
+				weightMatrix[i][int(split[1])] = 1.0-round(float(split[-1])/100,2)
 			except:
 				print 'Error reading ',line
-		if len(line) <10 and (not lbreak):
-			lbreak = True
+		
 	
 	return weightMatrix
 						
@@ -29,7 +31,14 @@ def toString(eset,featMan):
 	for entry in eset:
 		string+='\t'+str(featMan.returnQuery(entry))
 	return string.strip()
-	
+
+def toList(eset,featMan):
+	elist = []
+	for entry in eset:
+		elist.append(str(featMan.returnQuery(entry)))
+		
+	return elist
+
 def findClickQuery(fileName):
 	'''load clicked queries'''
 	porter1 = porter.PorterStemmer()
@@ -118,13 +127,13 @@ def mergeQueryCountS(file1, file2):
 		print entry ,'\t',freq
 	
 
-def findPairwiseDistance(file1):	
+def findPairwiseDistance(file1,file2):	
 	featMan = FeatureManager()
 	
 	featMan.readFeatures(file1)
 	featDict = featMan.featureDict;
 	
-	oFile = open('simFileForTraining.txt','w')
+	oFile = open(file2,'w')
 	
 	ids = featDict.keys()
 	keys = sorted(ids);
@@ -133,7 +142,8 @@ def findPairwiseDistance(file1):
 		qid1, qf1 = featMan.returnFeature(keys[i])
 		for j in range(i+1, len(keys)):
 			qid2, qf2 = featMan.returnFeature(keys[j])
-			qcos, ucos, userCos, ngramCos, entCos, catCos = qf1.findCosineDistance(qf2)
+			qcos, ucos, userCos, sessionCos, ngramCos, entCos, \
+			catCos,typeCos = qf1.findCosineDistance(qf2)
 			qjac = qf1.findJacardDistance(qf2)
 			#qedit = qf1.findEditDistance(qf2)
 			#normalized distance
@@ -141,10 +151,11 @@ def findPairwiseDistance(file1):
 			oFile.write(str(qid1)+'\t'+str(qid2)+'\t'+\
 			str(round(qcos,2))+'\t'+str(round(qjac,2))+'\t'+\
 			str(round(ngramCos,2))+'\t'+str(round(userCos,2))+'\t' + \
-			str(round(entCos,2))+'\t'+ str(round(catCos,2))+'\n')
-			edgeScore = (25*((qcos + qjac )/2.0) +\
-			15*ngramCos + 15*ucos + \
-			15*userCos + 15*entCos + 15*catCos)
+			str(round(entCos,2))+'\t'+ str(round(catCos,2))+\
+			'\t'+ str(round(sessionCos,2))+'\t'+ str(round(typeCos,2))+'\n')
+			edgeScore = (15*((qcos + qjac )/2.0) +\
+			12.5*ngramCos + 12.5*ucos + 15*sessionCos +\
+			15*userCos + 10*entCos + 10*catCos+ 10*typeCos)
 			if edgeScore > 25:
 				#print session[i], session[j], edgeScore, qcos, qjac, ucos, userCos, qedit
 				print qid1, qid2, round(edgeScore,3)
@@ -159,7 +170,7 @@ def main(argv):
 	#clickedInfo = loadClickedTerms(argv[1])
 	#calWordFeatures(argv[2], clickedInfo)
 	#mergeQueryCountS(argv[1],argv[2])
-	findPairwiseDistance(argv[1])
+	findPairwiseDistance(argv[1],argv[2])
 	
 if __name__ == '__main__':
 	main(sys.argv)		

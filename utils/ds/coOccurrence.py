@@ -111,12 +111,12 @@ class CoOccurrence:
 		return 0.0, 0.0;
 	#P(term2|term1)
 	def getProb(self,term2, term1,thresh):
-		
+		t1 , t2 = self.orderTerms(term1,term2)
 		i = j = -1;
-		if term1 in self.termId:
-			i = self.termId[term1];
-		if term2 in self.termId:
-			j = self.termId[term2];
+		if t1 in self.termId:
+			i = self.termId[t1];
+		if t2 in self.termId:
+			j = self.termId[t2];
 		
 		if i in self.termTermFreq:
 			total = sum(self.termTermFreq[i].values());

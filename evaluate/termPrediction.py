@@ -286,8 +286,8 @@ def getPrecRecall(run, toCompare ):
 	aInt =  toCompare & apset
 	#print 'EXPANSION SET ',apset, 'ADDED SET ',toCompare, 'INTSCN ',aInt
 	prec = 0
-	if len(toCompare) > 0:
-		prec = (1.0*len(aInt))/len(toCompare)	
+	if len(apset) > 0:
+		prec = (1.0*len(aInt))/len(apset)	
 	mrr = 0;
 	for i in range(len(apList)):
 		if apList[i] in toCompare:
@@ -302,7 +302,28 @@ def getPrecRecall(run, toCompare ):
 		recall = 0.0
 	
 	'''
+#run format = [<c1>[t1,t2,t4,t5] , <c2>[t3,t6,t7]]
+def getClustPrecRecall(run, toCompare):
+	prec = []
+	recall = []
+	#rlen = len(run)
+	done = set()
+	cSet = set(toCompare)		
+	for i in range(min(len(run),20)):
+		#print i, (set(run[i]) & cSet), done
+		#if len(run[i]) < 10:
+		#	print run[i], toCompare
+			
+		fterm = (set(run[i]) & cSet) - done
+		sint = len(fterm)
+		done = done | fterm
 
+		prec.append(sint/(len(run[i])*1.0))
+		recall.append(sint/(1.0*len(toCompare)))
+		
+			
+	return prec, recall
+	
 def getBand(num):
 	if num < 6:
 		return num;
