@@ -31,35 +31,36 @@ Files and input parameters
 	They are combined by weights (tuned on training dataset) 
 
 	Important files and functions
-	1. features/generateEntityFeatures.py : takes query file and tags queries with entity, category and their types
-	2. features/formatFeatures.py : takes different files  -- users and urls and sums up features
+	1. features/generateFeatures.py : takes query file and tags queries with entity, category and their types
 	3. features/__init__.py : find out weight matrix -- findPairwiseDistance(featFile, outFile)
-	4. entity/entity/category/findCategoryClusters.py : finds out clusters per entity type. 
+	4. /entity/category/findCategoryClusters.py : finds out clusters per entity type. 
 
 
-	Steps followed to cluster
+ Steps followed to cluster
 	INPUT : Aol-type formated file (tab seperated)
 		<uid> query <timestamp> <curl>
 	
 	1. Tag queries with entities
 	2. accumulate all features with following options 
 		-- uid : true or false  (whether user id present or not, if not then put in dummy id there)
-		-- url : tru or false (whether clicked urls present or not)
-		-- wtype : token, phrase or queries
+		-- wtype : token, phrase or queries (token does not work right now)
 	3. write the feature file
 	4. find pairwise similarity
 	5. output clusters with following options
-		--algo : kmeans or kmed
-		--type : wcat or etype
-		--wtype : token, phrase, queries
-		--csize : cluster size range (llimit , ulimit)
-		--out-file : output folder with clusters 
 	
 	OUTPUT : folder with clusters 
 		each file in folder has following format
 		-- algoTypeK.txt : number of final clusters (k) computed using algo (algoType)
 		-- <type> <wtype> <wtype> .... <wtype>  (tab seperated)  : Each line contains a type (wiki category or type file) and its cluster of wtypes (either words, phrases or queries)
 	
-	
-	
 
+EXECUTION SEQUENCE (to run!!)
+	Add project into the classpath -- export PYTHONPATH=<path-to-source-code>
+	1. Run dexter java -java -jar dexter-2.1.0.jar 
+	2. Run features/generateFeatures.py with required commands:
+		'--iFile', '--oFile', '--typeFile', '--catFile', '--uid', '--wtype'		
+	3. Run features/__init__.py featFile outFile
+	4. Run entity/category/findCategoryClusters.py with required commands
+		 '--featFile','--distFile','--outDir','--algo','--lowerLimit','--upperLimit'
+
+	

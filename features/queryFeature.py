@@ -47,7 +47,8 @@ class QueryFeature:
 		
 	def returnUrl(self):
 		return self.urlDict;
-		
+
+
 	def mergeFeature(self, feat):
 		self.updateDict(feat.urlDict, self.urlDict)
 		self.updateDict(feat.userDict,self.userDict)

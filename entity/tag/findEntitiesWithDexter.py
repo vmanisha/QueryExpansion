@@ -8,7 +8,7 @@ import ast
 from dbPedia import loadCategories,loadInstancesInList
 def tagQueryWithDexter(query, tagURL):
 	
-	tagParam = {'text':'', 'n':'50', 'dsb':'tagme','min-conf':'0.2','wn':'true' }
+	tagParam = {'text':'', 'n':'5', 'dsb':'tagme','min-conf':'0.2','wn':'true' }
 	tagParam['text'] = query
 	url = tagURL + '?' + urllib.urlencode(tagParam)
 	#print url

@@ -131,6 +131,8 @@ class FeatureManager:
 			query = self.filterWords(split[0])
 			typeList = 	ast.literal_eval(split[7])
 			#if toFilter and query in toFilter:
+			#query1, ngrams1, qVect, urlDict1, userDict1, sessionDict1 = 8, entDict1 = 5  \
+	        #catDict1 = 6,typeDict1 = 7
 			queryFeat = QueryFeature(query, ast.literal_eval(split[1]),ast.literal_eval(split[2]),\
 			ast.literal_eval(split[3]),ast.literal_eval(split[4]),\
 			ast.literal_eval(split[8]),	ast.literal_eval(split[5]),\

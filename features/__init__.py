@@ -127,10 +127,10 @@ def mergeQueryCountS(file1, file2):
 		print entry ,'\t',freq
 	
 
-def findPairwiseDistance(file1,file2):	
+def findPairwiseDistance(iFile,file2):	
 	featMan = FeatureManager()
 	
-	featMan.readFeatures(file1)
+	featMan.readFeatures(iFile)
 	featDict = featMan.featureDict;
 	
 	oFile = open(file2,'w')

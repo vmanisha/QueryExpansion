@@ -9,6 +9,7 @@ from clustering.build.kmean import KMeans
 from features import toString,readWeightMatrix
 from buildCategoryNetwork import returnFilteredNetwork
 from clustering.evaluate.external import getRecallPrecision
+import argparse
 def clusterAllWithKMeans(argv):
 	featMan = FeatureManager()
 	featMan.readFeatures(argv[1])
@@ -356,16 +357,24 @@ def printCategoryQueryDictionary(fileName, clusFile, weightFile):
 
 
 if __name__ == '__main__':
-	argv = sys.argv
+	parser = ap.ArguementParser(description = 'Generate clusters of entity tagged queries')
+	parser.add_argument('-f', '--featFile', help='Feature file', required=True)
+	parser.add_argument('-d', '--distFile', help='Pairwise Similarity file', required=True)
+	parser.add_argument('-o', '--outDir', help='Output Directory', required=True)
+	parser.add_argument('-a', '--algo', help='kmeans or kmediods', required=True)
+	parser.add_argument('-l', '--lowerLimit', help='min limit on #terms in cluster', required=True,type=int)
+	parser.add_argument('-u', '--upperLimit', help='upper limit on #terms in cluster', required=True,type=int)
+	
+	#argv = sys.argv
+	args = parser.parse_args()
+	
 	#clusterAllWithKMediods(argv)
 	featMan = FeatureManager()
-	featMan.readFeatures(argv[1])
-	weightMatrix = readWeightMatrix(argv[2])
+	featMan.readFeatures(args.featFile)
+	weightMatrix = readWeightMatrix(args.distFile)
 	#clusterAllWithKMeans(argv)
-	catQueryDist = findCatQueryDist(argv[1],featMan)
-	#print len(catQueryDist)
-	#
-	#print argv[1],argv[3]
+	catQueryDist = findCatQueryDist(args.featFile,featMan)
+	
 	##stemmer =  stem.porter.PorterStemmer()
 	#catNetwork, catQueryDist = returnFilteredNetwork(argv[1], argv[3], featMan,\
 	#weightMatrix)
@@ -379,16 +388,22 @@ if __name__ == '__main__':
 	#oFile.close()
 
 	##CLUSTER PRE-MERGE
-	metrics = {}
-	metrics['pre-merge'] = getRecallPrecision(argv[6],argv[7],argv[4],argv[1])
-	for termCount in range(3,10):
-		#clusterCatWithKMeans(termCount,featMan, weightMatrix, catQueryDist, argv[5])
-		clusterCatWithMediods(termCount,featMan, weightMatrix, catQueryDist,argv[5])
+	#metrics = {}
+	#metrics['pre-merge'] = getRecallPrecision(argv[6],argv[7],argv[4],argv[1])
 	
-		metrics[termCount] = getRecallPrecision(argv[6],argv[7],argv[5],argv[1])
+	for termCount in range(args.lowerLimit,args.upperLimit):
+
+		if args.algo == 'kmeans':
+		    outSuff = args.outDir+'/kmeans_'
+		    clusterCatWithKMeans(termCount,featMan, weightMatrix, catQueryDist, outSuff)
+		elif args.alog == 'kmediods':
+                      outSuff = args.outDir+'/kmeds_'
+                      clusterCatWithMediods(termCount,featMan, weightMatrix, catQueryDist,outSuff)
+                    	
+		#metrics[termCount] = getRecallPrecision(argv[6],argv[7],argv[5],argv[1])
 	
-	for tcount, met in metrics.items():
-		print tcount, met
+	#for tcount, met in metrics.items():
+	#	print tcount, met
 	#printCategoryQueryDictionary(argv[1],argv[2],argv[3])
 	
 	

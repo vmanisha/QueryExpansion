@@ -203,15 +203,17 @@ def getSessionWithNL(fileName):
 	yield sid, session
 
 
-def getSessionWithoutUser(fileName, timeCutoff = 1500):
+def getSessionTuples(fileName, timeCutoff = 1500):
 	session = []
 	lastTime = lastQuery = None
 
 	for line in open(fileName, 'r'):
 		split = line.strip().split('\t')
 		try :
+			entry = parseLine(line)
 			currTime = datetime.datetime.strptime(split[TIND], "%Y-%m-%d %H:%M:%S") #np.datetime64(split[2])
 			query = split[QIND].strip().lower()
+			entry[QUERY] = query
 			raw_split = query.split(' ')
 			if not ((lastTime == None) or \
 			((currTime -lastTime).total_seconds()<timeCutoff)):
@@ -224,7 +226,7 @@ def getSessionWithoutUser(fileName, timeCutoff = 1500):
 			and (not hasManyChars(query,raw_split,1,4,70) \
 			and not hasInapWords(raw_split) and not hasManyWords(raw_split,15,40) \
 			and hasAlpha(query)):# hasWebsite(query)):
-				session.append(query)
+				session.append(entry)
 				
 			lastTime = currTime
 			lastQuery = query
