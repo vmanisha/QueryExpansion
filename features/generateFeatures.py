@@ -64,12 +64,14 @@ def main():
     qid = 1
     sid = 1
     for session in getSessionTuples(args.iFile):
+        print session
         for entry in session:
             query = entry[QUERY]
             #tag it with dexter and get all 3 parameters
             spotDict = tagQueryWithDexter(query,tagURL)
             updatedSpotDict = getCatAndTypeInfo(spotDict,dbCatList, dbTypeList)
 
+            print spotDict
             if args.wtype == 'query':
                 #given wtype find the following
                 if query not in queryList:
