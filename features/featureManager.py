@@ -128,7 +128,6 @@ class FeatureManager:
 		i = 1
 		for line in open(fileName,'r'):
 			split = line.strip().split('\t')
-			print line
 			query = self.filterWords(split[0])
 			typeList = 	ast.literal_eval(split[7])
 			#if toFilter and query in toFilter:
