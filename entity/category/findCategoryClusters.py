@@ -357,7 +357,7 @@ def printCategoryQueryDictionary(fileName, clusFile, weightFile):
 
 
 if __name__ == '__main__':
-	parser = ap.ArguementParser(description = 'Generate clusters of entity tagged queries')
+	parser = ap.ArgumentParser(description = 'Generate clusters of entity tagged queries')
 	parser.add_argument('-f', '--featFile', help='Feature file', required=True)
 	parser.add_argument('-d', '--distFile', help='Pairwise Similarity file', required=True)
 	parser.add_argument('-o', '--outDir', help='Output Directory', required=True)

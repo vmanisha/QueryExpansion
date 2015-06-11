@@ -23,7 +23,7 @@ def updateDict(udict, val, key):
 
 def main():
 
-    parser = ap.ArguementParser(description = 'Generate features for entity tagged queries')
+    parser = ap.ArgumentParser(description = 'Generate features for entity tagged queries')
     parser.add_argument('-i', '--iFile', help='Query log file', required=True)
     parser.add_argument('-o', '--oFile', help='Output feature file', required=True)
     parser.add_argument('-t', '--typeFile', help='DBPedia type file', required=True)
