@@ -13,12 +13,12 @@ from utils import getNGramsAsList,getDictFromSet
 
 def updateDict(udict, val, key):
     #print udict, val, key
-
+    
     if key not in udict:
         udict[key] = {}
 
 
-    if type(val) == float or type(val) == int:
+    if type(val) == float or type(val) == int or type(val) == str:
         if val not in udict[key]:
             udict[key][val] = 0.0
 
@@ -69,8 +69,9 @@ def main():
 
     tagURL = 'http://'+ipaddress+':8080/dexter-webapp/api/rest/annotate'
 
-    qid = 1
+    cqid = 1
     sid = 1
+    qid = None
     for session in getSessionTuples(args.iFile):
         print 'Session' , sid, len(session)
         for entry in session:
@@ -84,8 +85,12 @@ def main():
                 if args.wtype == 'query':
                     #given wtype find the following
                     if query not in queryList:
-                        queryList[query] = qid
-
+                        queryList[query] = cqid
+			qid = cqid
+			cqid+=1
+		    else:
+			qid = queryList[query]
+		    #print query, qid, queryList
                     updateDict(sessionList,sid, qid)
 
                     if boolUid:
@@ -98,8 +103,9 @@ def main():
                             updateDict(categoryList,spot['cat'], qid)
                             updateDict(typeList,spot['type'], qid)
                             updateDict(entityList,spot['wikiname'],qid)
+			    #print qid, query, 'Cat',spot['cat'], categoryList[qid]
+			    #print qid, query, 'Type',spot['type'], typeList[qid]
 
-                    qid+=1
 
                 if args.wtype == 'phrase':
                     for spot in updatedSpotDict['spots']:
@@ -110,20 +116,23 @@ def main():
 
                             if len(split) > 1:
                                 if split not in queryList:
-                                    queryList[split] = qid
-
+                                    queryList[split] = cqid
+                            	    qid = cqid
+				    cqid+=1
+				else:
+				    qid = queryList[split]
                                 updateDict(sessionList,sid, qid)
 
                                 if boolUid:
                                     updateDict(userList, entry[USER], qid)
                                 if CLICKU in entry:
                                     updateDict(urlList, entry[CLICKU],qid)
-
-                                for spot in updatedSpotDict['spots']:
-                                    updateDict(categoryList,spot['cat'], qid)
-                                    updateDict(typeList,spot['type'], qid)
-                                    updateDict(entityList,spot['wikiname'],qid)
-                            qid+=1
+				
+				if updatedSpotDict:
+                                    for spot in updatedSpotDict['spots']:
+                                        updateDict(categoryList,spot['cat'], qid)
+                                        updateDict(typeList,spot['type'], qid)
+                                        updateDict(entityList,spot['wikiname'],qid)
 
 
 
