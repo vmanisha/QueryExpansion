@@ -79,7 +79,6 @@ def main():
             if 'spots' in spotDict:
                 updatedSpotDict = getCatAndTypeInfo(spotDict,dbCatList, dbTypeList)
 
-                print spotDict
                 if args.wtype == 'query':
                     #given wtype find the following
                     if query not in queryList:
@@ -91,11 +90,12 @@ def main():
                         updateDict(userList, entry[USER], qid)
                     if CLICKU in entry:
                         updateDict(urlList, entry[CLICKU],qid)
-
-                    for spot in updatedSpotDict['spots']:
-                        updateDict(categoryList,spot['cat'], qid)
-                        updateDict(typeList,spot['type'], qid)
-                        updateDict(entityList,spot['wikiname'],qid)
+                    print updatedSpotDict
+                    if updatedSpotDict:
+                        for spot in updatedSpotDict['spots']:
+                            updateDict(categoryList,spot['cat'], qid)
+                            updateDict(typeList,spot['type'], qid)
+                            updateDict(entityList,spot['wikiname'],qid)
 
                     qid+=1
 
