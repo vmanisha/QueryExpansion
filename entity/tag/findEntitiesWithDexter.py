@@ -156,7 +156,7 @@ def getCatAndTypeInfo(spotDict,categoryList, instanceList):
 	spots = spotDict['spots']
 	i = 0
 	for spot in spots:
-		ename = (spot['wikiname']).encode('unicode-escape')
+		ename = (spot['wikiname']).encode('unicode-escape').lower()
 		if ename in categoryList:
 			spotDict['spots'][i][u'cat'] = categoryList[ename]
 		else:

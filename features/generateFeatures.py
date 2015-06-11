@@ -11,6 +11,7 @@ from utils import getNGramsAsList,getDictFromSet
 #store entities
 
 def updateDict(udict, val, key):
+    print udict, val, key
     if key not in udict:
         udict[key] = {}
 
