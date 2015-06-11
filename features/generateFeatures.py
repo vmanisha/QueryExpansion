@@ -12,10 +12,15 @@ from utils import getNGramsAsList,getDictFromSet
 
 def updateDict(udict, val, key):
     print udict, val, key
+
     if key not in udict:
         udict[key] = {}
 
+
     if type(val) == float or type(val) == int:
+        if val not in udict[key]:
+            udict[key][val] = 0.0
+
         udict[key][val] +=1
     if type(val) == list:
         for entry in val:
