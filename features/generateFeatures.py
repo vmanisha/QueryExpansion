@@ -64,56 +64,58 @@ def main():
     qid = 1
     sid = 1
     for session in getSessionTuples(args.iFile):
-        print session
+        print sid, session
         for entry in session:
             query = entry[QUERY]
             #tag it with dexter and get all 3 parameters
+
             spotDict = tagQueryWithDexter(query,tagURL)
-            updatedSpotDict = getCatAndTypeInfo(spotDict,dbCatList, dbTypeList)
+            if 'spots' in spotDict:
+                updatedSpotDict = getCatAndTypeInfo(spotDict,dbCatList, dbTypeList)
 
-            print spotDict
-            if args.wtype == 'query':
-                #given wtype find the following
-                if query not in queryList:
-                    queryList[query] = qid
+                print spotDict
+                if args.wtype == 'query':
+                    #given wtype find the following
+                    if query not in queryList:
+                        queryList[query] = qid
 
-                updateDict(sessionList,sid, qid)
+                    updateDict(sessionList,sid, qid)
 
-                if boolUid:
-                    updateDict(userList, entry[USER], qid)
-                if CLICKU in entry:
-                    updateDict(urlList, entry[CLICKU],qid)
+                    if boolUid:
+                        updateDict(userList, entry[USER], qid)
+                    if CLICKU in entry:
+                        updateDict(urlList, entry[CLICKU],qid)
 
-                for spot in updatedSpotDict['spots']:
-                    updateDict(categoryList,spot['cat'], qid)
-                    updateDict(typeList,spot['type'], qid)
-                    updateDict(entityList,spot['wikiname'],qid)
+                    for spot in updatedSpotDict['spots']:
+                        updateDict(categoryList,spot['cat'], qid)
+                        updateDict(typeList,spot['type'], qid)
+                        updateDict(entityList,spot['wikiname'],qid)
 
-                qid+=1
+                    qid+=1
 
-            if args.wtype == 'phrase':
-                for spot in updatedSpotDict['spots']:
-                    splits = query.split(spot)
-                    for split in splits:
-                        split = split.strip()
-                        #remove stop words
+                if args.wtype == 'phrase':
+                    for spot in updatedSpotDict['spots']:
+                        splits = query.split(spot)
+                        for split in splits:
+                            split = split.strip()
+                            #remove stop words
 
-                        if len(split) > 1:
-                            if split not in queryList:
-                                queryList[split] = qid
+                            if len(split) > 1:
+                                if split not in queryList:
+                                    queryList[split] = qid
 
-                            updateDict(sessionList,sid, qid)
+                                updateDict(sessionList,sid, qid)
 
-                            if boolUid:
-                                updateDict(userList, entry[USER], qid)
-                            if CLICKU in entry:
-                                updateDict(urlList, entry[CLICKU],qid)
+                                if boolUid:
+                                    updateDict(userList, entry[USER], qid)
+                                if CLICKU in entry:
+                                    updateDict(urlList, entry[CLICKU],qid)
 
-                            for spot in updatedSpotDict['spots']:
-                                updateDict(categoryList,spot['cat'], qid)
-                                updateDict(typeList,spot['type'], qid)
-                                updateDict(entityList,spot['wikiname'],qid)
-                        qid+=1
+                                for spot in updatedSpotDict['spots']:
+                                    updateDict(categoryList,spot['cat'], qid)
+                                    updateDict(typeList,spot['type'], qid)
+                                    updateDict(entityList,spot['wikiname'],qid)
+                            qid+=1
 
 
 
