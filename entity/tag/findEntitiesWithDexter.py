@@ -166,10 +166,11 @@ def getCatAndTypeInfo(spotDict,categoryList, instanceList):
 		if ename in instanceList:
 			spotDict['spots'][i][u'type'] = instanceList[ename]
 		else:
-			print 'Instance not Found ', ename
+			#print 'Instance not Found ', ename
 			spotDict['spots'][i][u'type'] = []
 		i+=1
-	print spotDict
+	return spotDict
+
 
 
 if __name__ == '__main__':

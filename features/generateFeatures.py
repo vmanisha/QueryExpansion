@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from dbPedia import loadCategories,loadInstancesInList
 import argparse as ap
 from queryLog import getSessionTuples
 from queryLog import USER, QUERY, CLICKU
@@ -11,7 +12,7 @@ from utils import getNGramsAsList,getDictFromSet
 #store entities
 
 def updateDict(udict, val, key):
-    print udict, val, key
+    #print udict, val, key
 
     if key not in udict:
         udict[key] = {}
@@ -42,10 +43,11 @@ def main():
     boolUid = args.uid
 
     #load the category list
-    dbCatList = {}
-
+    dbCatList = loadCategories(args.catFile)
+    print 'Categories',len(dbCatList)
     #load the type list
-    dbTypeList = {}
+    dbTypeList = loadInstancesInList(args.typeFile)
+    print 'Types',len(dbTypeList)
 
     #query list
     queryList = {}
@@ -70,7 +72,7 @@ def main():
     qid = 1
     sid = 1
     for session in getSessionTuples(args.iFile):
-        print sid, session
+        print 'Session' , sid, len(session)
         for entry in session:
             query = entry[QUERY]
             #tag it with dexter and get all 3 parameters
@@ -90,7 +92,7 @@ def main():
                         updateDict(userList, entry[USER], qid)
                     if CLICKU in entry:
                         updateDict(urlList, entry[CLICKU],qid)
-                    print updatedSpotDict
+                    #print 'Updated Spot Dict ',updatedSpotDict
                     if updatedSpotDict:
                         for spot in updatedSpotDict['spots']:
                             updateDict(categoryList,spot['cat'], qid)
