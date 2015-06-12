@@ -5,6 +5,7 @@ from queryLog import getSessionTuples
 from queryLog import USER, QUERY, CLICKU
 from entity.tag.findEntitiesWithDexter import tagQueryWithDexter, getCatAndTypeInfo
 from utils import getNGramsAsList,getDictFromSet
+from queryLog import filterStopWordsFromQuery
 #for each query in log do the following
 #store the clicked document
 #store the user if present
@@ -12,8 +13,7 @@ from utils import getNGramsAsList,getDictFromSet
 #store entities
 
 def updateDict(udict, val, key):
-    #print udict, val, key
-    
+    #print key, type(val), val
     if key not in udict:
         udict[key] = {}
 
@@ -102,18 +102,18 @@ def main():
                         for spot in updatedSpotDict['spots']:
                             updateDict(categoryList,spot['cat'], qid)
                             updateDict(typeList,spot['type'], qid)
-                            updateDict(entityList,spot['wikiname'],qid)
+                            updateDict(entityList,str(spot['wikiname'].lower()),qid)
 			    #print qid, query, 'Cat',spot['cat'], categoryList[qid]
 			    #print qid, query, 'Type',spot['type'], typeList[qid]
-
+			    
 
                 if args.wtype == 'phrase':
                     for spot in updatedSpotDict['spots']:
-                        splits = query.split(spot)
+			splits = query.split(spot['mention'])
                         for split in splits:
-                            split = split.strip()
+			    split = split.strip()
                             #remove stop words
-
+			    split = filterStopWordsFromQuery(split)
                             if len(split) > 1:
                                 if split not in queryList:
                                     queryList[split] = cqid
@@ -129,11 +129,12 @@ def main():
                                     updateDict(urlList, entry[CLICKU],qid)
 				
 				if updatedSpotDict:
-                                    for spot in updatedSpotDict['spots']:
-                                        updateDict(categoryList,spot['cat'], qid)
-                                        updateDict(typeList,spot['type'], qid)
-                                        updateDict(entityList,spot['wikiname'],qid)
-
+                                    #for spot in updatedSpotDict['spots']:
+				    #print query, splits, spot['mention']
+                                    updateDict(categoryList,spot['cat'], qid)
+                                    updateDict(typeList,spot['type'], qid)
+				    #print qid, spot['wikiname'], entityList
+                                    updateDict(entityList,str(spot['wikiname'].lower()),qid)
 
 
         sid+=1
