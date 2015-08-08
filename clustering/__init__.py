@@ -10,4 +10,3 @@ from clustering.cluster import KMeans
 from queryLog import normalize
 import numpy as np
 import Pycluster as clust
-		
