@@ -132,5 +132,5 @@ def main(argv):
       print err
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
   main(sys.argv)

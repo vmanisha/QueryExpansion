@@ -17,132 +17,141 @@ from org.apache.lucene.util import Version
 from utils import stopSet
 from entity.ranker import Ranker
 from queryLog import getSessionWithXML
+
+
 class SearchIndex:
-	
-	def __init__(self, indexPath):
-		lucene.initVM(vmargs=['-Djava.awt.headless=true'])
-		print  'lucene', lucene.VERSION
 
-		#initialize the index
-		self.INDEX_DIR =  indexPath #"Clue_Index"
-		self.results = None
-		self.searcher = IndexSearcher(DirectoryReader.open(SimpleFSDirectory(File(self.INDEX_DIR))
-))
-		
-		self.searcher.setSimilarity(BM25Similarity())
-	
-    	
-	def initializeAnalyzer(self):
-		#self.analyzer = StandardAnalyzer(Version.LUCENE_CURRENT,JavaSet(stopSet))
-		sSet = CharArraySet(Version.LUCENE_CURRENT, 0, True)
-		for entry in stopSet:
-			sSet.add(entry)
-		self.stopSet = sSet
-		#self.analyzer = EnglishAnalyzer(Version.LUCENE_CURRENT,sSet)
-		self.analyzer = EnglishAnalyzer(Version.LUCENE_CURRENT)
-	
-	def getTopDocuments(self,query,limit,sfield,dfield):
-		queryObj = QueryParser(Version.LUCENE_CURRENT,sfield,
-                            self.analyzer).parse(query)
-		print queryObj
-		scoreDocs = self.searcher.search(queryObj, limit).scoreDocs
-		print "%s total matching documents." % len(scoreDocs)
-		self.results = scoreDocs
-		rresults = []
-		i = 0
-		#reader = self.searcher.getIndexReader();
-		#print type(reader)
-		for scoreDoc in scoreDocs:
-			doc = self.searcher.doc(scoreDoc.doc)
-			rresults.append((doc.get(dfield),scoreDoc.score));
-			#rresults.append(doc.get(dfield));#,scoreDoc.score))
-			i+=1
-			if i == limit:
-				break
-		return rresults
-		#print 'path:', doc.get("URL"), 'name:', doc.get("id"), 'title:', doc.get("title")
+  def __init__(self, indexPath):
+    lucene.initVM(vmargs=['-Djava.awt.headless=true'])
+    print 'lucene', lucene.VERSION
 
-	def getTopDocumentsWithExpansion(self,query,expTerms, limit,sfield,dfield):
-		print expTerms
-		query = query + ' '+' '.join('{0}^{1}'.format(x[0],round(x[1],2)) for x in expTerms)
-		sSet = CharArraySet(Version.LUCENE_CURRENT, 0, True)
-		for entry in expTerms:
-			sSet.add(entry[0])
-		
-		analyzer = EnglishAnalyzer(Version.LUCENE_CURRENT,self.stopSet,sSet)
-		
-		queryObj = QueryParser(Version.LUCENE_CURRENT,sfield,
-                            analyzer).parse(query)
-		scoreDocs = self.searcher.search(queryObj, limit).scoreDocs
-		print "%s total matching documents." % len(scoreDocs), queryObj
-		self.results = scoreDocs
-		rresults = []
-		i = 0
-		
-		for scoreDoc in scoreDocs:
-			doc = self.searcher.doc(scoreDoc.doc)
-			#rresults.append(doc.get(dfield));#,scoreDoc.score))
-			rresults.append((doc.get(dfield),scoreDoc.score));
-			
-			i+=1
-			if i == limit:
-				break
-		return rresults
-		
-	def getField(self,dfield, name,limit):
-		toReturn = []
-		i = 0
-		for scoreDoc in self.results:
-			doc = self.searcher.doc(scoreDoc.doc)
-			toReturn.append((doc.get(dfield), doc.get(name)))
-			i+=1
-			if i == limit:
-				break
-		return toReturn
-			
-	def close(self):
-		 del self. searcher
+    #initialize the index
+    self.INDEX_DIR = indexPath  #"Clue_Index"
+    self.results = None
+    self.searcher = IndexSearcher(DirectoryReader.open(
+        SimpleFSDirectory(File(self.INDEX_DIR))))
+
+    self.searcher.setSimilarity(BM25Similarity())
+
+  def initializeAnalyzer(self):
+    #self.analyzer = StandardAnalyzer(Version.LUCENE_CURRENT,JavaSet(stopSet))
+    sSet = CharArraySet(Version.LUCENE_CURRENT, 0, True)
+    for entry in stopSet:
+      sSet.add(entry)
+    self.stopSet = sSet
+    #self.analyzer = EnglishAnalyzer(Version.LUCENE_CURRENT,sSet)
+    self.analyzer = EnglishAnalyzer(Version.LUCENE_CURRENT)
+
+  def getTopDocuments(self, query, limit, sfield, dfield):
+    queryObj = QueryParser(Version.LUCENE_CURRENT, sfield,
+                           self.analyzer).parse(query)
+    print queryObj
+    scoreDocs = self.searcher.search(queryObj, limit).scoreDocs
+    print '%s total matching documents.' % len(scoreDocs)
+    self.results = scoreDocs
+    rresults = []
+    i = 0
+    #reader = self.searcher.getIndexReader();
+    #print type(reader)
+    for scoreDoc in scoreDocs:
+      doc = self.searcher.doc(scoreDoc.doc)
+      rresults.append((doc.get(dfield), scoreDoc.score))
+      #rresults.append(doc.get(dfield));#,scoreDoc.score))
+      i += 1
+      if i == limit:
+        break
+    return rresults
+    #print 'path:', doc.get("URL"), 'name:', doc.get("id"), 'title:', doc.get("title")
+
+  def getTopDocumentsWithExpansion(self, query, expTerms, limit, sfield, dfield
+                                 ):
+    print expTerms
+    query = query + ' ' + ' '.join('{0}^{1}'.format(x[0], round(x[1], 2))
+                                   for x in expTerms)
+    sSet = CharArraySet(Version.LUCENE_CURRENT, 0, True)
+    for entry in expTerms:
+      sSet.add(entry[0])
+
+    analyzer = EnglishAnalyzer(Version.LUCENE_CURRENT, self.stopSet, sSet)
+
+    queryObj = QueryParser(Version.LUCENE_CURRENT, sfield,
+                           analyzer).parse(query)
+    scoreDocs = self.searcher.search(queryObj, limit).scoreDocs
+    print '%s total matching documents.' % len(scoreDocs), queryObj
+    self.results = scoreDocs
+    rresults = []
+    i = 0
+
+    for scoreDoc in scoreDocs:
+      doc = self.searcher.doc(scoreDoc.doc)
+      #rresults.append(doc.get(dfield));#,scoreDoc.score))
+      rresults.append((doc.get(dfield), scoreDoc.score))
+
+      i += 1
+      if i == limit:
+        break
+    return rresults
+
+  def getField(self, dfield, name, limit):
+    toReturn = []
+    i = 0
+    for scoreDoc in self.results:
+      doc = self.searcher.doc(scoreDoc.doc)
+      toReturn.append((doc.get(dfield), doc.get(name)))
+      i += 1
+      if i == limit:
+        break
+    return toReturn
+
+  def close(self):
+    del self.searcher
 
 
 def main(argv):
-	searcher = SearchIndex(argv[2])
-	searcher.initializeAnalyzer()
-	oFile = open('baseline-session-14.all','w')
-	#oFile = {}
-	qId = 1
-	for session, doc, click, cTitle, csummary in getSessionWithXML(argv[1]):
-		print session[-1]
-		k = 0
-		for entry in searcher.getTopDocuments(session[-1], 1000, 'content','id'):
-			oFile.write(str(qId)+' Q0 '+entry[0]+' '+str(k)+' '+str(round(entry[1],2))+' baseline\n')
-			k+=1
-		qId+=1
-		#qId = split[0]
-		#lenth = int(split[1])
-		#query = split[2]
-		#terms = ast.literal_eval(split[-1])
-		#rankr = Ranker()
-		#sortedTerms = rankr.getTopK(terms, 50)
-		#lenth = int(split[-1])
-		'''for step in xrange(0,55,5):
+  searcher = SearchIndex(argv[2])
+  searcher.initializeAnalyzer()
+  oFile = open('baseline-session-14.all', 'w')
+  #oFile = {}
+  qId = 1
+  for session, doc, click, cTitle, csummary in getSessionWithXML(argv[1]):
+    print session[-1]
+    k = 0
+    for entry in searcher.getTopDocuments(session[-1], 1000, 'content', 'id'):
+      oFile.write(str(qId) + ' Q0 ' + entry[0] + ' ' + str(k) + ' ' + str(round(
+          entry[1], 2)) + ' baseline\n')
+      k += 1
+    qId += 1
+    #qId = split[0]
+    #lenth = int(split[1])
+    #query = split[2]
+    #terms = ast.literal_eval(split[-1])
+    #rankr = Ranker()
+    #sortedTerms = rankr.getTopK(terms, 50)
+    #lenth = int(split[-1])
+    '''for step in xrange(0,55,5):
 			lenth = step
 			if step == 0:
 				lenth = 1
 		'''
-		'''if lenth > 0 and lenth < 60:
-			if lenth not in oFile:
-				oFile[lenth] = open(argv[3]+'_'+str(lenth)+'.RL1','w')
-			docList = searcher.getTopDocumentsWithExpansion(query,terms[:lenth],2000,'content','id')
-			k = 1
-			for dtuple  in docList:
-				oFile[lenth].write(qId+' Q0 '+dtuple[0]+' '+str(k)+' '+str(round(dtuple[1],2))+' prob\n')
-				k+=1
-		
-	for i in oFile.keys():
-		oFile[i].close()
-	'''
-	oFile.close()
-	searcher.close()
+    '''if lenth > 0 and lenth < 60:
+
+                        if lenth not in oFile:
+                                oFile[lenth] =
+                                open(argv[3]+'_'+str(lenth)+'.RL1','w')
+                        docList =
+                        searcher.getTopDocumentsWithExpansion(query,terms[:lenth],2000,'content','id')
+                        k = 1
+                        for dtuple  in docList:
+                                oFile[lenth].write(qId+' Q0 '+dtuple[0]+'
+                                '+str(k)+' '+str(round(dtuple[1],2))+' prob\n')
+                                k+=1
+
+        for i in oFile.keys():
+                oFile[i].close()
+        '''
+  oFile.close()
+  searcher.close()
+
 
 if __name__ == '__main__':
-	main(sys.argv)
+  main(sys.argv)
