@@ -1,4 +1,4 @@
-import os
+import os,sys
 from yahoo_dataset_parser import YahooQuestionsParser
 from lxml import etree
 
@@ -31,6 +31,7 @@ def IndexYahooQuestionsWithWhoosh(input_folder_name, output_folder_name):
   parser = etree.XMLParser(target=YahooQuestionsParser())
   for ifile in os.listdir(input_folder_name):
     ifile = input_folder_name + '/' + ifile
+    print 'Parsing ', ifile;
     for question, answer_list in etree.parse(ifile, parser).items():
       # Create a whoosh document.
       index_writer.add_document(question=unicode(question),

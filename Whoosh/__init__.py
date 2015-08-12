@@ -10,7 +10,6 @@ from whoosh.qparser import QueryParser, OrGroup
 '''Utility Functions
 '''
 
-
 def loadIndex(indexPath, indexName):
 
   print 'IndexPath ', indexPath, 'IndexName ', indexName
@@ -24,7 +23,7 @@ def loadIndex(indexPath, indexName):
 
 def loadCollector(searcher, dlim, tlim):
   c = searcher.collector(limit=dlim)
-  # Wrap it in a TimeLimitedCollector and set the time limit to 10 seconds
+  # Wrap it in a TimeLimitedCollector and set the time limit to tlim seconds.
   tlc = TimeLimitCollector(c, timelimit=tlim)
   return tlc
 

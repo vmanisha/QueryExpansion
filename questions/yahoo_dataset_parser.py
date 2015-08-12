@@ -27,6 +27,8 @@ class YahooQuestionsParser(object):
     if tag == 'document':
       self.is_question = False
       self.curr_question = None
+      if len(self.questions) % 50000 == 0:
+        print 'Parsed ', len(self.questions), 'questions.'
 
     if tag == 'subject':
       self.is_subject = False
@@ -36,7 +38,7 @@ class YahooQuestionsParser(object):
     pass
 
   def data(self, data):
-    data = data.lower();
+    data = data.lower()
     if self.is_question:
       # A new question.
       if self.is_subject:
