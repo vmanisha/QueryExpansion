@@ -88,24 +88,25 @@ def stemQuery(string, stemmer):
 
 
 def getUserQueryAsString(entry):
-  string =  str(entry[USER]) +"\t" + entry[QUERY] + "\t" + str(entry[QTIME]);
+  string = str(entry[USER]) + '\t' + entry[QUERY] + '\t' + str(entry[QTIME])
   if CLICKU in entry:
-    return string + "\t" + entry[CLICKU];
-  return string;
+    return string + '\t' + entry[CLICKU]
+  return string
+
 
 def getSessionsByUsers(filename, queries_to_ignore, timeCutoff=1500):
-  users = {};
-  lastTime = lastQuery = None;
-  lastUser = currUser = None;
-  session = [];
-  i = 0;
+  users = {}
+  lastTime = lastQuery = None
+  lastUser = currUser = None
+  session = []
+  i = 0
   for line in open(filename, 'r'):
     try:
-      entry = parseLine(line);
-      currTime = entry[QTIME];
-      query = entry[QUERY];
-      raw_split = query.split();
-      currUser = entry[USER];
+      entry = parseLine(line)
+      currTime = entry[QTIME]
+      query = entry[QUERY]
+      raw_split = query.split()
+      currUser = entry[USER]
       if not ((lastTime == None) or \
          (((currTime-lastTime).total_seconds() < timeCutoff \
          or subQuery(query,lastQuery,0.7))\
@@ -114,9 +115,9 @@ def getSessionsByUsers(filename, queries_to_ignore, timeCutoff=1500):
           if lastUser not in users:
             users[lastUser] = []
           users[lastUser].append(session)
-          session = []  
+          session = []
           if len(users) % 1000 == 0:
-            print "Finished ", len(users);
+            print 'Finished ', len(users)
       if (lastTime != currTime and lastQuery != query) \
       and hasAlpha(query) \
       and not(hasManyChars(query,raw_split,1,4,70) \
@@ -128,17 +129,18 @@ def getSessionsByUsers(filename, queries_to_ignore, timeCutoff=1500):
       lastTime = currTime
       lastQuery = query
       lastUser = currUser
-      i+=1
+      i += 1
     except Exception as err:
-      print err;
+      print err
       if i > 1:
-        break;
+        break
 
   if lastUser not in users:
     users[lastUser] = []
   users[lastUser].append(session)
   session = []
   return users
+
 
 def getSessionWithXML(fileName, storeTitle=False):
   #content = open(fileName,'r').read()
@@ -440,7 +442,25 @@ def normalizeWithoutStem(query):
   return query
 
 
-  #get term list from a query
+def normalizeWithStopWordRemoval(query):
+  if hasWebsite(query):
+    return ''
+  #replace symbols
+  query = re.sub(SYMB, ' ', query)
+
+  #remove numbers
+  query = re.sub('\d+', '', query)
+
+  #remove spaces
+  query = re.sub('\s+', ' ', query)
+
+  qset = set(query.strip().split())
+  qset -= stopSet
+
+  return ' '.join(qset)
+
+
+#get term list from a query
 def getQueryTerms(query):
 
   if hasWebsite(query):

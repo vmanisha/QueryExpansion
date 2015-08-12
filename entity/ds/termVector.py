@@ -67,7 +67,7 @@ class TermVector:
     if not os.path.exists(indexLoc):
       os.mkdir(indexLoc)
 
-  #open the index
+    #open the index
     tindex = create_in(indexLoc, schema=ischema, indexname=indName)
     writer = tindex.writer()
     i = 1
