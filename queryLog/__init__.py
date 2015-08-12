@@ -78,7 +78,7 @@ def parseLine(line):
       entry[CLICKU] = split[CUIND].lower().strip()
     return entry
   except Exception as err:
-
+    print err
     return {}
 
 
@@ -87,39 +87,58 @@ def stemQuery(string, stemmer):
   return ' '.join(stemmer.stem(x) for x in split)
 
 
-def getSessionsByUsers(filename, timecutoff=6000):
-  users = {}
-  lastTime = lastQuery = None
-  session = []
-  for line in open(fileName, 'r'):
-    entry = parseLine(line)
-    currTime = entry[QTIME]
-    if not ((lastTime == None) or \
-       (((currTime-lastTime).total_seconds() < timeCutoff \
-       or subQuery(query,lastQuery,0.7))\
-       and currUser == lastUser)):
-      if len(session) > 1:
-        if lastUser not in users:
-          users[lastUser] = []
-        users[lastUser].append(session)
-        session = []
+def getUserQueryAsString(entry):
+  string =  str(entry[USER]) +"\t" + entry[QUERY] + "\t" + str(entry[QTIME]);
+  if CLICKU in entry:
+    return string + "\t" + entry[CLICKU];
+  return string;
 
-    if (lastTime != currTime or lastQuery != query) \
-    and hasAlpha(query) \
-    and not(hasManyChars(query,raw_split,1,4,70) \
-            or hasInapWords(raw_split) \
-            or hasManyWords(raw_split,15,40)\
-            or hasWebsite(query)):
-      session.append(entry)
+def getSessionsByUsers(filename, queries_to_ignore, timeCutoff=1500):
+  users = {};
+  lastTime = lastQuery = None;
+  lastUser = currUser = None;
+  session = [];
+  i = 0;
+  for line in open(filename, 'r'):
+    try:
+      entry = parseLine(line);
+      currTime = entry[QTIME];
+      query = entry[QUERY];
+      raw_split = query.split();
+      currUser = entry[USER];
+      if not ((lastTime == None) or \
+         (((currTime-lastTime).total_seconds() < timeCutoff \
+         or subQuery(query,lastQuery,0.7))\
+         and currUser == lastUser)):
+        if len(session) > 1:
+          if lastUser not in users:
+            users[lastUser] = []
+          users[lastUser].append(session)
+          session = []  
+          if len(users) % 1000 == 0:
+            print "Finished ", len(users);
+      if (lastTime != currTime and lastQuery != query) \
+      and hasAlpha(query) \
+      and not(hasManyChars(query,raw_split,1,4,70) \
+              or hasInapWords(raw_split) \
+              or hasManyWords(raw_split,15,40)\
+              or hasWebsite(query) or (query in queries_to_ignore)):
+        session.append(entry)
 
-    lastTime = currTime
-    lastQuery = query
+      lastTime = currTime
+      lastQuery = query
+      lastUser = currUser
+      i+=1
+    except Exception as err:
+      print err;
+      if i > 1:
+        break;
 
   if lastUser not in users:
     users[lastUser] = []
   users[lastUser].append(session)
   session = []
-
+  return users
 
 def getSessionWithXML(fileName, storeTitle=False):
   #content = open(fileName,'r').read()
