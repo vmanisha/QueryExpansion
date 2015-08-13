@@ -5,11 +5,13 @@ import unittest
 from Whoosh import loadIndex, loadCollector, loadQueryParser
 from whoosh.fields import Schema, TEXT
 import os
+from whoosh.analysis import StemmingAnalyzer
 
 
 class YahooDatasetIndexerTest(unittest.TestCase):
 
   def test_create_index(self):
+    stem_analyzer = StemmingAnalyzer()
     test_folder_to_index = 'test-folder'
     test_index_name = 'test-index'
     if not os.path.exists(test_folder_to_index):
@@ -28,17 +30,22 @@ class YahooDatasetIndexerTest(unittest.TestCase):
     questions_index, questions_searcher = loadIndex(test_index_name,
                                                     test_index_name)
     # Check the schema.
-    expected_schema = Schema(question=TEXT(stored=True,
-                                           phrase=False),
-                             answers=TEXT(stored=False,
-                                          phrase=False))
+    expected_schema = Schema(question_tokens=TEXT(analyzer=stem_analyzer,
+                                      stored=False,
+                                      phrase=False),
+                        question_text=TEXT(analyzer=stem_analyzer,
+                                      stored=True,
+                                      phrase=False),
+                        answers=TEXT(analyzer=stem_analyzer,
+                                     stored=False,
+                                     phrase=False))
     self.assertEqual(expected_schema, questions_index.schema)
     # Check the number of documents.
     self.assertEqual(1, questions_index.doc_count())
     # Check the number of terms in question and answer fields.
     expected_question_terms = ['contagi', 'yawn']
     i = 0
-    for question_terms_tuple in questions_index.reader().iter_field('question'):
+    for question_terms_tuple in questions_index.reader().iter_field('question_tokens'):
       self.assertEqual(question_terms_tuple[0], expected_question_terms[i])
       i += 1
     expected_answer_terms = ['bodi']
