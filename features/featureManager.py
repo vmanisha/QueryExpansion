@@ -136,10 +136,10 @@ class FeatureManager:
       queryFeat = QueryFeature(query, ast.literal_eval(split[1]),ast.literal_eval(split[2]),\
 			ast.literal_eval(split[3]),ast.literal_eval(split[4]),\
 			ast.literal_eval(split[8]), ast.literal_eval(split[5]),\
-			ast.literal_eval(split[6]), typeList)
-      if len(typeList) > 0:
+			ast.literal_eval(split[6]),typeList)
+      #if len(typeList) > 0:
         #if queryFilter and query in queryFilter and len(typeList) > 0:
-        self.addFeature(query, i, queryFeat)
+      self.addFeature(query, i, queryFeat)
 
       #self.buildFeatCounts(i,queryFeat.userDict)
       #self.buildFeatCounts(i,queryFeat.catDict)

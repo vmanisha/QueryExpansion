@@ -53,8 +53,36 @@ def loadPairs(queryId, fileName, labeledPoints, pairLabels):
     for pair in pairs:
       pairLabels.add(pair)
 
-
-def calculateIndicies(trueLabelFile, differentPairFile, predictedLabelFile,
+			
+	
+# each pair in these sets is sorted by alphabetical order.	
+# format : same_pairs_dict = set(query1+'\t'+query2)
+# format : different_pairs = set(query1+'\t'+query2)
+# format : predicted_same_pairs_set = set(query1+'\t'+query2)
+# format : predicted_different_pairs_set = set(query1+'\t'+query2)
+def calculateIndicesFromSets(same_pairs_set, different_pairs_set,
+					predicted_same_pairs_set,
+					predicted_different_pairs_set):
+	true_positives = 0.0
+	true_negatives = 0.0
+	false_negatives = 0.0
+	false_positives = 0.0
+	
+	for predicted_pair in predicted_same_pairs_set:
+		if predicted_pair in same_pairs_set:
+			true_positives+=1.0
+		if predicted_pair in different_pairs_set:
+			false_positives+=1.0
+	for predicted_pair in predicted_different_pairs_set:
+		if predicted_pair in same_pairs_set:
+			false_negatives+=1.0
+		if predicted_pair in different_pairs_set:
+			true_negatives+=1.0
+	return true_positives, false_positives, true_negatives, \
+	false_negatives, len(same_pairs_set)+ len(different_pairs_set)
+	
+	
+def calculateIndiciesFromFiles(trueLabelFile, differentPairFile, predictedLabelFile,
                       queryList):
 
   queryId = {}
@@ -133,7 +161,7 @@ def generatePairs(elist):
 
 
 def printIndices(argv1, argv2, argv3):
-  tp, fp, fn, tn, totalPairs = calculateIndicies(argv1, argv2, argv3)
+  tp, fp, fn, tn, totalPairs = calculateIndiciesFromFiles(argv1, argv2, argv3)
   print 'Rand-Index ', RandIndex(tp, tn, totalPairs)
   recall = Recall(tp, fn)
   print 'Recall', recall
@@ -142,8 +170,8 @@ def printIndices(argv1, argv2, argv3):
   print 'fMeasure', fMeasure(prec, recall)
 
 
-def getRecallPrecision(true, diff, predict, feat):
-  tp, fp, fn, tn, totalPairs = calculateIndicies(true, diff, predict, feat)
+def getRecallPrecision(true, diff, predicted_same, predicted_diff):
+  tp, fp, fn, tn, totalPairs = calculateIndicesFromSets(true, diff, predicted_same, predicted_diff)
   rand = RandIndex(tp, tn, totalPairs)
   print 'Rand-Index ',
   recall = Recall(tp, fn)
@@ -160,7 +188,7 @@ def getRecallPrecision(true, diff, predict, feat):
 if __name__ == '__main__':
   argv = sys.argv
 
-  tp, fp, fn, tn, totalPairs = calculateIndicies(argv[1], argv[2], argv[3],
+  tp, fp, fn, tn, totalPairs = calculateIndiciesFromFiles(argv[1], argv[2], argv[3],
                                                  argv[4])
   print 'Rand-Index ', RandIndex(tp, tn, totalPairs)
   recall = Recall(tp, fn)

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import sys
 from features.featureManager import FeatureManager
 import Pycluster as clust
 import numpy as np
@@ -9,21 +8,42 @@ from clustering.build.kmean import KMeans
 from features import toString,readWeightMatrix
 from buildCategoryNetwork import returnFilteredNetwork
 from clustering.evaluate.external import getRecallPrecision
-import argparse
-def clusterAllWithKMeans(argv):
-	featMan = FeatureManager()
-	featMan.readFeatures(argv[1])
-	#sessCount = 0
-	#lastSes = None;
-	#session = []
+import argparse as ap
+
+
+def getPairLabelsFromClusters(cluster_list, featMan):
+	samePairsSet = set()
+	differentPairsSet = set()
+	for cluster in cluster_list:
+		# for each cluster get all pairs and label
+		# them on same task.
+		generatePairs(cluster, cluster, featMan, samePairsSet)
+	for i in range(len(cluster_list)-1):
+		for j in range(i+1, len(cluster_list)):
+			generatePairs(cluster_list[i], cluster_list[j], \
+			featMan, differentPairsSet)
+	return samePairsSet, differentPairsSet
+	
+def generatePairs(item_list1, item_list2, featMan, output_list):
+	for i in range(len(item_list1)):
+		query_i = featMan.returnQuery(item_list1[i])
+		for j in range(len(item_list2)):
+			query_j = featMan.returnQuery(item_list2[j])
+			if query_j < query_i:
+				temp = query_j
+				query_j = query_i
+				query_i = temp
+			output_list.add(query_i +'\t'+query_j)
+
+def clusterAllWithKMeans(lowerLimit, upperLimit, featMan, weightMatrix,\
+					samePairsSet, differentPairsSet, outDir):
 	
 	#stemmer =  stem.porter.PorterStemmer()
-	weightMatrix = readWeightMatrix(argv[2])
 	metrics = {}
 	print len(weightMatrix)
 
 	data = featMan.returnKeys()
-	for k in range(4,50,2):
+	for k in range(lowerLimit,upperLimit,2):
 		i = len(data)/k
 		if i == 0:
 			i = 1
@@ -32,31 +52,85 @@ def clusterAllWithKMeans(argv):
 		clusters = kmeans.getClusters();
 		#means = kmeans.getMeans();
 		noClus =kmeans.getTermInNoCluster();
-	
+		
 		if clusters:
-			fname = argv[5]+'_'+str(i)+'.txt'
+			predicted_same_pairs, predicted_different_pairs = \
+				getPairLabelsFromClusters(clusters)
+			fname = outDir+'_'+str(i)+'.txt'
 			oFile = open(fname,'w');
 			for entry in clusters:
 				if len(entry) > 0:
 					oFile.write(toString(entry,featMan)+'\n')
 			oFile.write('NO CLUST\t'+toString(noClus,featMan)+'\n');
 			oFile.close()
-			metrics[k] = getRecallPrecision(argv[6],argv[7],fname,argv[1])
+			metrics[k] = getRecallPrecision(samePairsSet, \
+			differentPairsSet, getPairLabelsFromClusters(clusters,featMan))
 	for tcount, met in metrics.items():
 		print tcount, met
 
-def clusterAllWithKMediods(argv):
-	featMan = FeatureManager()
-	featMan.readFeatures(argv[1])
+def clusterCatWithKMeans(lowerLimit, upperLimit, featMan, \
+						weightMatrix, samePairsSet, \
+						differentPairsSet, catQueryDist,\
+						outFile = 'cat-clusters-with-mean.txt'):
+	
+	metrics = {}
+	
+	for termCount in range(lowerLimit, upperLimit, 2):
+		i = 1
+		fclusters = []
+		allCatClusters = []
+		oFile = open(outFile+termCount,'w')
+		for cat, qIdSet in catQueryDist.items():
+			if len(qIdSet) > 1:
+				k = len(qIdSet)/termCount
+				if k == 0:
+					k = 1
+				print cat, len(qIdSet), k
+				
+				if k > 1:
+					kmeans = KMeans(k,list(qIdSet),weightMatrix,5, 0.1)
+					kmeans.cluster();
+					clusters = kmeans.getClusters();
+					noClus =kmeans.getTermInNoCluster();
+								
+					for entry in clusters:
+						allCatClusters.append(entry)
+						if len(entry) > 0:
+							cStr = toString(entry,featMan)
+							fclusters.append(cStr)
+							oFile.write(cat+'\t'+cStr+'\n');
+					oFile.write(cat+'\t'+'NO CLUST\t'+\
+								toString(noClus,featMan)+'\n');
+				else:
+					cStr = toString(qIdSet,featMan)
+					oFile.write(cat+'\t'+cStr+'\n');
+					allCatClusters.append(qIdSet)
+				
+				if i % 50 == 0:
+					print i
+				i+=1	
+		metrics[termCount] = getRecallPrecision(samePairsSet, \
+										differentPairsSet,\
+										getPairLabelsFromClusters( \
+										allCatClusters,featMan))	
+		oFile.close()
+	for tcount, met in metrics.items():
+		print tcount, met
+
+def clusterAllWithKMediods(lowerLimit, upperLimit,\
+				 featMan, weightFile, samePairsSet, \
+				 differentPairsSet, outDir):
 	
 	data = featMan.returnKeys()
-	#weightMatrix = readWeightMatrix(argv[2])
-	weightList = getWeightMatrixForKMedFromFile(featMan.returnLastId(),argv[2],data)
+	weightList = getWeightMatrixForKMedFromFile(featMan.returnLastId(),\
+												weightFile,data)
 	#getWeightMatrixForKMed(data, weightMatrix)
 	print len(weightList)
 	metrics = {}
-	print 'Clustering'
-	for k in range(4,50,2):
+	
+	for k in range(lowerLimit,upperLimit,2):
+		print 'Clustering with terms ', k
+		cluster_list = []
 		i = (len(weightList)+1)/k
 		if i == 0:
 			i = 1
@@ -71,19 +145,66 @@ def clusterAllWithKMediods(argv):
 				clusters[clusId].add(c)	
 			except:
 				print c #len(data)
-		fname = argv[5]+'_'+str(i)+'.txt'
+		fname = outDir+'_'+str(i)+'.txt'
 		oFile = open(fname,'w');
 		for entry in clusters.values():
-			#print len(entry)
+			cluster_list.append(entry)
 			qStr = toString(entry,featMan)	
 			oFile.write(qStr+'\n')
 		oFile.close()
-		metrics[k] = getRecallPrecision(argv[6],argv[7],fname,argv[1])
+		metrics[k] = getRecallPrecision(samePairsSet, differentPairsSet,\
+		getPairLabelsFromClusters(cluster_list, featMan))
 	
 	for tcount, met in metrics.items():
 		print tcount, met
 
-		
+def clusterCatWithMediods(lowerLimit, upperLimit,featMan, weightMatrix, \
+						 samePairsSet, differentPairsSet, catQueryDist, \
+						outFile = 'cat-clusters-with-med.txt'):
+	
+	oFile = open(outFile,'w')
+	metrics = {}
+	for noTerms in range(lowerLimit, upperLimit, 2):
+		fclusters = []
+		cluster_list = []
+		i = 0
+		oFile = open(outFile+termCount,'w')
+		for cat, qSet in catQueryDist.items():
+			if len(qSet) > 1: # and cat in pairs:
+				k = len(qSet)/noTerms
+				if k == 0:
+					k = 1
+			
+				qList = list(qSet)
+				catDist = getWeightMatrixForKMed(qList, weightMatrix)
+							
+				clusArray, error, opt = clust.kmedoids(catDist,k, 5, None)
+				clusters = {}
+				for c in range(len(clusArray)):
+					clusId = clusArray[c]
+					if clusId not in clusters:
+						clusters[clusId] = set()
+					clusters[clusId].add(qList[c])
+				
+				for entry in clusters.values():
+					cluster_list.append(entry)
+					qStr = toString(entry,featMan)
+					fclusters.append(qStr)
+					oFile.write(cat+'\t'+qStr+'\n');
+								
+				print 'Clust ',cat, len(clusters), error, opt
+				if i % 5 == 0:
+					print i
+					
+				i+=1	
+		metrics[noTerms] = getRecallPrecision(samePairsSet, differentPairsSet,\
+		getPairLabelsFromClusters(cluster_list, featMan))
+
+		oFile.close()
+	for tcount, met in metrics.items():
+		print tcount, met
+
+
 def getWeightMatrixForKMedFromFile(count, fileName,data):
 	weightList = []
 	weightList.append(np.array([]))
@@ -138,51 +259,11 @@ def getWeightMatrixForKMed(data, weightMatrix):
 	return weightList
 
 
-def clusterCatWithKMeans(termCount, featMan, weightMatrix, catQueryDist,outFile = 'cat-clusters-with-mean.txt'):
-	noClusSet = set()
-	fclusters = []
-
-	i = 1
-	#cat = 'illinois'
-	#qSet = catQueryDist[cat]
-	oFile = open(outFile,'w')
-	
-	for cat, qSet in catQueryDist.items():
-		if len(qSet) > 1:
-			k = len(qSet)/termCount
-			if k == 0:
-				k = 1
-			print cat, len(qSet), k
-			
-			if k > 1:
-				kmeans = KMeans(k,list(qSet),weightMatrix,5, 0.1)
-				kmeans.cluster();
-				clusters = kmeans.getClusters();
-				#means = kmeans.getMeans();
-				noClus =kmeans.getTermInNoCluster();
-				#print 'Clust ',cat, len(clusters), len(noClus), len(qSet)
-			
-			
-				for entry in clusters:
-					if len(entry) > 0:
-						cStr = toString(entry,featMan)
-						fclusters.append(cStr)
-						oFile.write(cat+'\t'+cStr+'\n');
-						#print cat,'\t', cStr
-				for entry in noClus:
-					noClusSet.add(featMan.returnQuery(entry));
-			else:
-				cStr = toString(qSet,featMan)
-				oFile.write(cat+'\t'+cStr+'\n');	
-			if i % 50 == 0:
-				print i
-			i+=1	
-	oFile.close()
-	return fclusters, noClusSet
-
 def clusterCatWithMediodsAndNetwork(featMan, weightMatrix, catQueryDist,network):
 	#cluster each cat find the outliers
 	#move them to parents
+	i = 0
+	fclusters = []
 	for cat, qSet in catQueryDist.items():
 		if len(qSet) > 1: # and cat in pairs:
 			k = len(qSet)/5
@@ -200,7 +281,7 @@ def clusterCatWithMediodsAndNetwork(featMan, weightMatrix, catQueryDist,network)
 				if clusId not in clusters:
 					clusters[clusId] = set()
 				clusters[clusId].add(qList[c])
-			outliers = getOutliers(qList,catDist)
+			#outliers = getOutliers(qList,catDist)
 			for entry in clusters.values():
 				qStr = toString(entry,featMan)
 				fclusters.append(qStr)
@@ -244,55 +325,6 @@ def getOutliers(queries, weightMatrix):
 	
 	return outliers
 			
-def clusterCatWithMediods(noTerms,featMan, weightMatrix, catQueryDist, outFile = 'cat-clusters-with-med.txt'):
-	
-	noClusSet = set()
-	fclusters = []
-	subsets = {}
-	i = 0;
-	oFile = open(outFile,'w')
-	for cat, qSet in catQueryDist.items():
-		if len(qSet) > 1: # and cat in pairs:
-			k = len(qSet)/noTerms
-			if k == 0:
-				k = 1
-			#print cat, len(qSet), k
-			qList = list(qSet)
-			catDist = getWeightMatrixForKMed(qList, weightMatrix)
-						
-			clusArray, error, opt = clust.kmedoids(catDist,k, 5, None)
-			#print 'Queries', qList
-			clusters = {}
-			for c in range(len(clusArray)):
-				clusId = clusArray[c]
-				if clusId not in clusters:
-					clusters[clusId] = set()
-				clusters[clusId].add(qList[c])
-			
-			#outliers = getOutliers(qList, catDist)
-			#if cat in pairs:
-			#	subsets[cat] = []
-			for entry in clusters.values():
-				qStr = toString(entry,featMan)
-				fclusters.append(qStr)
-				oFile.write(cat+'\t'+qStr+'\n');
-				#if cat in pairs:
-				#	subsets[cat].append(qStr)
-							
-			print 'Clust ',cat, len(clusters), error, opt
-			if i % 5 == 0:
-				print i
-				#break
-			i+=1	
-			
-			#for entry in clusters:
-				#if len(entry) > 0:
-					#cStr = toString(entry,featMan)
-					#fclusters.append(cStr)
-					##print cat,'\t', cStr
-				
-	oFile.close()
-	return fclusters, noClusSet, subsets
 
 
 def printCategoryQueryDictionary(fileName, clusFile, weightFile):
@@ -355,26 +387,56 @@ def printCategoryQueryDictionary(fileName, clusFile, weightFile):
 	outW.close();
 						
 
+# Returns two sets one with pairs labeled on same task
+# and one with pairs labeled on different task.
+def loadPairsFromFile(file_name):
+	same_task_set = set()
+	different_task_set = set()
+	
+	for line in open(file_name):
+		split = line.split('\t')
+		query1 = split[0]
+		query2 = split[1]
+		label = split[-1].strip()
+		# swap the queries if query2 precedes query1 alphabetically
+		if query2 < query1:
+			temp = query2
+			query2 = query1
+			query1 = temp
+			
+		if 'same' in label:
+			same_task_set.add(query1+'\t'+query2)
+		if 'different' in label:
+			different_task_set.add(query1+'\t'+query2)
+	return same_task_set, different_task_set		
 
 if __name__ == '__main__':
-	parser = ap.ArgumentParser(description = 'Generate clusters of entity tagged queries')
+	parser = ap.ArgumentParser(description = 'Generate clusters of'+ \
+							'entity tagged queries')
 	parser.add_argument('-f', '--featFile', help='Feature file', required=True)
-	parser.add_argument('-d', '--distFile', help='Pairwise Similarity file', required=True)
-	parser.add_argument('-o', '--outDir', help='Output Directory', required=True)
-	parser.add_argument('-a', '--algo', help='kmeans or kmediods', required=True)
-	parser.add_argument('-l', '--lowerLimit', help='min limit on #terms in cluster', required=True,type=int)
-	parser.add_argument('-u', '--upperLimit', help='upper limit on #terms in cluster', required=True,type=int)
+	parser.add_argument('-d', '--distFile', help='Pairwise Similarity file',\
+						required=True)
+	parser.add_argument('-o', '--outDir', help='Output Directory', \
+						required=True)
+	parser.add_argument('-a', '--algo', help='kmeans or kmediods or'+ \
+						'cat_kmediods or cat_kmeans', \
+						required=True)
+	parser.add_argument('-l', '--lowerLimit', help='min limit on #terms in '+\
+						'cluster', required=True,type=int)
+	parser.add_argument('-u', '--upperLimit', help='upper limit on #terms in'+\
+						' cluster', required=True,type=int)
+	parser.add_argument('-p', '--pairLabelFile', help='Task labels for a'+\
+						' pair of queries, same_task and different_task',\
+						 required=False)
 	
 	#argv = sys.argv
 	args = parser.parse_args()
 	
-	#clusterAllWithKMediods(argv)
+	
 	featMan = FeatureManager()
 	featMan.readFeatures(args.featFile)
 	weightMatrix = readWeightMatrix(args.distFile)
-	#clusterAllWithKMeans(argv)
-	catQueryDist = findCatQueryDist(args.featFile,featMan)
-	
+		
 	##stemmer =  stem.porter.PorterStemmer()
 	#catNetwork, catQueryDist = returnFilteredNetwork(argv[1], argv[3], featMan,\
 	#weightMatrix)
@@ -390,18 +452,42 @@ if __name__ == '__main__':
 	##CLUSTER PRE-MERGE
 	#metrics = {}
 	#metrics['pre-merge'] = getRecallPrecision(argv[6],argv[7],argv[4],argv[1])
+	samePairsSet = differentPairsSet = None
+	if args.pairLabelFile:
+		samePairsSet , differentPairsSet =\
+					loadPairsFromFile(args.pairLabelFile)
 	
 	for termCount in range(args.lowerLimit,args.upperLimit):
-
-		if args.algo == 'kmeans':
-		    outSuff = args.outDir+'/kmeans_'
-		    clusterCatWithKMeans(termCount,featMan, weightMatrix, catQueryDist, outSuff)
-		elif args.alog == 'kmediods':
-                      outSuff = args.outDir+'/kmeds_'
-                      clusterCatWithMediods(termCount,featMan, weightMatrix, catQueryDist,outSuff)
-                    	
-		#metrics[termCount] = getRecallPrecision(argv[6],argv[7],argv[5],argv[1])
-	
+		if args.algo == 'kmediods':
+			outSuff = args.outDir+'/kmeds_'
+			clusterAllWithKMediods(args.lowerLimit, args.upperLimit,\
+								featMan, args.weightFile, samePairsSet,\
+								differentPairsSet, args.outDir)
+		else:
+			weightMatrix = readWeightMatrix(args.distFile)
+			if args.algo == 'kmeans':
+				outSuff = args.outDir+'/kmeans_'
+				clusterAllWithKMeans(args.lowerLimit, args.upperLimit,\
+									featMan, weightMatrix, \
+									samePairsSet,
+									differentPairsSet,\
+									args.outDir)
+			elif args.algo == 'cat_kmeans':
+				catQueryDist = findCatQueryDist(args.featFile,featMan)
+				outSuff = args.outDir+'/kmeans_'
+				clusterCatWithKMeans(args.lowerLimit, args.upperLimit,\
+									featMan, weightMatrix, samePairsSet,\
+									differentPairsSet, catQueryDist, \
+									outSuff)
+			elif args.alog == 'cat_kmediods':
+				catQueryDist = findCatQueryDist(args.featFile,featMan)
+				outSuff = args.outDir+'/cat_kmeds_'
+				clusterCatWithMediods(args.lowerLimit, args.upperLimit,\
+									featMan, weightMatrix, samePairsSet,\
+									differentPairsSet,catQueryDist,\
+									outSuff)
+	                    	
+		
 	#for tcount, met in metrics.items():
 	#	print tcount, met
 	#printCategoryQueryDictionary(argv[1],argv[2],argv[3])
