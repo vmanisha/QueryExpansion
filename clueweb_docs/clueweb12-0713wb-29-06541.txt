@@ -1,0 +1,179 @@
+<html>
+ <head>
+  <script language="JavaScript">helpstat = false;stprompt = false;basic = true;function thelp(swtch){	if (swtch == 1){		basic = false;		stprompt = false;		helpstat = true;	} else if (swtch == 0) {		helpstat = false;		stprompt = false;		basic = true;	} else if (swtch == 2) {		helpstat = false;		basic = false;		stprompt = true;	}}function AddText(NewCode) {document.PostTopic.Message.value+=NewCode}function email() {	if (helpstat) {		alert("Email Tag Turns an email address into a mailto hyperlink.\n\nUSE #1: [url]someone\@anywhere.com[/url] \nUSE #2: [url=\"someone\@anywhere.com\"]link text[/url]");		}	else if (basic) {		AddTxt="[url][/url]";		AddText(AddTxt);		}	else { 		txt2=prompt("Text to be shown for the link. Leave blank if you want the url to be shown for the link.",""); 		if (txt2!=null) {			txt=prompt("URL for the link.","mailto:");      			if (txt!=null) {				if (txt2=="") {					AddTxt="[url]"+txt+"[/url]";					AddText(AddTxt);				} else {					AddTxt="[url=\""+txt+"\"]"+txt2+"[/url]";					AddText(AddTxt);				}         			} 		}	}}function showsize(size) {	if (helpstat) {		alert("Size Tag Sets the text size. Possible values are 1 to 6.\n1 being the smallest and 6 the largest.\n\nUSE: [size="+size+"]This is size "+size+" text[/size="+size+"]");	} else if (basic) {		AddTxt="[size="+size+"][/size="+size+"]";		AddText(AddTxt);	} else {                       		txt=prompt("Text to be size "+size,"Text"); 		if (txt!=null) {             			AddTxt="[size="+size+"]"+txt+"[/size="+size+"]";			AddText(AddTxt);		}        	}}function bold() {	if (helpstat) {		alert("Bold Tag Makes the enlosed text bold.\n\nUSE: [b]This is some bold text[/b]");	} else if (basic) {		AddTxt="[b][/b]";		AddText(AddTxt);	} else {  		txt=prompt("Text to be made BOLD.","Text");     		if (txt!=null) {           			AddTxt="[b]"+txt+"[/b]";			AddText(AddTxt);		}       	}}function italicize() {	if (helpstat) {		alert("Italicize Tag Makes the enlosed text italicized.\n\nUSE: [i]This is some italicized text[/i]");	} else if (basic) {		AddTxt="[i][/i]";		AddText(AddTxt);	} else {   		txt=prompt("Text to be italicized","Text");     		if (txt!=null) {           			AddTxt="[i]"+txt+"[/i]";			AddText(AddTxt);		}	        	}}function quote() {	if (helpstat){		alert("Quote tag Quotes the enclosed text to reference something specific that someone has posted.\n\nUSE: [quote]This is a quote[/quote]");	} else if (basic) {		AddTxt=" [quote] [/quote]";		AddText(AddTxt);	} else {   		txt=prompt("Text to be quoted","Text");     		if(txt!=null) {          			AddTxt=" [quote] "+txt+" [/quote]";			AddText(AddTxt);		}	        	}}function showcolor(color) {	if (helpstat) {		alert("Color Tag Sets the text color. Any named color can be used.\n\nUSE: ["+color+"]This is some "+color+" text[/"+color+"]");	} else if (basic) {		AddTxt="["+color+"][/"+color+"]";		AddText(AddTxt);	} else {       	txt=prompt("Text to be "+color,"Text");		if(txt!=null) {			AddTxt="["+color+"]"+txt+"[/"+color+"]";			AddText(AddTxt);        		} 	}}function center() { 	if (helpstat) {		alert("Centered tag Centers the enclosed text.\n\nUSE: [center]This text is centered[/center]");	} else if (basic) {		AddTxt="[center][/center]";		AddText(AddTxt);	} else {  		txt=prompt("Text to be centered","Text");     		if (txt!=null) {          			AddTxt="[center]"+txt+"[/center]";			AddText(AddTxt);		}	       	}}function hyperlink() {	if (helpstat) {		alert("Hyperlink Tag \nTurns an url into a hyperlink.\n\nUSE: [url]http://www.anywhere.com[/url]\n\nUSE: [url=http://www.anywhere.com]link text[/url]");	} else if (basic) {		AddTxt="[url][/url]";		AddText(AddTxt);	} else { 		txt2=prompt("Text to be shown for the link.\nLeave blank if you want the url to be shown for the link.",""); 		if (txt2!=null) {			txt=prompt("URL for the link.","http://");      			if (txt!=null) {				if (txt2=="") {					AddTxt="[url]"+txt+"[/url]";					AddText(AddTxt);				} else {					AddTxt="[url=\""+txt+"\"]"+txt2+"[/url]";					AddText(AddTxt);				}         			} 		}	}}function image() {	if (helpstat){		alert("Image Tag Inserts an image into the post.\n\nUSE: [img]http://www.anywhere.com/image.gif[/img]");	} else if (basic) {		AddTxt="[img][/img]";		AddText(AddTxt);	} else {  		txt=prompt("URL for graphic","http://");    		if(txt!=null) {            			AddTxt="[img]"+txt+"[/img]";			AddText(AddTxt);		}		}}function showcode() {	if (helpstat) {		alert("Code Tag Blockquotes the text you reference and preserves the formatting.\nUsefull for posting code.\n\nUSE: [code]This is formated text[/code]");	} else if (basic) {		AddTxt=" [code] [/code]";		AddText(AddTxt);	} else {   		txt=prompt("Enter code","");     		if (txt!=null) {          			AddTxt="[code]"+txt+"[/code]";			AddText(AddTxt);		}	       	}}function list() {	if (helpstat) {		alert("List Tag Builds a bulleted, numbered, or alphabetical list.\n\nUSE: [list] [*]item1[/*] [*]item2[/*] [*]item3[/*] [/list]");	} else if (basic) {		AddTxt=" [list][*]  [/*][*]  [/*][*]  [/*][/list]";		AddText(AddTxt);	} else {  		type=prompt("Type of list Enter \'A\' for alphabetical, \'1\' for numbered, Leave blank for bulleted.","");               		while ((type!="") && (type!="A") && (type!="a") && (type!="1") && (type!=null)) {			type=prompt("ERROR! The only possible values for type of list are blank 'A' and '1'.","");               		}		if (type!=null) {			if (type=="") {				AddTxt="[list]";			} else {				AddTxt="[list="+type+"]";			} 			txt="1";			while ((txt!="") && (txt!=null)) {				txt=prompt("List item Leave blank to end list",""); 				if (txt!="") {             					AddTxt+="[*]"+txt+"[/*]"; 				}                   			} 			if (type=="") {				AddTxt+="[/list] ";			} else {				AddTxt+="[/list="+type+"]";			} 			AddText(AddTxt); 		}	}}function underline() {  	if (helpstat) {		alert("Underline Tag Underlines the enclosed text.\n\nUSE: [u]This text is underlined[/u]");	} else if (basic) {		AddTxt="[u][/u]";		AddText(AddTxt);	} else {  		txt=prompt("Text to be Underlined.","Text");     		if (txt!=null) {           			AddTxt="[u]"+txt+"[/u]";			AddText(AddTxt);		}	        	}}function showfont(font) { 	if (helpstat){		alert("Font Tag Sets the font face for the enclosed text.\n\nUSE: [font="+font+"]The font of this text is "+font+"[/font]");	} else if (basic) {		AddTxt="[font="+font+"][/font="+font+"]";		AddText(AddTxt);	} else {                  		txt=prompt("Text to be in "+font,"Text");		if (txt!=null) {             			AddTxt="[font="+font+"]"+txt+"[/font="+font+"]";			AddText(AddTxt);		}        	}  }</script>
+  <title>ClearBox RADIUS &amp; TACACS+ Server Forum</title>
+  <meta name="copyright" content="This code is Copyright (C) 2000-01 Michael Anderson and Pierre Gorissen" />
+  <script language="JavaScript"><!-- hide from JavaScript-challenged browsersfunction openWindow(url) {  popupWin = window.open(url,'new_page','width=400,height=400')}function openWindow2(url) {  popupWin = window.open(url,'new_page','width=400,height=450')}function openWindow3(url) {  popupWin = window.open(url,'new_page','width=400,height=450,scrollbars=yes')}function openWindow4(url) {  popupWin = window.open(url,'new_page','width=400,height=525')}function openWindow5(url) {  popupWin = window.open(url,'new_page','width=450,height=525,scrollbars=yes,toolbars=yes,menubar=yes,resizable=yes')}// done hiding --></script>
+  <style type="text/css"><!--a:link    {color:darkblue;text-decoration:underline}a:visited {color:blue;text-decoration:underline}a:hover   {color:red;text-decoration:underline}input.radio {background: navyblue; color:#000000}--></style>
+ </head>
+ <body bgcolor="#e7e7e7" text="midnightblue" link="darkblue" alink="red" vlink="red">
+  <a name="top"></a>
+  <font face="Verdana, Arial, Helvetica">
+   <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+    <tbody>
+     <tr> 
+      <td valign="top" width="50%"><a href="default.asp"><img alt="ClearBox RADIUS &amp; TACACS+ Server Forum" border="0" src="../Img/forumlogo.gif" /></a></td> 
+      <td align="center" valign="top" width="50%"> 
+       <table border="0" cellpadding="2" cellspacing="0"> 
+        <tbody>
+         <tr> 
+          <td align="center"><font face="Verdana, Arial, Helvetica" size="2"><b>ClearBox RADIUS &amp; TACACS+ Server Forum</b></font></td> 
+         </tr> 
+         <tr> 
+          <td align="center"><font face="Verdana, Arial, Helvetica" size="1"> <a href="../"><acronym title="Homepage">Home</acronym></a> | <a href="javascript:openWindow3('pop_profile.asp?mode=Edit')"><acronym title="Edit your personal profile...">Profile</acronym></a> | <a href="policy.asp"><acronym title="Register to post to our forum...">Register</acronym></a> | <a href="active.asp"><acronym title="See what topics have been active since your last visit...">Active Topics</acronym></a> | <a href="members.asp"><acronym title="Current members of these forums...">Members</acronym></a> | <a href="search.asp"><acronym title="Perform a search by keyword, date, and/or name...">Search</acronym></a> | <a href="faq.asp"><acronym title="Answers to Frequently Asked Questions...">FAQ</acronym></a> </font></td> 
+         </tr> 
+         <form action="/forum/post.asp" method="post" id="form1" name="form1"></form> 
+         <input type="hidden" name="Method_Type" value="login" /> 
+         <tr> 
+          <td align="center"> 
+           <table> 
+            <tbody>
+             <tr> 
+              <td><font face="Verdana, Arial, Helvetica" size="1"><b>Username:</b></font><br /> <input type="text" name="Name" size="10" value="" /></td> 
+              <td><font face="Verdana, Arial, Helvetica" size="1"><b>Password:</b></font><br /> <input type="password" name="Password" size="10" value="" /></td> 
+              <td valign="bottom"> <input type="submit" value="Login" id="submit1" name="submit1" /> </td> 
+             </tr> 
+             <tr> 
+              <td colspan="3" align="left"><font face="Verdana, Arial, Helvetica" size="1"> <input type="checkbox" name="SavePassWord" value="true" checked="" /><b> Save Password</b></font> </td> 
+             </tr> 
+            </tbody>
+           </table> </td> 
+         </tr>  
+        </tbody>
+       </table> </td> 
+     </tr>
+    </tbody>
+   </table>
+   <table align="center" border="0" cellpadding="0" cellspacing="0" width="95%"> 
+    <tbody>
+     <tr> 
+      <td><script language="JavaScript" src="selectbox.js"></script><script language="JavaScript"><!--function autoReload(objform){	var tmpCookieURL = '/forum/';	if (objform.SelectSize.value == 1)	{		document.PostTopic.Message.cols = 45;		document.PostTopic.Message.rows = 6;	}	if (objform.SelectSize.value == 2)	{		document.PostTopic.Message.cols = 70;		document.PostTopic.Message.rows = 12;	}	if (objform.SelectSize.value == 3)	{		document.PostTopic.Message.cols = 90;		document.PostTopic.Message.rows = 12;	}	if (objform.SelectSize.value == 4)	{		document.PostTopic.Message.cols = 130;		document.PostTopic.Message.rows = 15;	}	document.cookie = tmpCookieURL + "strSelectSize=" + objform.SelectSize.value}function OpenPreview(){	var curCookie = "strMessagePreview=" + escape(document.PostTopic.Message.value);	document.cookie = curCookie;	popupWin = window.open('pop_preview.asp', 'preview_page', 'scrollbars=yes,width=750,height=450')	}//--></script>
+       <table border="0" width="100%" align="center"> 
+        <tbody>
+         <tr> 
+          <td width="33%" align="left"><font face="Verdana, Arial, Helvetica" size="2"> <img src="icon_folder_open.gif" border="0" />&nbsp;<a href="default.asp">All Forums</a><br /> <img src="icon_bar.gif" border="0" /><img src="icon_folder_open.gif" border="0" />&nbsp;<a href="forum.asp?FORUM_ID=4">For Server End Users</a><br /> <img src="icon_blank.gif" border="0" /><img src="icon_bar.gif" border="0" /><img src="icon_folder_open_topic.gif" border="0" />&nbsp;<a href="topic.asp?TOPIC_ID=8254">Escorted tours Tibet</a> </font></td> 
+         </tr>
+        </tbody>
+       </table><p align="center"><font face="Verdana, Arial, Helvetica" size="2"><b>Note:</b> You must be registered in order to post a reply.<br />To register, <a href="policy.asp">click here</a>. Registration is FREE!<br /></font></p>
+       <table border="0" cellspacing="0" cellpadding="0" align="center"> 
+        <tbody>
+         <tr> 
+          <td bgcolor="black"> 
+           <table border="0" cellspacing="1" cellpadding="1"> 
+            <form name="Screensize" method="POST" action="post.asp?method=TopicQuote&amp;FORUM_ID=4&amp;CAT_ID=5&amp;Forum_Title=For+Server+End+Users&amp;TOPIC_ID=8254&amp;REPLY_ID=+&amp;Topic_Title=Escorted+tours+Tibet"></form> 
+            <input name="ARCHIVE" type="hidden" value="" /> 
+            <input name="Method_Type" type="hidden" value="TopicQuote" /> 
+            <input name="Type" type="hidden" value="" /> 
+            <input name="REPLY_ID" type="hidden" value="" /> 
+            <input name="TOPIC_ID" type="hidden" value="8254" /> 
+            <input name="FORUM_ID" type="hidden" value="4" /> 
+            <input name="CAT_ID" type="hidden" value="5" /> 
+            <input name="Author" type="hidden" value="84825" /> 
+            <input name="Mod_ID" type="hidden" value="" /> 
+            <input name="Cat_Title" type="hidden" value=" " /> 
+            <input name="FORUM_Title" type="hidden" value="For Server End Users" /> 
+            <input name="Topic_Title" type="hidden" value="Escorted tours Tibet" /> 
+            <input name="M" type="hidden" value="" /> 
+            <input name="Refer" type="hidden" value="http://www.xperiencetech.com/forum/topic.asp?TOPIC_ID=8254" /> 
+            <input name="cookies" type="hidden" value="yes" /> 
+            <tbody>
+             <tr> 
+              <td bgcolor="navyblue" nowrap="" valign="top" align="right"><font face="Verdana, Arial, Helvetica" size="2"><b>Screensize:</b></font></td> 
+              <td bgcolor="navyblue"><font face="Verdana, Arial, Helvetica" size="2"> <select name="SelectSize" size="1" onchange="autoReload(document.Screensize)"> <option value="1">640 x 480</option> <option value="2" selected="">800 x 600</option> <option value="3">1024 x 768</option> <option value="4">1280 x 1024</option> </select></font> </td> 
+             </tr> 
+             <form action="post_info.asp" method="post" name="PostTopic"></form>
+             <input name="ARCHIVE" type="hidden" value="" />
+             <input name="Method_Type" type="hidden" value="TopicQuote" />
+             <input name="Type" type="hidden" value="" />
+             <input name="REPLY_ID" type="hidden" value="" />
+             <input name="TOPIC_ID" type="hidden" value="8254" />
+             <input name="FORUM_ID" type="hidden" value="4" /> 
+             <input name="CAT_ID" type="hidden" value="5" />
+             <input name="Author" type="hidden" value="84825" />
+             <input name="Mod_ID" type="hidden" value="" />
+             <input name="Cat_Title" type="hidden" value=" " />
+             <input name="FORUM_Title" type="hidden" value="For Server End Users" />
+             <input name="Topic_Title" type="hidden" value="Escorted tours Tibet" />
+             <input name="M" type="hidden" value="" />
+             <input name="Refer" type="hidden" value="http://www.xperiencetech.com/forum/topic.asp?TOPIC_ID=8254" />
+             <input name="cookies" type="hidden" value="yes" /> 
+             <tr> 
+              <td bgcolor="navyblue" nowrap="" valign="top" align="right"><font face="Verdana, Arial, Helvetica" size="2"><b>UserName:</b></font></td> 
+              <td bgcolor="navyblue"><input name="UserName" maxlength="25" size="25" type="text" value="" /></td> 
+             </tr> 
+             <tr> 
+              <td bgcolor="navyblue" nowrap="" valign="top" align="right"><font face="Verdana, Arial, Helvetica" size="2"><b>Password:</b></font></td> 
+              <td bgcolor="navyblue" valign="top"><input name="Password" maxlength="13" size="13" type="password" value="" /></td> 
+             </tr> 
+             <tr> 
+              <td bgcolor="navyblue" nowrap="" valign="top" align="right"><font face="Verdana, Arial, Helvetica" size="2"><b>Message:</b><br /> <br /> 
+                <table border="0"> 
+                 <tbody>
+                  <tr> 
+                   <td align="left" nowrap=""><font face="Verdana, Arial, Helvetica" size="2"> * HTML is OFF<br /> * Forum Code is OFF<br /> </font> </td> 
+                  </tr> 
+                 </tbody>
+                </table> </font> </td> 
+              <td bgcolor="navyblue"><textarea cols="70" name="Message" rows="12" wrap="VIRTUAL">[quote]Altitude sickness is a ordinary physiological reaction when body go to accommodate to the pressure dissimilarity, less oxygen essence, air wearisome which caused next to the alititude in their [url=http://www.mytibettours.com/tibet-classic-tour]Tibet tours from Beijing[/url]. People would suffer from the altitude sickness as in short order as the altitude reaches 2700m. The conventional symptoms of the altitude sickness were inconvenience, shortness of stir, chest tightness, anorexia, slightly burning, dizziness, fatigue and so on. In arrears to the less oxygen, some people would purple lips and fingertips, drowsiness, demented upset, could not catnap at another performance. Apart from, some people had the vulgar skin, chapped lips, nose bleeding, or chart clot. Recommendations to the origination of the plateau department, can not strut too fast, not match or running, can not do enchiridion labor, not overeating, so as not to increase the onus on the digestive organs, not drinking and smoking, have a bite more vegetables and fruits palatial in vitaminsfood, amount of moisten to board warm, less a bath to avoid catching a cold and tamein [url=http://www.mytibettours.com/china-tours-with-tibet]Tibet tour packages Singapore[/url]. Not oxygen, as much as doable to their own to adapt to it, otherwise you may be in the highlands is perpetually inseparable from the oxygen (zealous dependence). Bewitching drugs to alleviate altitude sickness: altitude Rhodiola (at least 10 days in advance to apprehend), the mesa (to Tibet after taking), American ginseng tablet, capsule Nuodikang (advantageous), 100 Ning alleviate abnormal languor (control problem caused by way of altitude sickness), American ginseng (to alleviate extreme weariness, profoundly useful), JiuXinWan (not many clothes), Salvia medication (the treatment of cardiovascular), glucose (kind of a box of five signs of altitude sickness symptoms taking a certain upshot), etc., recompense in [url=http://www.mytibettours.com/visit-tibet]Visit Tibet  tours[/url] the pause versatile people, and non-exclusive symptoms of altitude sickness can be eliminated in 1-2 days to shape to the weak penury fit 3-7 days. If you are talented to modify to the suggestion of butter tea, you can also spirits some buttered tea to alleviate altitude sickness, to a predetermined extent. Tibet common bed or a certain size towns make hospitals or haleness centers, lesser altitude sickness suggested that self-regulation to adjust to it, can conscious of a doctor. Signs of altitude sickness, it should climb more vacation, less vigour, and avow on eating, you can go on with a integer of drugs to alleviate altitude sickness. Unfeeling altitude sickness, such as occur: edema, pulmonary edema, a polluted cold and other symptoms, it is recommended that sure polyclinic transfusion, oxygen remedy, [url=http://www.mytibettours.com/tibet-travel-permit]Tibet visa for Canadians[/url], and as happily as credible to leave the mesa, in Lhasa more nearby flights every period, and out of order of Lhasa, a mere flight to be gone, the communal altitude sickness into the aircraft or to the plains disappeared without a suggestion, and without any sequelae.AEV High Steer[/quote]</textarea><br /> </td> 
+             </tr> 
+             <tr> 
+              <td bgcolor="navyblue">&nbsp;</td> 
+              <td bgcolor="navyblue"> <font face="Verdana, Arial, Helvetica" size="2"> <input name="Sig" type="checkbox" value="yes" checked="" />Check here to include your profile signature.<br /> </font> </td> 
+             </tr> 
+             <tr> 
+              <td bgcolor="navyblue">&nbsp;</td> 
+              <td bgcolor="navyblue"><input name="Submit" type="submit" value="Post New Reply" /> &nbsp;<input name="Reset" type="reset" value="Reset Fields" /></td> 
+             </tr> 
+            </tbody>
+           </table> </td> 
+         </tr>
+        </tbody>
+       </table></td>
+     </tr>
+    </tbody>
+   </table>
+   <table border="0" width="100%" align="center"></table>
+   <table border="0" width="100%" cellspacing="0" cellpadding="0" align="center"> 
+    <tbody>
+     <tr> 
+      <td bgcolor="black"> 
+       <table border="0" width="100%" cellspacing="1" cellpadding="4"> 
+        <tbody>
+         <tr> 
+          <td bgcolor="#ffce0a" colspan="2" align="center"><b><font verdana,="" arial,="" helvetica="" size="2" color="mintcream">T O P I C &nbsp;&nbsp;&nbsp; R E V I E W</font></b></td> 
+         </tr> 
+         <tr> 
+          <td bgcolor="whitesmoke" valign="top" width="100" nowrap=""><font color="midnightblue" face="Verdana, Arial, Helvetica" size="2"><b>Weteaffiste</b></font></td> 
+          <td bgcolor="whitesmoke" valign="top" width="100%"><font color="midnightblue" face="Verdana, Arial, Helvetica" size="2"> Altitude sickness is a ordinary physiological reaction when body go to accommodate to the pressure dissimilarity, less oxygen essence, air wearisome which caused next to the alititude in their [url=<a href="http://www.mytibettours.com/tibet-classic-tour" target="_blank">http://www.mytibettours.com/tibet-classic-tour</a>]Tibet tours from Beijing[/url]. People would suffer from the altitude sickness as in short order as the altitude reaches 2700m. The conventional symptoms of the altitude sickness were inconvenience, shortness of stir, chest tightness, anorexia, slightly burning, dizziness, fatigue and so on. In arrears to the less oxygen, some people would purple lips and fingertips, drowsiness, demented upset, could not catnap at another performance. Apart from, some people had the vulgar skin, chapped lips, nose bleeding, or chart clot. <br />Recommendations to the origination of the plateau department, can not strut too fast, not match or running, can not do enchiridion labor, not overeating, so as not to increase the onus on the digestive organs, not drinking and smoking, have a bite more vegetables and fruits palatial in vitaminsfood, amount of moisten to board warm, less a bath to avoid catching a cold and tamein [url=<a href="http://www.mytibettours.com/china-tours-with-tibet" target="_blank">http://www.mytibettours.com/china-tours-with-tibet</a>]Tibet tour packages Singapore[/url]. Not oxygen, as much as doable to their own to adapt to it, otherwise you may be in the highlands is perpetually inseparable from the oxygen (zealous dependence). <br />Bewitching drugs to alleviate altitude sickness: altitude Rhodiola (at least 10 days in advance to apprehend), the mesa (to Tibet after taking), American ginseng tablet, capsule Nuodikang (advantageous), 100 Ning alleviate abnormal languor (control problem caused by way of altitude sickness), American ginseng (to alleviate extreme weariness, profoundly useful), JiuXinWan (not many clothes), Salvia medication (the treatment of cardiovascular), glucose (kind of a box of five signs of altitude sickness symptoms taking a certain upshot), etc., recompense in [url=<a href="http://www.mytibettours.com/visit-tibet" target="_blank">http://www.mytibettours.com/visit-tibet</a>]Visit Tibet tours[/url] the pause versatile people, and non-exclusive symptoms of altitude sickness can be eliminated in 1-2 days to shape to the weak penury fit 3-7 days. <br />If you are talented to modify to the suggestion of butter tea, you can also spirits some buttered tea to alleviate altitude sickness, to a predetermined extent. Tibet common bed or a certain size towns make hospitals or haleness centers, lesser altitude sickness suggested that self-regulation to adjust to it, can conscious of a doctor. Signs of altitude sickness, it should climb more vacation, less vigour, and avow on eating, you can go on with a integer of drugs to alleviate altitude sickness. <br />Unfeeling altitude sickness, such as occur: edema, pulmonary edema, a polluted cold and other symptoms, it is recommended that sure polyclinic transfusion, oxygen remedy, [url=<a href="http://www.mytibettours.com/tibet-travel-permit" target="_blank">http://www.mytibettours.com/tibet-travel-permit</a>]Tibet visa for Canadians[/url], and as happily as credible to leave the mesa, in Lhasa more nearby flights every period, and out of order of Lhasa, a mere flight to be gone, the communal altitude sickness into the aircraft or to the plains disappeared without a suggestion, and without any sequelae.<p></p></font><p><font color="midnightblue" face="Verdana, Arial, Helvetica" size="2">AEV High Steer</font></p></td> 
+         </tr> 
+        </tbody>
+       </table> </td> 
+     </tr>
+    </tbody>
+   </table></font>
+  <table width="100%" border="0" bgcolor="#e7e7e7" cellpadding="0" cellspacing="4"> 
+   <tbody>
+    <tr bgcolor="#e7e7e7"> 
+     <td bgcolor="#e7e7e7"> 
+      <table border="0" width="100%" align="center" cellpadding="4" cellspacing="0"> 
+       <tbody>
+        <tr> 
+         <td bgcolor="whitesmoke" align="left" valign="top" nowrap=""><font face="Verdana, Arial, Helvetica" size="2"> <p align="left">ClearBox RADIUS &amp; TACACS+ Server Forum</p> </font></td> 
+         <td bgcolor="whitesmoke" align="right" valign="top" nowrap=""><font face="Verdana, Arial, Helvetica" size="2"> <p align="right">� 2000 - 2001 Snitz Communications</p> </font></td> 
+         <td bgcolor="whitesmoke" width="10" nowrap=""><a href="#top"><img src="icon_go_up.gif" height="15" width="15" border="0" align="right" alt="Go To Top Of Page" /></a></td> 
+        </tr> 
+       </tbody>
+      </table> </td> 
+    </tr>
+   </tbody>
+  </table>
+  <table border="0" width="100%" align="center" cellpadding="4" cellspacing="0"> 
+   <tbody>
+    <tr> 
+     <td align="right"><font face="Verdana, Arial, Helvetica" size="1"> <a href="http://forum.snitz.com"><acronym title="Powered By: Snitz Forums 2000 Version 3.3.03">Snitz Forums 2000</acronym></a> </font></td> 
+    </tr>
+   </tbody>
+  </table>  
+  <!-- timer<center><font face="Verdana, Arial, Helvetica" size="1">70207.4</font></center>end timer -->
+ </body>
+</html>
