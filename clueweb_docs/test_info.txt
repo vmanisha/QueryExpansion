@@ -1,3 +1,3 @@
 query	altitude sickness
-url
+url	http://www.xperiencetech.com/forum/topic.asp?TOPIC_ID=8254
 file	test.html
