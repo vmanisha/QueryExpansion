@@ -1,0 +1,775 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" id="typepad-standard" xmlns:fb="http://www.facebook.com/2008/fbml">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <meta name="generator" content="http://www.typepad.com/" /> 
+  <meta name="keywords" content="North Carolina Traffic Attorney, North Carolina Bankruptcy, Tax Attorney" /> 
+  <meta name="description" content="&lt;meta name=&quot;google-site-verification&quot; content=&quot;HAFcKpxSz-nqnuX5OMjUljk2KH2HH29ApxntQli2gxw&quot; /&gt;" /> 
+  <link rel="stylesheet" href="http://charlottelawyer.typepad.com/blog/styles.css?v=6" type="text/css" media="screen" /> 
+  <link rel="stylesheet" href="http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/themes/common/print.css" type="text/css" media="print" /> 
+  <link rel="alternate" type="application/atom+xml" title="Posts on 'Charlotte Attorney's blog' (Atom)" href="http://charlottelawyer.typepad.com/blog/atom.xml" /> 
+  <link rel="alternate" type="application/rss+xml" title="Posts on 'Charlotte Attorney's blog' (RSS 1.0)" href="http://charlottelawyer.typepad.com/blog/index.rdf" /> 
+  <link rel="alternate" type="application/rss+xml" title="Posts on 'Charlotte Attorney's blog' (RSS 2.0)" href="http://charlottelawyer.typepad.com/blog/rss.xml" /> 
+  <script type="text/javascript">		var TPApp = {};		TPApp.app_uri = "http://www.typepad.com/";	</script> 
+  <script type="text/javascript" src="http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/js/yui/yahoo-dom-event.js,/js/app/thumbnail-gallery-min.js,/js/app/flyouts-min.js"></script> 
+  <script type="text/javascript">		var _gaq = _gaq || [];		_gaq.push(['t2._setAccount', 'UA-225723-36']);		_gaq.push(['t2._setDomainName', 'none']);		_gaq.push(['t2._setAllowLinker', true]);        _gaq.push(['t2._setCustomVar', 1, 'Blog', '6a0133ec9e4ca2970b0133ec9e4d7f970b', 3]);        _gaq.push(['t2._setCustomVar', 2, 'Page Type', 'Category', 3]);		_gaq.push(['t2._trackPageview']);		(function() {		  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;		  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';		  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);		})();	</script> 
+  <title>Charlotte Attorney's blog: 1099</title> 
+  <link rel="start" href="http://charlottelawyer.typepad.com/blog/" title="Home" />
+ </head>
+ <body class="layout-two-column-right">
+  <div id="fb-root"></div>
+  <script>window.fbAsyncInit = function() {    FB.init( { apiKey: 'a279adbe87e2b3c505e777af99a5260d', xfbml: true } );};( function() {    var e = document.createElement( 'script' ); e.async = true;    e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';    document.getElementById( 'fb-root' ).appendChild( e );} )();</script> 
+  <div id="container"> 
+   <div id="wrapper"> 
+    <div id="container-inner" class="pkg"> 
+     <!-- banner -->
+     <div id="banner"> 
+      <div id="banner-inner" class="pkg"> 
+       <h1 id="banner-header"><a href="http://charlottelawyer.typepad.com/blog/" accesskey="1">Charlotte Attorney's blog</a></h1> 
+       <h2 id="banner-description"> Bankruptcy, Traffic, Tax
+        <link rel="me" type="text/html" href="http://www.google.com/profiles/maxwelllegal" />
+        <meta name="google-site-verification" content="HAFcKpxSz-nqnuX5OMjUljk2KH2HH29ApxntQli2gxw" /> </h2> 
+       <div id="banner-screen"></div> 
+      </div> 
+      <div id="banner-bg">
+       <a href="http://charlottelawyer.typepad.com/blog/" accesskey="1">Home</a>
+      </div>
+     </div>
+     <div id="nav"> 
+      <div id="nav-inner"> 
+       <ul class="nav-list pkg"> 
+        <li class="nav-list-item"><a href="http://charlottelawyer.typepad.com/blog/">Home</a></li> 
+        <li class="nav-list-item"><a href="http://charlottelawyer.typepad.com/blog/archives.html">Archives</a></li> 
+        <li class="nav-list-item"><a href="http://profile.typepad.com/attorney2">Profile</a></li> 
+        <li class="last-nav-list-item nav-list-item"><a href="http://charlottelawyer.typepad.com/blog/atom.xml">Subscribe</a></li> 
+       </ul> 
+      </div>
+     </div> 
+     <div id="pagebody"> 
+      <div id="pagebody-inner" class="pkg"> 
+       <div id="alpha"> 
+        <div id="alpha-inner" class="pkg"> 
+         <!-- archive header -->
+         <h2 class="content-header"> 1099</h2> 
+         <!-- entries --> 
+         <h2 class="date-header">04/10/2011</h2> 
+         <div class="entry-category-1099 entry-category-cabarrus_lawyer entry-category-charlotte_attorney entry-category-concord_attorney entry-category-file_for_bankruptcy entry-category-gastonia_attorney entry-category-gastonia_bankruptcy entry-category-gastonia_bankruptcy_lawyer entry-category-halt_foreclosure entry-category-income_tax_service entry-category-income_tax_services entry-category-individual_income entry-category-irs entry-category-irs_debt entry-category-loan_modification entry-category-mecklenburg_county_attorney entry-category-misc_income entry-category-tax_debt entry-category-tax_preparation entry-category-tax_services entry-category-taxes entry-category-unemployment entry-category-w2 entry-category-wipe_away_debt entry-category-wipe_debt_away entry-author-attorney entry-has-title entry-type-post entry" id="entry-6a0133ec9e4ca2970b014e60874f53970c"> 
+          <h3 class="entry-header"><a href="http://charlottelawyer.typepad.com/blog/2011/04/the-government-maybe-shut-down-but-that-doesnt-mean-you-still-dont-have-to-file-taxes.html">The Government maybe shut down but that doesn’t mean you still don’t have to file taxes</a></h3> 
+          <div class="entry-content"> 
+           <div class="entry-body"> 
+            <p>&nbsp;</p> 
+            <p>by <a href="http://maxwelllegal.com/taxpreparation.html" target="_blank">Income Tax</a></p> 
+            <p>&nbsp;</p> 
+            <p>Your 2010 return still needs to be mailed by April 18, 2010, North Carolina State Returns need to be mailed by April 15, 2010.</p> 
+            <p>&nbsp;</p> 
+            <p>SERVICES OFFERED <br />Because we provide tax preparation services we understand how important it is to have your taxes prepared in an efficient and timely fashion. Attorney has several years of experience a Tax Attorney and often assists clients with collection tax defense representation against both the Internal Revenue Service and North Carolina Department of Revenue. Attorney Maxwell is a highly skilled professional Attorney who takes pride in providing the highest quality of service to her clients.</p> 
+            <p>We also provide the following services:</p> 
+            <p>&nbsp;&nbsp;&nbsp; * Assistance with filing Amendments <br />&nbsp;&nbsp;&nbsp; * Tax preparation for current and prior tax years <br />&nbsp;&nbsp;&nbsp; * Collection/Audit Defense Assistance</p> 
+            <p><u>OFFICE LOCATIONS</u> <br />We have two convenient offices located in Charlotte and Concord. We also service clients all over the state of North and South Carolina. <br /><u>OFFICE HOURS</u></p> 
+            <p>&nbsp;&nbsp;&nbsp; * Monday thru Thursday 10 a.m - 6 p.m. <br />&nbsp;&nbsp;&nbsp; * Friday &amp; Saturday 9 a.m - 4 p.m.</p> 
+            <p><u>SCHEDULING <br /></u>You may Email US directly or call 704-461-1883 to schedule a time for the service to be performed. If you are unable to come the office, we will still be able to assist you with filing and processing your return. In that case we can provide you with the necessary forms and you may send those to us along with your paperwork in order to have your return processed.</p> 
+            <p><u></u></p> 
+            <p>&nbsp;&nbsp;&nbsp; *&nbsp;&nbsp; Credit Cards: Visa, Mastercard, Amex, Discover <br />&nbsp;&nbsp;&nbsp; *&nbsp;&nbsp; Money Order <br />&nbsp;&nbsp;&nbsp; *&nbsp;&nbsp; Cash<u>ACCEPTABLE FORMS OF PAYMENT</u> <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://maxwelllegal.com/taxpreparation.html" target="_blank">FREE E-FILING</a> <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Typically, when you e-file you recieve a refund within two (2) weeks of submission. Don't have a bank account? That is not a problem as well. You can have your refund deposited on a western union master card and the funds can either be withdrawn at any atm or used for purchases.</p> 
+            <p>Maxwell Law Firm, PLLC is a <a href="http://maxwelllegal.com/taxpreparation.html" target="_blank">tax firm</a> in North Carolina that provides e-filing services for irs and state current and prior year returns. They also provide debt relief assistance with&nbsp; tax debt, garnishments, a tax levy, and provide their clients with options.</p> 
+            <p>&nbsp;</p> 
+            <p><a href="http://maxwelllegal.com/taxpreparation.html">income tax refund</a>, <a href="http://maxwelllegal.com/taxpreparation.html">income tax rates</a> , <a href="http://maxwelllegal.com/taxpreparation.html">tax forms</a> , <a href="http://maxwelllegal.com/taxpreparation.html">tax calculator</a> , <a href="http://thelegaldocumentshop.com">legal documents</a></p> 
+           </div> 
+          </div>
+          <div class="entry-meta pkg"> 
+           <div class="entry-meta-info"> 
+            <a href="http://charlottelawyer.typepad.com/blog/2011/04/the-government-maybe-shut-down-but-that-doesnt-mean-you-still-dont-have-to-file-taxes.html">Apr 10, 2011 3:14:16 PM</a> | 
+            <a href="http://charlottelawyer.typepad.com/blog/1099/">1099</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/cabarrus-lawyer/">Cabarrus Lawyer</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/charlotte-attorney/">charlotte attorney</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/concord-attorney/">concord attorney</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/file-for-bankruptcy/">file for bankruptcy</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/gastonia-attorney/">Gastonia Attorney</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/gastonia-bankruptcy/">gastonia bankruptcy</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/gastonia-bankruptcy-lawyer/">Gastonia Bankruptcy Lawyer</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/halt-foreclosure/">Halt foreclosure</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax-service/">Income Tax Service</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax-services/">income tax services</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/individual-income/">Individual Income</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/irs/">IRS</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/irs-debt/">irs debt</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/loan-modification/">loan modification</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/mecklenburg-county-attorney/">Mecklenburg County Attorney</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/misc-income/">Misc Income</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-debt/">tax debt</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparation/">tax preparation</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-services/">tax services</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/taxes/">taxes</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/unemployment/">unemployment</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/w2/">W2</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/wipe-away-debt/">wipe away debt</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/wipe-debt-away/">wipe debt away</a> 
+           </div> 
+           <div class="entry-facebook-like">
+            <fb:like href="http://charlottelawyer.typepad.com/blog/2011/04/the-government-maybe-shut-down-but-that-doesnt-mean-you-still-dont-have-to-file-taxes.html" layout="button_count" show_faces="false"></fb:like>
+           </div>
+          </div> 
+          <div class="entry-footer"> 
+           <ul class="entry-footer-feedback pkg"> 
+            <li><iframe class="favorite-button-frame" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="true" src="http://www.typepad.com/services/connect/favorite?asset_id=6a0133ec9e4ca2970b014e60874f53970c&amp;theme_type=mb&amp;bgcolor=&amp;hi_color=&amp;brightness="></iframe></li> 
+            <li><a href="http://charlottelawyer.typepad.com/blog/2011/04/the-government-maybe-shut-down-but-that-doesnt-mean-you-still-dont-have-to-file-taxes.html#comments" class="entry-footer-comment">Comment <span>0</span></a></li> 
+            <li><a href="javascript:var%20b=document.body;var%20TYPEPAD___bookmarklet_domain='http://www.typepad.com/';TYPEPAD___reblog_entryxid='6a0133ec9e4ca2970b014e60874f53970c'; TYPEPAD___is_reblog = 1; if(b&amp;&amp;!document.xmlVersion){void(z=document.createElement('script'));void(z.type='text/javascript');void(z.src='http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/js/qp/loader-combined-min.js');void(b.appendChild(z));}else{}" title="Grab this post for your own blog" class="entry-footer-reblog">Reblog It <span>0</span></a></li> 
+           </ul> 
+          </div> 
+         </div> 
+         <h2 class="date-header">04/07/2011</h2> 
+         <div class="entry-category-1099 entry-category-income_tax entry-category-income_tax entry-category-income_tax_service entry-category-income_tax_services entry-category-w2 entry-author-attorney entry-has-title entry-type-post entry" id="entry-6a0133ec9e4ca2970b014e6072d67d970c"> 
+          <h3 class="entry-header"><a href="http://charlottelawyer.typepad.com/blog/2011/04/income-tax-services-by-tax-attorney-704-461-1883-w2-return-7500.html">Income Tax Services by Tax Attorney 704-461-1883 W2 return $75.00</a></h3> 
+          <div class="entry-content"> 
+           <div class="entry-body"> 
+            <div>
+             <p>This year you have until April 18th (15th for NC) to file your <a title="Income Tax, EFILE services" rel="nofollow" href="http://concordnclawyer.com/" target="_self">tax return</a>, but you may have more time if you file an <a title="Income tax extension" rel="nofollow" href="http://maxwelllegal.com/" target="_self">extension</a>.</p>
+             <p>If you owe <a title="tax debt" rel="nofollow" href="http://maxwelllegal.com/" target="_self">back taxes</a>, IRS or the State may seize your <a title="income tax refund" rel="nofollow" href="http://maxwelllegal.com/" target="_self">refund</a>. But they don't have to.....</p>
+             <p>Our trained <a title="Tax Lawyer" rel="nofollow" href="http://maxwelllegal.com/" target="_self">Tax Attorney</a>:</p>
+             <p>1. Filing prior year returns</p>
+             <p>2. Assisting with payment plans</p>
+             <p>3. Tax <a title="Tax Debt/Audit Protection, Income Tax starting at $90.00" rel="nofollow" href="http://concordnclawyer.com/" target="_self">Audits </a></p>
+             <p>4. Collection Defense</p>
+             <p>5. <a title="wipe away tax debt" rel="nofollow" href="http://charlotte.backpage.com/LegalServices/the-end-of-tax-season-is-near-have-you-filed-extension-owe-back-taxes/chapter%207" target="_self">Bankruptcy</a> (Yes Bankruptcy can clear up really old tax debt)</p>
+             <p>6. E-filing current year returns (Federal and All states) &amp;</p>
+             <p>7. Advising on your rights and options</p>
+             <p>&nbsp;</p>
+             <p>Please visit our webpage http://maxwelllegal.com/taxpreparation.html&nbsp; &amp;</p>
+             <p>Take a look at our <a title="Income Tax, EFILE services" rel="nofollow" href="http://maxwelllegal.com/2010%20Income%20Tax.pdf" target="_self">questionnaire</a></p>
+             <p>&nbsp;</p>
+             <p><span style="font-size: 8pt;">please note that quoted rate is based on filing single or head of household (w2 employee filing a federal nc state return only) Other state returns additional.</span></p>
+             <p><a rel="nofollow" href="http://maxwelllegal.com/taxpreparation.html">income tax return,</a> <a rel="nofollow" href="http://maxwelllegal.com/taxpreparation.html">state income tax</a> , <a rel="nofollow" href="http://maxwelllegal.com/">year round tax service</a>, <a rel="nofollow" href="http://maxwelllegal.com/taxpreparation.html">federal tax</a>, <a rel="nofollow" href="http://maxwelllegal.com/2010%20Income%20Tax.pdf">income tax refunds</a>, <a rel="nofollow" href="http://maxwelllegal.com/taxpreparation.html">federal income tax</a> , <a rel="nofollow" href="http://maxwelllegal.com/taxpreparation.html">income tax forms</a> , <a rel="nofollow" href="http://maxwelllegal.com/taxpreparation.html">income tax calculator, income tax refund</a>, <a rel="nofollow" href="http://maxwelllegal.com/taxpreparation.html">income tax rates</a> , <a rel="nofollow" href="http://maxwelllegal.com/taxpreparation.html">tax forms</a> , <a rel="nofollow" href="http://maxwelllegal.com/taxpreparation.html">tax calculator</a> , <a rel="nofollow" href="http://maxwelllegal.com/">Bankruptcy</a>,</p>
+            </div> 
+           </div> 
+          </div>
+          <div class="entry-meta pkg"> 
+           <div class="entry-meta-info"> 
+            <a href="http://charlottelawyer.typepad.com/blog/2011/04/income-tax-services-by-tax-attorney-704-461-1883-w2-return-7500.html">Apr 7, 2011 7:17:56 AM</a> | 
+            <a href="http://charlottelawyer.typepad.com/blog/1099/">1099</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax-1/">Income tax</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax/">income tax</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax-service/">Income Tax Service</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax-services/">income tax services</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/w2/">W2</a> 
+           </div> 
+           <div class="entry-facebook-like">
+            <fb:like href="http://charlottelawyer.typepad.com/blog/2011/04/income-tax-services-by-tax-attorney-704-461-1883-w2-return-7500.html" layout="button_count" show_faces="false"></fb:like>
+           </div>
+          </div> 
+          <div class="entry-footer"> 
+           <ul class="entry-footer-feedback pkg"> 
+            <li><iframe class="favorite-button-frame" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="true" src="http://www.typepad.com/services/connect/favorite?asset_id=6a0133ec9e4ca2970b014e6072d67d970c&amp;theme_type=mb&amp;bgcolor=&amp;hi_color=&amp;brightness="></iframe></li> 
+            <li><a href="http://charlottelawyer.typepad.com/blog/2011/04/income-tax-services-by-tax-attorney-704-461-1883-w2-return-7500.html#comments" class="entry-footer-comment">Comment <span>0</span></a></li> 
+            <li><a href="javascript:var%20b=document.body;var%20TYPEPAD___bookmarklet_domain='http://www.typepad.com/';TYPEPAD___reblog_entryxid='6a0133ec9e4ca2970b014e6072d67d970c'; TYPEPAD___is_reblog = 1; if(b&amp;&amp;!document.xmlVersion){void(z=document.createElement('script'));void(z.type='text/javascript');void(z.src='http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/js/qp/loader-combined-min.js');void(b.appendChild(z));}else{}" title="Grab this post for your own blog" class="entry-footer-reblog">Reblog It <span>0</span></a></li> 
+           </ul> 
+          </div> 
+         </div> 
+         <h2 class="date-header">04/04/2011</h2> 
+         <div class="entry-category-1099 entry-category-income_tax entry-category-income_tax entry-category-income_tax_service entry-category-income_tax_services entry-category-tax_attorney entry-category-tax_credits entry-category-tax_debt entry-category-tax_preparation entry-category-tax_preparation entry-category-tax_preparer entry-category-tax_services entry-category-taxes entry-category-taxes entry-author-attorney entry-has-title entry-type-post entry" id="entry-6a0133ec9e4ca2970b014e605eb928970c"> 
+          <h3 class="entry-header"><a href="http://charlottelawyer.typepad.com/blog/2011/04/the-end-of-tax-season-is-near-have-you-filed-extension-owe-back-taxes.html">The End of Tax Season is near? Have you filed? Extension? Owe Back Taxes?</a></h3> 
+          <div class="entry-content"> 
+           <div class="entry-body"> 
+            <p>This year you have until April 18th to file your <a href="http://concordnclawyer.com" target="_self" title="Income Tax, EFILE services">tax return</a>, but you may have more time if you file an <a href="http://maxwelllegal.com" target="_self" title="Income tax extension">extension</a>.</p>
+            <p>If you owe <a href="http://maxwelllegal.com" target="_self" title="tax debt">back taxes</a>, IRS or the State may seize your <a href="http://maxwelllegal.com" target="_self" title="income tax refund">refund</a>. But they don't have to.....</p>
+            <p>Our trained <a href="http://maxwelllegal.com" target="_self" title="Tax Lawyer">Tax Attorney</a>:</p>
+            <p>1. Filing prior year returns</p>
+            <p>2. Assisting with payment plans</p>
+            <p>3. Tax <a href="http://concordnclawyer.com" target="_self" title="Tax Debt/Audit Protection, Income Tax starting at $90.00">Audits </a></p>
+            <p>4. Collection Defense</p>
+            <p>5. <a href="chapter 7" target="_self" title="wipe away tax debt">Bankruptcy</a> (Yes Bankruptcy can clear up really old tax debt)</p>
+            <p>6. E-filing current year returns (Federal and All states) &amp;</p>
+            <p>7. Advising on your rights and options</p>
+            <p>&nbsp;</p>
+            <p>Please visit our webpage http://maxwelllegal.com/taxpreparation.html&nbsp; &amp;</p>
+            <p>Take a look at our <a href="http://maxwelllegal.com/2010 Income Tax.pdf" target="_self" title="Income Tax, EFILE services">questionnaire</a></p>
+            <p>&nbsp;</p>
+            <p><a href="http://maxwelllegal.com/taxpreparation.html">income tax return,</a> <a href="http://maxwelllegal.com/taxpreparation.html">state income tax</a> , <a href="http://maxwelllegal.com/">year round tax service</a>, <a href="http://maxwelllegal.com/taxpreparation.html">federal tax</a>, <a href="http://maxwelllegal.com/2010%20Income%20Tax.pdf">income tax refunds</a>, <a href="http://maxwelllegal.com/taxpreparation.html">federal income tax</a> , <a href="http://maxwelllegal.com/taxpreparation.html">income tax forms</a> , <a href="http://maxwelllegal.com/taxpreparation.html">income tax calculator, income tax refund</a>, <a href="http://maxwelllegal.com/taxpreparation.html">income tax rates</a> , <a href="http://maxwelllegal.com/taxpreparation.html">tax forms</a> , <a href="http://maxwelllegal.com/taxpreparation.html">tax calculator</a> , <a href="http://maxwelllegal.com/">Bankruptcy</a>,</p> 
+           </div> 
+          </div>
+          <div class="entry-meta pkg"> 
+           <div class="entry-meta-info"> 
+            <a href="http://charlottelawyer.typepad.com/blog/2011/04/the-end-of-tax-season-is-near-have-you-filed-extension-owe-back-taxes.html">Apr 4, 2011 4:58:18 AM</a> | 
+            <a href="http://charlottelawyer.typepad.com/blog/1099/">1099</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax-1/">Income tax</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax/">income tax</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax-service/">Income Tax Service</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax-services/">income tax services</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-attorney/">tax attorney</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-credits/">tax credits</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-debt/">tax debt</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparation-1/">Tax preparation</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparation/">tax preparation</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparer/">tax preparer</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-services/">tax services</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/taxes-1/">Taxes</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/taxes/">taxes</a> 
+           </div> 
+           <div class="entry-facebook-like">
+            <fb:like href="http://charlottelawyer.typepad.com/blog/2011/04/the-end-of-tax-season-is-near-have-you-filed-extension-owe-back-taxes.html" layout="button_count" show_faces="false"></fb:like>
+           </div>
+          </div> 
+          <div class="entry-footer"> 
+           <ul class="entry-footer-feedback pkg"> 
+            <li><iframe class="favorite-button-frame" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="true" src="http://www.typepad.com/services/connect/favorite?asset_id=6a0133ec9e4ca2970b014e605eb928970c&amp;theme_type=mb&amp;bgcolor=&amp;hi_color=&amp;brightness="></iframe></li> 
+            <li><a href="http://charlottelawyer.typepad.com/blog/2011/04/the-end-of-tax-season-is-near-have-you-filed-extension-owe-back-taxes.html#comments" class="entry-footer-comment">Comment <span>0</span></a></li> 
+            <li><a href="javascript:var%20b=document.body;var%20TYPEPAD___bookmarklet_domain='http://www.typepad.com/';TYPEPAD___reblog_entryxid='6a0133ec9e4ca2970b014e605eb928970c'; TYPEPAD___is_reblog = 1; if(b&amp;&amp;!document.xmlVersion){void(z=document.createElement('script'));void(z.type='text/javascript');void(z.src='http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/js/qp/loader-combined-min.js');void(b.appendChild(z));}else{}" title="Grab this post for your own blog" class="entry-footer-reblog">Reblog It <span>0</span></a></li> 
+           </ul> 
+          </div> 
+         </div> 
+         <h2 class="date-header">02/14/2011</h2> 
+         <div class="entry-category-1099 entry-category-credit_repair entry-category-income_tax entry-category-income_tax entry-category-income_tax_service entry-category-income_tax_services entry-category-irs entry-category-irs_debt entry-category-judgment entry-category-levy entry-category-lien entry-category-tax_attorney entry-category-tax_credits entry-category-tax_debt entry-category-tax_preparation entry-category-tax_preparation entry-category-tax_preparer entry-category-tax_services entry-category-taxes entry-category-taxes entry-category-w2 entry-author-attorney entry-has-title entry-type-post entry" id="entry-6a0133ec9e4ca2970b014e8611d25e970d"> 
+          <h3 class="entry-header"><a href="http://charlottelawyer.typepad.com/blog/2011/02/check-out-your-tax-preparer-.html">Check out your tax preparer -- Try looking for a qualified and legitimate preparer</a></h3> 
+          <div class="entry-content"> 
+           <div class="entry-body"> 
+            <p>You've decided to hire someone to file your taxes this year. You've looked at your <a title="tax pro time - Don't Mess With Taxes" href="http://dontmesswithtaxes.typepad.com/dont_mess_with_taxes/2011/02/tax-pro-time.html" target="_blank">tax pro</a> options and decided which kind of paid preparer fits your needs.</p>
+            <p>Now the next step: Thoroughly vetting the tax professional.</p>
+            <p>Remember, regardless of who fills out your 1040 and sends it on to the IRS, when you sign your tax return, you are legally responsible for everything on it. So it's crucial to hire a tax pro who's not only knowledgeable, but also ethical.</p>
+            <p>Most tax preparers are honest and provide quality service. But as with any consumer transaction, it's up to you, the buyer of the services, to make sure you're hiring a true professional.</p>
+            <p>Here are some things to keep in mind when someone else prepares your return.</p>
+            <p><strong>Check on IRS registration</strong><br />Starting this year, preparers must be <a title="IRS.gov urges paid preparers to register" href="http://www.irs.gov/efile/article/0,,id=118449,00.html" target="_blank">registered with the IRS</a> to file a return. Make sure the person you hire has done so.</p>
+            <p><strong>Complaints count</strong><br />Look into whether the preparer has any questionable history with the Better Business Bureau. Also check your state's board of accountancy for CPAs, your state's bar association for attorneys or the IRS Office of Professional Responsibility for Enrolled Agents.</p>
+            <p>If you live in a state that licenses or registers tax preparers, contact that regulatory office to make sure there are no complaints against the person you plan to hire.</p>
+            <p><strong>Do they belong?</strong><br />Check your preparers professional affiliations. Membership in such groups requires that a tax preparer follow a code of ethics and participate in continuing education programs.</p>
+            <p><strong>Office hours are important</strong><br />Make sure your tax preparer will be around after the April filing deadline. Some offices open up just during filing season and then disappear as soon as returns are filed. But the IRS can come asking questions about a return months later. The person who helped you file it should be around so you can get the answers to any possible IRS questions.</p>
+            <p><strong>Who does the actual work?</strong><br />If your tax preparer is part of larger firm, determine whether he or she will be the person actually doing your tax work or whether your taxes will be delegated to someone else in the office, perhaps a person with less tax training.</p>
+            <p>Also find out if your preparer exports tax returns for preparation. Foreign countries do not have the same security and privacy laws as the United States, nor is there any recourse should your information be compromised as a result of lax or nonexistent privacy procedures.</p>
+            <p><strong>How do they charge?</strong><br />Don't hire a tax preparer whose fee is based on how big of a refund you get. That's usually an indication that tax law envelopes will be pushed to get you more money than you're rightfully entitled to just so your tax preparer can make more money.</p>
+            <p>Similarly, avoid preparers who claim they can get you a larger refund than other preparers. If your returns are prepared correctly, every preparer should come up with essentially the same tax and refund numbers.</p>
+            <p><strong>Find someone who wants to know</strong><br />Be wary of preparers who aren't concerned about documentation. Reputable tax preparers will request to see your receipts and will ask you detailed questions to determine your qualifications for expenses, deductions, credits and the like. It's always better that these questions are asked by your preparer and answered before filing, rather than later by an IRS examiner.</p>
+            <p><strong>Avoid blank return requests</strong><br />Remember that warning about being responsible for the return you sign? If a tax preparer asks you to sign a blank tax return, find a new tax pro. Never sign a tax document before it's finished and then only after you've read it carefully and understand the entries.</p>
+            <p>If you're unsure about an entry and your tax pro can't explain it to your satisfaction, then don't sign the return. A tax preparer who won't or can't explain the items on your 1040 and associated schedules is either incompetent or unscrupulous.</p>
+            <p>Sure, thoroughly checking out your tax pro takes some time. But it's time well spent when it ensures that your taxes are completed properly.</p>
+            <p>For several years now Attorney Maxwell has assisted clients with tax collection defense and has seen several of her clients audited based on improperly prepared returns and countless other issues and errors on income tax returns which cause her clients a lot of trouble and money in the end. She is a Tax Lawyer that offers <a title="Low cost Income Tax Filing" href="http://maxwelllegal.com/taxes.html" target="_self">Low Cost Income tax preparation services</a>, <a title="free e file services" href="http://maxwelllegal.com/taxes.html" target="_self">FREE ELECTRONIC FILING for both <strong>individuals and business</strong></a> tax payers, <a title="1040, 1099 " href="http://concordnclawyer.com" target="_self">1040 filings, 1099 filing assistance</a>,&nbsp; and <a title="Year Around Income Tax Services" href="http://maxwelllegal.com" target="_self">year round income tax service</a></p>
+            <p>She also assists with:</p>
+            <p>Itemized Deductions (Sch A)</p>
+            <p>• Interest and Ordinary Dividends (Sch B)</p>
+            <p>•Sole Proprietorship Income &amp; Expenses (Sch C)</p>
+            <p>• Capital Gains and Losses (Sch D) <br />• Calculating Cost Basis on Long Term Investments <br />• Rental Property Income, Expenses and Depreciation (Sch E) <br />• Household Employment Taxes (Sch H) <br />• Income Tax Filing Extensions</p>
+            <p>Clients have several options for having their returns prepared. For more information see our <a title="Income Tax Form" href="http://maxwelllegal.com/2010%20Income%20Tax.pdf" target="_self">tax intake form</a> located here http://maxwelllegal.com/2010%20Income%20Tax.pdf</p> 
+           </div> 
+          </div>
+          <div class="entry-meta pkg"> 
+           <div class="entry-meta-info"> 
+            <a href="http://charlottelawyer.typepad.com/blog/2011/02/check-out-your-tax-preparer-.html">Feb 14, 2011 9:01:15 AM</a> | 
+            <a href="http://charlottelawyer.typepad.com/blog/1099/">1099</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/credit-repair/">credit repair</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax-1/">Income tax</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax/">income tax</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax-service/">Income Tax Service</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax-services/">income tax services</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/irs/">IRS</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/irs-debt/">irs debt</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/judgment/">judgment</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/levy/">levy</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/lien/">lien</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-attorney/">tax attorney</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-credits/">tax credits</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-debt/">tax debt</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparation-1/">Tax preparation</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparation/">tax preparation</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparer/">tax preparer</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-services/">tax services</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/taxes-1/">Taxes</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/taxes/">taxes</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/w2/">W2</a> 
+           </div> 
+           <div class="entry-facebook-like">
+            <fb:like href="http://charlottelawyer.typepad.com/blog/2011/02/check-out-your-tax-preparer-.html" layout="button_count" show_faces="false"></fb:like>
+           </div>
+          </div> 
+          <div class="entry-footer"> 
+           <ul class="entry-footer-feedback pkg"> 
+            <li><iframe class="favorite-button-frame" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="true" src="http://www.typepad.com/services/connect/favorite?asset_id=6a0133ec9e4ca2970b014e8611d25e970d&amp;theme_type=mb&amp;bgcolor=&amp;hi_color=&amp;brightness="></iframe></li> 
+            <li><a href="http://charlottelawyer.typepad.com/blog/2011/02/check-out-your-tax-preparer-.html#comments" class="entry-footer-comment">Comment <span>0</span></a></li> 
+            <li><a href="javascript:var%20b=document.body;var%20TYPEPAD___bookmarklet_domain='http://www.typepad.com/';TYPEPAD___reblog_entryxid='6a0133ec9e4ca2970b014e8611d25e970d'; TYPEPAD___is_reblog = 1; if(b&amp;&amp;!document.xmlVersion){void(z=document.createElement('script'));void(z.type='text/javascript');void(z.src='http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/js/qp/loader-combined-min.js');void(b.appendChild(z));}else{}" title="Grab this post for your own blog" class="entry-footer-reblog">Reblog It <span>0</span></a></li> 
+           </ul> 
+          </div> 
+         </div> 
+         <h2 class="date-header">02/07/2011</h2> 
+         <div class="entry-category-1099 entry-category-audit entry-category-audit_defense entry-category-income_tax entry-category-income_tax entry-category-income_tax_service entry-category-income_tax_services entry-category-tax_attorney entry-category-tax_credits entry-category-tax_debt entry-category-tax_preparation entry-category-tax_preparation entry-category-tax_preparer entry-category-tax_services entry-category-taxes entry-category-taxes entry-author-attorney entry-has-title entry-type-post entry" id="entry-6a0133ec9e4ca2970b0147e261821d970b"> 
+          <h3 class="entry-header"><a href="http://charlottelawyer.typepad.com/blog/2011/02/new-tax-laws-you-need-to-know.html">New tax laws you need to know</a></h3> 
+          <div class="entry-content"> 
+           <div class="entry-body"> 
+            <h6>Some deductions eliminated, personal exemptions increased</h6>
+            <h6>By <a href="http://www.tctimes.com/articles/2011/02/04/news/local/doc4d4c76a3bc518925086679.txt">Anna Troppens</a></h6>
+            <p>Published: Friday, February 4, 2011 5:30 PM EST</p>
+            <p>Income tax season is underway, and the deadline is a few days longer this year — April 18 instead of 15. The reason is Emancipation Day, celebrated in the Washington D.C. area and in some states. This year, the number of business days is affected by the holiday and the tax deadline is extended, said Glen Mitchell, owner and an enrolled agent for Tax Center in Holly. “It gives us a little bit more time,” he said.<br /> In addition, tax season has been a little slower this year — due to changes approved on Dec. 17. It enacted the Tax Relief, Unemployment Insurance Reauthorization, and Job Creation Act of 2010, extending a number of expiring provisions. These include the state and local sales tax deduction, higher education tuition and fees deduction and educator expenses deduction, a spokesperson for the Internal Revenue Service (IRS) said.</p>
+            <p>&nbsp;</p>
+            <p>read more here <a href="http://www.tctimes.com/articles/2011/02/04/news/local/doc4d4c76a3bc518925086679.txt" title="http://www.tctimes.com/articles/2011/02/04/news/local/doc4d4c76a3bc518925086679.txt">http://www.tctimes.com/articles/2011/02/04/news/local/doc4d4c76a3bc518925086679.txt</a></p>
+            <p><a href="http://maxwelllegal.com/">Free e-file</a>, <a href="http://concordnclawyer.com/">free efile</a>, <a href="http://maxwelllegal.com/">income taxes 28204</a>, <a href="http://maxwelllegal.com/">income tax 28203</a>, <a href="http://maxwelllegal.com/">income tax 28202</a>, <a href="http://maxwelllegal.com/">income tax 28262</a>, <a href="http://concordnclawyer.com/">income tax 28269</a>, <a href="http://maxwelllegal.com/">income tax 28211</a>, <a href="http://maxwelllegal.com/">income tax 28209,</a> <a href="http://concordnclawyer.com/">income tax 28025</a>, <a href="http://concordnclawyer.com/">income tax 28027</a>, <a href="http://maxwelllegal.com/taxpreparation.html">Charlotte income tax services</a>, <a href="http://concordnclawyer.com/taxes.html">concord north Carolina income tax services</a>, <a href="http://maxwelllegal.com/taxes.html">IRS Tax Returns</a>, <a href="http://www.maxwelllegal.com/">charlotte attorneys</a>, <a href="http://maxwelllegal.com/taxpreparation.html">charlotte income tax</a>, <a href="http://concordnclawyer.com/taxes.html">concord nc income tax</a>, <a href="http://maxwelllegal.com/taxpreparation.html">north Carolina state tax</a>, <a href="http://maxwelllegal.com/">efile</a>, <a href="http://concordnclawyer.com/">e-file,</a> <a href="http://maxwelllegal.com/taxes.html">authorized e-file</a>, <a href="http://maxwelllegal.com/taxpreparation.html">audit protection</a>, <a href="http://concordnclawyer.com/taxes.html">audit assistance</a>, <a href="http://maxwelllegal.com/taxpreparation.html">tax garnishment</a>, <a href="http://concordnclawyer.com/taxes.html">tax collection defense</a>, <a href="http://concordnclawyer.com/">tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">1040</a>, <a href="http://maxwelllegal.com/taxes.html">1040EZ</a>, <a href="http://maxwelllegal.com/">charlotte chapter 7</a>, <a href="http://concordnclawyer.com/">online tax preparation</a>, <a href="http://maxwelllegal.com/">tax preparation software</a>, <a href="http://concordnclawyer.com/">income tax preparation</a>, <a href="http://concordnclawyer.com/">tax preparation services</a>, <a href="http://maxwelllegal.com/2010%20Income%20Tax.pdf">income tax questionnaire</a>, <a href="http://concordnclawyer.com/">professional tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">tax preparation fees</a>, <a href="http://maxwelllegal.com/">state tax preparation</a>, <a href="http://concordnclawyer.com/">tax preparation programs</a>, <a href="http://maxwelllegal.com/">irs tax preparation</a>, <a href="http://concordnclawyer.com/">cost us tax preparation</a><a href="http://maxwelllegal.com/">, federal tax preparation</a>, <a href="http://maxwelllegal.com/">online income tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">low cost tax preparation</a>, <a href="http://concordnclawyer.com/">tax preparation companies</a>, <a href="http://maxwelllegal.com/">tax preparation websites</a>, <a href="http://maxwelllegal.com/taxes.html">tax return preparation</a>, <a href="http://maxwelllegal.com/taxes.html">cheap tax preparation</a>, <a href="http://concordnclawyer.com/">income tax preparation,</a> <a href="http://maxwelllegal.com/">software tax preparation</a>, <a href="http://concordnclawyer.com/">business tax preparation</a>, <a href="http://concordnclawyer.com/">income tax preparation services,</a> <a href="http://maxwelllegal.com/">professional tax preparation</a>,<a href="http://maxwelllegal.com/taxes.html"> software tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">help federal income tax preparation</a>, <a href="http://concordnclawyer.com/">certified tax preparer</a>, <a href="http://maxwelllegal.com/">individual tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">north Carolina income tax</a>, <a href="http://maxwelllegal.com/">low cost tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">online tax preparation</a>, <a href="http://concordnclawyer.com/">services income tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">tax preparation questions</a>, <a href="http://maxwelllegal.com/">corporate tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">income tax return preparation</a>, <a href="http://maxwelllegal.com/">income tax preparation</a>, <a href="http://concordnclawyer.com/">fees tax preparation rates</a>, <a href="http://maxwelllegal.com/">small business tax preparation north carolina</a>, <a href="http://maxwelllegal.com/taxes.html">best tax preparation</a>, <a href="http://maxwelllegal.com/">tax preparer license federal and state tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html"><em>efile tax preparation</em></a><a href="http://concordnclawyer.com/">, business tax preparation</a>, <a href="http://maxwelllegal.com/">software electronic tax, preparation tax preparation</a>, <a href="http://maxwelllegal.com/">tax preparation charlotte</a>, <a href="http://maxwelllegal.com/taxes.html">best tax preparation</a><a href="http://maxwelllegal.com/">, cheapest tax preparation concord north carolina</a>, <a href="http://maxwelllegal.com/">tax preparation checklist</a>, <a href="http://maxwelllegal.com/">tax preparer free tax preparation</a>, <a href="http://concordnclawyer.com/">concord north carolina tax preparation</a>, <a href="http://concordnclawyer.com/">federal tax return preparation</a>, <a href="http://maxwelllegal.com/">certified tax preparer become</a>, <a href="http://maxwelllegal.com/">a tax preparer professional income tax preparation software,</a> <a href="http://maxwelllegal.com/taxes.html">irs debt</a>, <a href="http://maxwelllegal.com/taxes.html">tax debt</a>, <a href="http://concordnclawyer.com/taxes.html">irs garnishment</a>, <a href="http://concordnclawyer.com/taxes.html">tax garnishment</a>, <a href="http://concordnclawyer.com/taxes.html">walkins welcome</a>, <a href="http://concordnclawyer.com/">tax preparation franchise tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">salisbury tax preparation</a>, <a href="http://maxwelllegal.com/">kannapolis low income tax preparation</a>, <a href="http://concordnclawyer.com/">online tax return preparation</a>, <a href="http://maxwelllegal.com/">income tax preparation programs</a>, <a href="http://maxwelllegal.com/taxes.html">tax preparation firms charlotte</a>, <a href="http://maxwelllegal.com/">tax preparation free online tax preparation</a>,<a href="http://maxwelllegal.com/taxes.html"> income tax preparation,</a><a href="http://maxwelllegal.com/taxes.html"> sc state tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">nc state tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">software tax preparation</a>, <a href="http://maxwelllegal.com/">personal income tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">tax preparation guide,</a> <a href="http://maxwelllegal.com/">north carolina tax preparation 2010</a>, <a href="http://concordnclawyer.com/">south carolina tax preparation 2010</a>, <a href="http://maxwelllegal.com/taxcoupon.html">year around tax services</a>, <a href="http://maxwelllegal.com/">irs online tax preparation 2010</a>, <a href="http://concordnclawyer.com/">tax preparation tax preparation</a>, <a href="http://concordnclawyer.com/">online tax preparation concord tax prep,</a> <a href="http://concordnclawyer.com/">tax return tax preparation</a>, <a href="http://maxwelllegal.com/">charlotte tax return preparation fees</a>, <a href="http://http/www.taxfoundation.org/files/state_individualincome_rates-20100327.pdf">state individual income tax,</a> <a href="http://concordnclawyer.com/">free tax preparation software</a>, <a href="http://maxwelllegal.com/taxes.html">Armed forces gross income</a>, <a href="http://concordnclawyer.com/taxes.html">Military income</a>, <a href="http://maxwelllegal.com/taxes.html">FEDERAL AND STATE INCOME TAX FILING</a><a href="http://concordnclawyer.com/taxes.html">, FAST, ACCURATE AND LOW COST</a>, <a href="http://charlotteattorney.typepad.com/">charlotte attorneys blog</a>, <a href="http://maxwelllegal.com/blog/">Charlotte Lawyer blog</a>, <a href="http://twitter.com/#%21/AttorneyMaxwell">attorneymaxwell,</a></p> 
+           </div> 
+          </div>
+          <div class="entry-meta pkg"> 
+           <div class="entry-meta-info"> 
+            <a href="http://charlottelawyer.typepad.com/blog/2011/02/new-tax-laws-you-need-to-know.html">Feb 7, 2011 5:10:22 AM</a> | 
+            <a href="http://charlottelawyer.typepad.com/blog/1099/">1099</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/audit/">audit</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/audit-defense/">audit defense</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax-1/">Income tax</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax/">income tax</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax-service/">Income Tax Service</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax-services/">income tax services</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-attorney/">tax attorney</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-credits/">tax credits</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-debt/">tax debt</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparation-1/">Tax preparation</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparation/">tax preparation</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparer/">tax preparer</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-services/">tax services</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/taxes-1/">Taxes</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/taxes/">taxes</a> 
+           </div> 
+           <div class="entry-facebook-like">
+            <fb:like href="http://charlottelawyer.typepad.com/blog/2011/02/new-tax-laws-you-need-to-know.html" layout="button_count" show_faces="false"></fb:like>
+           </div>
+          </div> 
+          <div class="entry-footer"> 
+           <ul class="entry-footer-feedback pkg"> 
+            <li><iframe class="favorite-button-frame" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="true" src="http://www.typepad.com/services/connect/favorite?asset_id=6a0133ec9e4ca2970b0147e261821d970b&amp;theme_type=mb&amp;bgcolor=&amp;hi_color=&amp;brightness="></iframe></li> 
+            <li><a href="http://charlottelawyer.typepad.com/blog/2011/02/new-tax-laws-you-need-to-know.html#comments" class="entry-footer-comment">Comment <span>0</span></a></li> 
+            <li><a href="javascript:var%20b=document.body;var%20TYPEPAD___bookmarklet_domain='http://www.typepad.com/';TYPEPAD___reblog_entryxid='6a0133ec9e4ca2970b0147e261821d970b'; TYPEPAD___is_reblog = 1; if(b&amp;&amp;!document.xmlVersion){void(z=document.createElement('script'));void(z.type='text/javascript');void(z.src='http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/js/qp/loader-combined-min.js');void(b.appendChild(z));}else{}" title="Grab this post for your own blog" class="entry-footer-reblog">Reblog It <span>0</span></a></li> 
+           </ul> 
+          </div> 
+         </div> 
+         <h2 class="date-header">01/31/2011</h2> 
+         <div class="entry-category-1099 entry-category-audit entry-category-audit_defense entry-category-efile_services entry-category-fresh_start entry-category-ganishment entry-category-garnishment entry-category-tax_preparation entry-category-tax_preparation entry-category-tax_preparer entry-category-tax_services entry-category-taxes entry-category-taxes entry-category-wipe_away_debt entry-category-wipe_debt_away entry-category-year_around_tax_service entry-author-attorney entry-has-title entry-type-post entry" id="entry-6a0133ec9e4ca2970b0147e226e6ec970b"> 
+          <h3 class="entry-header"><a href="http://charlottelawyer.typepad.com/blog/2011/01/delay-means-time-crunch-for-some-taxpayer-returns.html">Delay means time crunch for some taxpayer returns</a></h3> 
+          <div class="entry-content"> 
+           <div class="entry-body"> 
+            <p>posted by <a href="http://concordnclawyer.com/taxes.html">low cost tax preparation</a></p>
+            <p><a href="mailto:lpowers@rgj.com">By Lenita Powers</a> • lpowers@rgj.com • January 29, 2011</p>
+            <p>Changes approved late last year by Congress have pushed back the date when taxpayers who claim itemized deductions can begin filing their income tax returns, resulting in headaches for accountants and possibly a longer wait for Americans who expect refunds.</p>
+            <p>The tax-filing period began Jan. 4, but taxpayers claiming itemized deductions -- which includes almost everyone with a mortgage -- can't send in their federal tax returns until Feb. 14.</p>
+            <p>Legislation to extend former President George W. Bush's tax cuts through 2012 and other tax breaks, which were set to expire, including college tuition and the state and local sales tax deduction that benefits Nevada, weren't passed by Congress until Dec. 17.</p>
+            <p>&quot;It was so late in the year, we needed to get our systems up to speed in order to be able to accept those tax returns that had deductions related to what was in the new law,&quot; said Raphael Tulino, Internal Revenue Service spokesman for Nevada and Southern California</p>
+            <p>Out of an estimated 50 million federal tax returns, only about 9 million with itemized deductions will be affected by the changes, Tulino said.</p>
+            <p>That 9 million represents a small number of taxpayers who will be affected compared with the 140 million tax returns expected to be filed this year.</p>
+            <p>&quot;Only a third of the country itemizes,&quot; he said. &quot;So this is not affecting a majority of the taxpayers. Don't get me wrong; if you're one of those who wanted to file ASAP, we apologize. But we wanted to have those systems reprogrammed so taxpayers get their returns properly processed and we needed that extra time because of all the changes that came our way.&quot;</p>
+            <p>The upside of any delay or confusion for taxpayers who itemize is that they will be able to keep those deductions that had been set to expire and get bigger refunds.</p>
+            <p>The downside is taxpayers who prepare their own tax returns or accountants who do it for them have one month less to prepare federal tax returns, cutting their window of work down to about three months this year unless they file for extensions.</p>
+            <p>&quot;It's thrown a wrench into it,&quot; said Michael Bosma, a certified public accountant and managing shareholder with the Bosma Group in Reno. &quot;A lot of individuals' returns we file, they usually get the information for those returns to us in late January or early February. With this delay, they can't file them until the second week in February.</p>
+            <p>&quot;So now clients are thinking they don't have to get their stuff to us until later,&quot; he said. &quot;That bunches up our work so we have to reach out to clients and say, 'Please, please, get us the information as soon as possible so we can prepare your return and then file it as soon as we are able to file on Feb. 14.&quot;</p>
+            <p>The deadline to get your taxes to the IRS this year also has been pushed back by three days. Tax returns have to be postmarked by midnight April 18 instead of April 15 because of Emancipation Day, which is being observed in Washington, D.C., falls on April 15, a Friday. By law, holidays observed in the District of Columbia are comparable to a federal holiday, which pushed the tax deadline this year to April 18, a Monday.</p>
+            <p>&quot;That's another maddening part of this,&quot; said Bosma, who has clients spread across the United States and some who are international. &quot;The IRS has delayed when you can send in your return, but there is no corresponding delay on the filing deadline. So you end up with a couple of weeks less to get the same volume of work done.&quot;</p>
+            <p>Deane Albright, senior partner with Albright, Persing and Associates in Reno, doesn't think the loss of one month to get clients' taxes prepared and sent to the IRS will make that much difference.</p>
+            <p>&quot;By the time most people get their W-2s, 1099s and all that type of information gathered up, they normally don't have all that in until close to Feb. 14 anyway,&quot; said Albright, whose CPA firm has 20 people who handle individual, business and corporate taxes and audits. &quot;So the delay is not that significant.&quot;</p>
+            <p>Taxpayers who use short-form or simple tax returns with no itemized deductions can send their taxes in before Feb. 14, he said.</p>
+            <p>For those who do itemize deductions, Albright agrees with Bosma that they still need to get the information to the accountant or business that prepares their taxes as soon as possible before the Feb. 14 crunch &quot;so it will be ready to go and they will know what their refund amount will be.&quot;</p>
+            <p>Tulino said taxpayers filing returns with itemized deductions won't have to wait longer to get their refunds even though they have two weeks less to file their tax returns.</p>
+            <p>Bosma disagrees.</p>
+            <p>&quot;This will delay the refunds to those taxpayers who filed for itemized deductions,&quot; Bosma said.</p>
+            <p>&quot;If you file your return two weeks later than usual, that means it will take two weeks longer to get it. If the IRS feels confident that it's not going to happen, that's awesome, but in my mind, it will still take four to six weeks from the day they get your return to process it. I don't think the IRS has the infrastructure to get your refund back to you in two weeks' less time than it usually takes. They have not lessened the turnaround time for your refund and this year, some taxpayers have lost two weeks that they could have used to get those returns in earlier.&quot;</p>
+            <p>Bosma said the tax code changes and the delay will not affect most businesses, which had very few credits impacted.</p>
+            <p>Ben Steele of Steele and Associates, a CPA firm in Carson City, said the delay in the tax filing date is causing problems for businesses, especially if they have partnerships in some other states.</p>
+            <p>&quot;There are deadlines in some states for certain things like farming that have to be in by Feb. 15,&quot; Steele said. &quot;And all state income taxes relate to the federal income tax, so if you deal with multiple states like we do, you have issues. The federal tax programs are pretty much driving the state programs because of all the changes the IRS has to make.&quot;</p>
+            <p><a href="http://maxwelllegal.com/">Free e-file</a>, <a href="http://concordnclawyer.com/">free efile</a>, <a href="http://maxwelllegal.com/">income taxes 28204</a>, <a href="http://maxwelllegal.com/">income tax 28203</a>, <a href="http://maxwelllegal.com/">income tax 28202</a>, <a href="http://maxwelllegal.com/">income tax 28262</a>, <a href="http://concordnclawyer.com/">income tax 28269</a>, <a href="http://maxwelllegal.com/">income tax 28211</a>, <a href="http://maxwelllegal.com/">income tax 28209,</a> <a href="http://concordnclawyer.com/">income tax 28025</a>, <a href="http://concordnclawyer.com/">income tax 28027</a>, <a href="http://maxwelllegal.com/taxpreparation.html">Charlotte income tax services</a>, <a href="http://concordnclawyer.com/taxes.html">concord north Carolina income tax services</a>, <a href="http://maxwelllegal.com/taxes.html">IRS Tax Returns</a>, <a href="http://www.maxwelllegal.com/">charlotte attorneys</a>, <a href="http://maxwelllegal.com/taxpreparation.html">charlotte income tax</a>, <a href="http://concordnclawyer.com/taxes.html">concord nc income tax</a>, <a href="http://maxwelllegal.com/taxpreparation.html">north Carolina state tax</a>, <a href="http://maxwelllegal.com/">efile</a>, <a href="http://concordnclawyer.com/">e-file,</a> <a href="http://maxwelllegal.com/taxes.html">authorized e-file</a>, <a href="http://maxwelllegal.com/taxpreparation.html">audit protection</a>, <a href="http://concordnclawyer.com/taxes.html">audit assistance</a>, <a href="http://maxwelllegal.com/taxpreparation.html">tax garnishment</a>, <a href="http://concordnclawyer.com/taxes.html">tax collection defense</a>, <a href="http://concordnclawyer.com/">tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">1040</a>, <a href="http://maxwelllegal.com/taxes.html">1040EZ</a>, <a href="http://maxwelllegal.com/">charlotte chapter 7</a>, <a href="http://concordnclawyer.com/">online tax preparation</a>, <a href="http://maxwelllegal.com/">tax preparation software</a>, <a href="http://concordnclawyer.com/">income tax preparation</a>, <a href="http://concordnclawyer.com/">tax preparation services</a>, <a href="http://maxwelllegal.com/2010%20Income%20Tax.pdf">income tax questionnaire</a>, <a href="http://concordnclawyer.com/">professional tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">tax preparation fees</a>, <a href="http://maxwelllegal.com/">state tax preparation</a>, <a href="http://concordnclawyer.com/">tax preparation programs</a>, <a href="http://maxwelllegal.com/">irs tax preparation</a>, <a href="http://concordnclawyer.com/">cost us tax preparation</a><a href="http://maxwelllegal.com/">, federal tax preparation</a>, <a href="http://maxwelllegal.com/">online income tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">low cost tax preparation</a>, <a href="http://concordnclawyer.com/">tax preparation companies</a>, <a href="http://maxwelllegal.com/">tax preparation websites</a>, <a href="http://maxwelllegal.com/taxes.html">tax return preparation</a>, <a href="http://maxwelllegal.com/taxes.html">cheap tax preparation</a>, <a href="http://concordnclawyer.com/">income tax preparation,</a> <a href="http://maxwelllegal.com/">software tax preparation</a>, <a href="http://concordnclawyer.com/">business tax preparation</a>, <a href="http://concordnclawyer.com/">income tax preparation services,</a> <a href="http://maxwelllegal.com/">professional tax preparation</a>,<a href="http://maxwelllegal.com/taxes.html"> software tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">help federal income tax preparation</a>, <a href="http://concordnclawyer.com/">certified tax preparer</a>, <a href="http://maxwelllegal.com/">individual tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">north Carolina income tax</a>, <a href="http://maxwelllegal.com/">low cost tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">online tax preparation</a>, <a href="http://concordnclawyer.com/">services income tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">tax preparation questions</a>, <a href="http://maxwelllegal.com/">corporate tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">income tax return preparation</a>, <a href="http://maxwelllegal.com/">income tax preparation</a>, <a href="http://concordnclawyer.com/">fees tax preparation rates</a>, <a href="http://maxwelllegal.com/">small business tax preparation north carolina</a>, <a href="http://maxwelllegal.com/taxes.html">best tax preparation</a>, <a href="http://maxwelllegal.com/">tax preparer license federal and state tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html"><em>efile tax preparation</em></a><a href="http://concordnclawyer.com/">, business tax preparation</a>, <a href="http://maxwelllegal.com/">software electronic tax, preparation tax preparation</a>, <a href="http://maxwelllegal.com/">tax preparation charlotte</a>, <a href="http://maxwelllegal.com/taxes.html">best tax preparation</a><a href="http://maxwelllegal.com/">, cheapest tax preparation concord north carolina</a>, <a href="http://maxwelllegal.com/">tax preparation checklist</a>, <a href="http://maxwelllegal.com/">tax preparer free tax preparation</a>, <a href="http://concordnclawyer.com/">concord north carolina tax preparation</a>, <a href="http://concordnclawyer.com/">federal tax return preparation</a>, <a href="http://maxwelllegal.com/">certified tax preparer become</a>, <a href="http://maxwelllegal.com/">a tax preparer professional income tax preparation software,</a> <a href="http://maxwelllegal.com/taxes.html">irs debt</a>, <a href="http://maxwelllegal.com/taxes.html">tax debt</a>, <a href="http://concordnclawyer.com/taxes.html">irs garnishment</a>, <a href="http://concordnclawyer.com/taxes.html">tax garnishment</a>, <a href="http://concordnclawyer.com/taxes.html">walkins welcome</a>, <a href="http://concordnclawyer.com/">tax preparation franchise tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">salisbury tax preparation</a>, <a href="http://maxwelllegal.com/">kannapolis low income tax preparation</a>, <a href="http://concordnclawyer.com/">online tax return preparation</a>, <a href="http://maxwelllegal.com/">income tax preparation programs</a>, <a href="http://maxwelllegal.com/taxes.html">tax preparation firms charlotte</a>, <a href="http://maxwelllegal.com/">tax preparation free online tax preparation</a>,<a href="http://maxwelllegal.com/taxes.html"> income tax preparation,</a><a href="http://maxwelllegal.com/taxes.html"> sc state tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">nc state tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">software tax preparation</a>, <a href="http://maxwelllegal.com/">personal income tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">tax preparation guide,</a> <a href="http://maxwelllegal.com/">north carolina tax preparation 2010</a>, <a href="http://concordnclawyer.com/">south carolina tax preparation 2010</a>, <a href="http://maxwelllegal.com/taxcoupon.html">year around tax services</a>, <a href="http://maxwelllegal.com/">irs online tax preparation 2010</a>, <a href="http://concordnclawyer.com/">tax preparation tax preparation</a>, <a href="http://concordnclawyer.com/">online tax preparation concord tax prep,</a> <a href="http://concordnclawyer.com/">tax return tax preparation</a>, <a href="http://maxwelllegal.com/">charlotte tax return preparation fees</a>, <a href="http://http/www.taxfoundation.org/files/state_individualincome_rates-20100327.pdf">state individual income tax,</a> <a href="http://concordnclawyer.com/">free tax preparation software</a>, <a href="http://maxwelllegal.com/taxes.html">Armed forces gross income</a>, <a href="http://concordnclawyer.com/taxes.html">Military income</a>, <a href="http://maxwelllegal.com/taxes.html">FEDERAL AND STATE INCOME TAX FILING</a><a href="http://concordnclawyer.com/taxes.html">, FAST, ACCURATE AND LOW COST</a>, <a href="http://charlotteattorney.typepad.com/">charlotte attorneys blog</a>, <a href="http://maxwelllegal.com/blog/">Charlotte Lawyer blog</a>, <a href="http://twitter.com/#%21/AttorneyMaxwell">attorneymaxwell,</a></p> 
+           </div> 
+          </div>
+          <div class="entry-meta pkg"> 
+           <div class="entry-meta-info"> 
+            <a href="http://charlottelawyer.typepad.com/blog/2011/01/delay-means-time-crunch-for-some-taxpayer-returns.html">Jan 31, 2011 3:26:23 AM</a> | 
+            <a href="http://charlottelawyer.typepad.com/blog/1099/">1099</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/audit/">audit</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/audit-defense/">audit defense</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/e-file-services/">e-file services</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/fresh-start/">fresh start</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/ganishment/">ganishment</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/garnishment/">garnishment</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparation-1/">Tax preparation</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparation/">tax preparation</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparer/">tax preparer</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-services/">tax services</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/taxes-1/">Taxes</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/taxes/">taxes</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/wipe-away-debt/">wipe away debt</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/wipe-debt-away/">wipe debt away</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/year-around-tax-service/">year around tax service</a> 
+           </div> 
+           <div class="entry-facebook-like">
+            <fb:like href="http://charlottelawyer.typepad.com/blog/2011/01/delay-means-time-crunch-for-some-taxpayer-returns.html" layout="button_count" show_faces="false"></fb:like>
+           </div>
+          </div> 
+          <div class="entry-footer"> 
+           <ul class="entry-footer-feedback pkg"> 
+            <li><iframe class="favorite-button-frame" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="true" src="http://www.typepad.com/services/connect/favorite?asset_id=6a0133ec9e4ca2970b0147e226e6ec970b&amp;theme_type=mb&amp;bgcolor=&amp;hi_color=&amp;brightness="></iframe></li> 
+            <li><a href="http://charlottelawyer.typepad.com/blog/2011/01/delay-means-time-crunch-for-some-taxpayer-returns.html#comments" class="entry-footer-comment">Comment <span>0</span></a></li> 
+            <li><a href="javascript:var%20b=document.body;var%20TYPEPAD___bookmarklet_domain='http://www.typepad.com/';TYPEPAD___reblog_entryxid='6a0133ec9e4ca2970b0147e226e6ec970b'; TYPEPAD___is_reblog = 1; if(b&amp;&amp;!document.xmlVersion){void(z=document.createElement('script'));void(z.type='text/javascript');void(z.src='http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/js/qp/loader-combined-min.js');void(b.appendChild(z));}else{}" title="Grab this post for your own blog" class="entry-footer-reblog">Reblog It <span>0</span></a></li> 
+           </ul> 
+          </div> 
+         </div> 
+         <div class="entry-category-1099 entry-category-tax_attorney entry-category-tax_credits entry-category-tax_debt entry-category-tax_preparation entry-category-tax_preparation entry-category-w2 entry-category-year_around_tax_service entry-author-attorney entry-has-title entry-type-post entry" id="entry-6a0133ec9e4ca2970b0147e226e190970b"> 
+          <h3 class="entry-header"><a href="http://charlottelawyer.typepad.com/blog/2011/01/tax-problems-tax-return-preparation-audit-help.html">Tax Problems--Tax Return Preparation--Audit Help</a></h3> 
+          <div class="entry-content"> 
+           <div class="entry-body"> 
+            <p>by <a href="http://maxwelllegal.com/taxcoupon.html">Tax Attorney</a></p>
+            <p>If you have any kind of tax problem, Maxwell Law Firm PLLC can help. <br />All work will be done by a&nbsp; licensed tax professional, admitted to practice before the IRS. We are not part-time seasonal preparers or bookkeepers dabbling in tax, like others you may find. <br />We pride ourselves on our ability to get the job done. My office has solved some of the most difficult tax problems out there--for clients who have been to other preparers who were unable to handle tax problems. <br />We can file ANY year tax return you need to file, as well as represent you in any IRS or State negotiation. We can prepare you for an audit, go in your place or accompany you, and solve your tax problem quickly and fairly.</p>
+            <p>We offer several alternatives for collection defense and assistance.&nbsp; We can fight for your cause and save you money!</p>
+            <p><a href="http://maxwelllegal.com/">Free e-file</a>, <a href="http://concordnclawyer.com/">free efile</a>, <a href="http://maxwelllegal.com/">income taxes 28204</a>, <a href="http://maxwelllegal.com/">income tax 28203</a>, <a href="http://maxwelllegal.com/">income tax 28202</a>, <a href="http://maxwelllegal.com/">income tax 28262</a>, <a href="http://concordnclawyer.com/">income tax 28269</a>, <a href="http://maxwelllegal.com/">income tax 28211</a>, <a href="http://maxwelllegal.com/">income tax 28209,</a> <a href="http://concordnclawyer.com/">income tax 28025</a>, <a href="http://concordnclawyer.com/">income tax 28027</a>, <a href="http://maxwelllegal.com/taxpreparation.html">Charlotte income tax services</a>, <a href="http://concordnclawyer.com/taxes.html">concord north Carolina income tax services</a>, <a href="http://maxwelllegal.com/taxes.html">IRS Tax Returns</a>, <a href="http://www.maxwelllegal.com/">charlotte attorneys</a>, <a href="http://maxwelllegal.com/taxpreparation.html">charlotte income tax</a>, <a href="http://concordnclawyer.com/taxes.html">concord nc income tax</a>, <a href="http://maxwelllegal.com/taxpreparation.html">north Carolina state tax</a>, <a href="http://maxwelllegal.com/">efile</a>, <a href="http://concordnclawyer.com/">e-file,</a> <a href="http://maxwelllegal.com/taxes.html">authorized e-file</a>, <a href="http://maxwelllegal.com/taxpreparation.html">audit protection</a>, <a href="http://concordnclawyer.com/taxes.html">audit assistance</a>, <a href="http://maxwelllegal.com/taxpreparation.html">tax garnishment</a>, <a href="http://concordnclawyer.com/taxes.html">tax collection defense</a>, <a href="http://concordnclawyer.com/">tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">1040</a>, <a href="http://maxwelllegal.com/taxes.html">1040EZ</a>, <a href="http://maxwelllegal.com/">charlotte chapter 7</a>, <a href="http://concordnclawyer.com/">online tax preparation</a>, <a href="http://maxwelllegal.com/">tax preparation software</a>, <a href="http://concordnclawyer.com/">income tax preparation</a>, <a href="http://concordnclawyer.com/">tax preparation services</a>, <a href="http://maxwelllegal.com/2010%20Income%20Tax.pdf">income tax questionnaire</a>, <a href="http://concordnclawyer.com/">professional tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">tax preparation fees</a>, <a href="http://maxwelllegal.com/">state tax preparation</a>, <a href="http://concordnclawyer.com/">tax preparation programs</a>, <a href="http://maxwelllegal.com/">irs tax preparation</a>, <a href="http://concordnclawyer.com/">cost us tax preparation</a><a href="http://maxwelllegal.com/">, federal tax preparation</a>, <a href="http://maxwelllegal.com/">online income tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">low cost tax preparation</a>, <a href="http://concordnclawyer.com/">tax preparation companies</a>, <a href="http://maxwelllegal.com/">tax preparation websites</a>, <a href="http://maxwelllegal.com/taxes.html">tax return preparation</a>, <a href="http://maxwelllegal.com/taxes.html">cheap tax preparation</a>, <a href="http://concordnclawyer.com/">income tax preparation,</a> <a href="http://maxwelllegal.com/">software tax preparation</a>, <a href="http://concordnclawyer.com/">business tax preparation</a>, <a href="http://concordnclawyer.com/">income tax preparation services,</a> <a href="http://maxwelllegal.com/">professional tax preparation</a>,<a href="http://maxwelllegal.com/taxes.html"> software tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">help federal income tax preparation</a>, <a href="http://concordnclawyer.com/">certified tax preparer</a>, <a href="http://maxwelllegal.com/">individual tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">north Carolina income tax</a>, <a href="http://maxwelllegal.com/">low cost tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">online tax preparation</a>, <a href="http://concordnclawyer.com/">services income tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">tax preparation questions</a>, <a href="http://maxwelllegal.com/">corporate tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">income tax return preparation</a>, <a href="http://maxwelllegal.com/">income tax preparation</a>, <a href="http://concordnclawyer.com/">fees tax preparation rates</a>, <a href="http://maxwelllegal.com/">small business tax preparation north carolina</a>, <a href="http://maxwelllegal.com/taxes.html">best tax preparation</a>, <a href="http://maxwelllegal.com/">tax preparer license federal and state tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html"><em>efile tax preparation</em></a><a href="http://concordnclawyer.com/">, business tax preparation</a>, <a href="http://maxwelllegal.com/">software electronic tax, preparation tax preparation</a>, <a href="http://maxwelllegal.com/">tax preparation charlotte</a>, <a href="http://maxwelllegal.com/taxes.html">best tax preparation</a><a href="http://maxwelllegal.com/">, cheapest tax preparation concord north carolina</a>, <a href="http://maxwelllegal.com/">tax preparation checklist</a>, <a href="http://maxwelllegal.com/">tax preparer free tax preparation</a>, <a href="http://concordnclawyer.com/">concord north carolina tax preparation</a>, <a href="http://concordnclawyer.com/">federal tax return preparation</a>, <a href="http://maxwelllegal.com/">certified tax preparer become</a>, <a href="http://maxwelllegal.com/">a tax preparer professional income tax preparation software,</a> <a href="http://maxwelllegal.com/taxes.html">irs debt</a>, <a href="http://maxwelllegal.com/taxes.html">tax debt</a>, <a href="http://concordnclawyer.com/taxes.html">irs garnishment</a>, <a href="http://concordnclawyer.com/taxes.html">tax garnishment</a>, <a href="http://concordnclawyer.com/taxes.html">walkins welcome</a>, <a href="http://concordnclawyer.com/">tax preparation franchise tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">salisbury tax preparation</a>, <a href="http://maxwelllegal.com/">kannapolis low income tax preparation</a>, <a href="http://concordnclawyer.com/">online tax return preparation</a>, <a href="http://maxwelllegal.com/">income tax preparation programs</a>, <a href="http://maxwelllegal.com/taxes.html">tax preparation firms charlotte</a>, <a href="http://maxwelllegal.com/">tax preparation free online tax preparation</a>,<a href="http://maxwelllegal.com/taxes.html"> income tax preparation,</a><a href="http://maxwelllegal.com/taxes.html"> sc state tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">nc state tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">software tax preparation</a>, <a href="http://maxwelllegal.com/">personal income tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">tax preparation guide,</a> <a href="http://maxwelllegal.com/">north carolina tax preparation 2010</a>, <a href="http://concordnclawyer.com/">south carolina tax preparation 2010</a>, <a href="http://maxwelllegal.com/taxcoupon.html">year around tax services</a>, <a href="http://maxwelllegal.com/">irs online tax preparation 2010</a>, <a href="http://concordnclawyer.com/">tax preparation tax preparation</a>, <a href="http://concordnclawyer.com/">online tax preparation concord tax prep,</a> <a href="http://concordnclawyer.com/">tax return tax preparation</a>, <a href="http://maxwelllegal.com/">charlotte tax return preparation fees</a>, <a href="http://http/www.taxfoundation.org/files/state_individualincome_rates-20100327.pdf">state individual income tax,</a> <a href="http://concordnclawyer.com/">free tax preparation software</a>, <a href="http://maxwelllegal.com/taxes.html">Armed forces gross income</a>, <a href="http://concordnclawyer.com/taxes.html">Military income</a>, <a href="http://maxwelllegal.com/taxes.html">FEDERAL AND STATE INCOME TAX FILING</a><a href="http://concordnclawyer.com/taxes.html">, FAST, ACCURATE AND LOW COST</a>, <a href="http://charlotteattorney.typepad.com/">charlotte attorneys blog</a>, <a href="http://maxwelllegal.com/blog/">Charlotte Lawyer blog</a>, <a href="http://twitter.com/#%21/AttorneyMaxwell">attorneymaxwell,</a></p> 
+           </div> 
+          </div>
+          <div class="entry-meta pkg"> 
+           <div class="entry-meta-info"> 
+            <a href="http://charlottelawyer.typepad.com/blog/2011/01/tax-problems-tax-return-preparation-audit-help.html">Jan 31, 2011 3:21:40 AM</a> | 
+            <a href="http://charlottelawyer.typepad.com/blog/1099/">1099</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-attorney/">tax attorney</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-credits/">tax credits</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-debt/">tax debt</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparation-1/">Tax preparation</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparation/">tax preparation</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/w2/">W2</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/year-around-tax-service/">year around tax service</a> 
+           </div> 
+           <div class="entry-facebook-like">
+            <fb:like href="http://charlottelawyer.typepad.com/blog/2011/01/tax-problems-tax-return-preparation-audit-help.html" layout="button_count" show_faces="false"></fb:like>
+           </div>
+          </div> 
+          <div class="entry-footer"> 
+           <ul class="entry-footer-feedback pkg"> 
+            <li><iframe class="favorite-button-frame" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="true" src="http://www.typepad.com/services/connect/favorite?asset_id=6a0133ec9e4ca2970b0147e226e190970b&amp;theme_type=mb&amp;bgcolor=&amp;hi_color=&amp;brightness="></iframe></li> 
+            <li><a href="http://charlottelawyer.typepad.com/blog/2011/01/tax-problems-tax-return-preparation-audit-help.html#comments" class="entry-footer-comment">Comment <span>0</span></a></li> 
+            <li><a href="javascript:var%20b=document.body;var%20TYPEPAD___bookmarklet_domain='http://www.typepad.com/';TYPEPAD___reblog_entryxid='6a0133ec9e4ca2970b0147e226e190970b'; TYPEPAD___is_reblog = 1; if(b&amp;&amp;!document.xmlVersion){void(z=document.createElement('script'));void(z.type='text/javascript');void(z.src='http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/js/qp/loader-combined-min.js');void(b.appendChild(z));}else{}" title="Grab this post for your own blog" class="entry-footer-reblog">Reblog It <span>0</span></a></li> 
+           </ul> 
+          </div> 
+         </div> 
+         <h2 class="date-header">01/28/2011</h2> 
+         <div class="entry-category-1099 entry-category-audit entry-category-audit_defense entry-category-collection_defense entry-category-collections entry-category-income_tax entry-category-income_tax entry-category-income_tax_service entry-category-income_tax_services entry-category-irs entry-category-irs_debt entry-category-tax_attorney entry-category-tax_credits entry-category-tax_debt entry-category-tax_preparation entry-category-tax_preparation entry-category-tax_preparer entry-category-tax_services entry-category-taxes entry-category-taxes entry-category-wipe_away_debt entry-category-wipe_debt_away entry-author-attorney entry-has-title entry-type-post entry" id="entry-6a0133ec9e4ca2970b0148c817f9a0970c"> 
+          <h3 class="entry-header"><a href="http://charlottelawyer.typepad.com/blog/2011/01/tax-preparation-services-by-tax-lawyer.html">Tax Preparation Services by Tax Lawyer</a></h3> 
+          <div class="entry-content"> 
+           <div class="entry-body"> 
+            <p>We will offer tax preparation services for both North Carolina and South Carolina Residents.</p>
+            <p>Let our qualified Attorney with several years of experience prepare your Income Taxes. We offer FREE ELECTRONIC FILING when we prepare your taxes, and by mentioning you saw our ad on craig’s list you’ll receive <strong>DISCOUNT</strong> on your Tax Preparation. <br />Convenient evening and weekend hours, call 704-461-1883 or email us to schedule your appointment. <br />Visit our web page at <a href="http://www.maxwelllegal.com/taxpreparation.html%20and">www.maxwelllegal.com/taxpreparation.html </a>and fill out our <a href="http://maxwelllegal.com/2010%20Income%20Taxes.pdf">tax intake form</a>&nbsp; (clicking link)</p>
+            <p>Our goal is to make your life less taxing. Services we provide include: <br />• Responding to IRS Letters <br />• Identifying all possible itemized deductions <br />• Calculating Estimated Tax Payments <br />• Prior Year Returns <br />• All US State Returns <br />• Analysis of your Withholding Exemptions <br />• Sole Proprietorship Income &amp; Expenses (Sch C) <br />• Interest and Ordinary Dividends (Sch B) <br />• Capital Gains and Losses (Sch D) <br />• Calculating Cost Basis on Long Term Investments <br />• Rental Property Income, Expenses and Depreciation (Sch E) <br />• Household Employment Taxes (Sch H) <br />• Income Tax Filing Extensions <br />• Tax Collection Defense</p>
+            <p><a href="http://maxwelllegal.com/">Free e-file</a>, <a href="http://concordnclawyer.com/">free efile</a>, <a href="http://maxwelllegal.com/">income taxes 28204</a>, <a href="http://maxwelllegal.com/">income tax 28203</a>, <a href="http://maxwelllegal.com/">income tax 28202</a>, <a href="http://maxwelllegal.com/">income tax 28262</a>, <a href="http://concordnclawyer.com/">income tax 28269</a>, <a href="http://maxwelllegal.com/">income tax 28211</a>, <a href="http://maxwelllegal.com/">income tax 28209,</a> <a href="http://concordnclawyer.com/">income tax 28025</a>, <a href="http://concordnclawyer.com/">income tax 28027</a>, <a href="http://maxwelllegal.com/taxpreparation.html">Charlotte income tax services</a>, <a href="http://concordnclawyer.com/taxes.html">concord north Carolina income tax services</a>, <a href="http://maxwelllegal.com/taxes.html">IRS Tax Returns</a>, <a href="http://www.maxwelllegal.com/">charlotte attorneys</a>, <a href="http://maxwelllegal.com/taxpreparation.html">charlotte income tax</a>, <a href="http://concordnclawyer.com/taxes.html">concord nc income tax</a>, <a href="http://maxwelllegal.com/taxpreparation.html">north Carolina state tax</a>, <a href="http://maxwelllegal.com/">efile</a>, <a href="http://concordnclawyer.com/">e-file,</a> <a href="http://maxwelllegal.com/taxes.html">authorized e-file</a>, <a href="http://maxwelllegal.com/taxpreparation.html">audit protection</a>, <a href="http://concordnclawyer.com/taxes.html">audit assistance</a>, <a href="http://maxwelllegal.com/taxpreparation.html">tax garnishment</a>, <a href="http://concordnclawyer.com/taxes.html">tax collection defense</a>, <a href="http://concordnclawyer.com/">tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">1040</a>, <a href="http://maxwelllegal.com/taxes.html">1040EZ</a>, <a href="http://maxwelllegal.com/">charlotte chapter 7</a>, <a href="http://concordnclawyer.com/">online tax preparation</a>, <a href="http://maxwelllegal.com/">tax preparation software</a>, <a href="http://concordnclawyer.com/">income tax preparation</a>, <a href="http://concordnclawyer.com/">tax preparation services</a>, <a href="http://maxwelllegal.com/2010%20Income%20Tax.pdf">income tax questionnaire</a>, <a href="http://concordnclawyer.com/">professional tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">tax preparation fees</a>, <a href="http://maxwelllegal.com/">state tax preparation</a>, <a href="http://concordnclawyer.com/">tax preparation programs</a>, <a href="http://maxwelllegal.com/">irs tax preparation</a>, <a href="http://concordnclawyer.com/">cost us tax preparation</a><a href="http://maxwelllegal.com/">, federal tax preparation</a>, <a href="http://maxwelllegal.com/">online income tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">low cost tax preparation</a>, <a href="http://concordnclawyer.com/">tax preparation companies</a>, <a href="http://maxwelllegal.com/">tax preparation websites</a>, <a href="http://maxwelllegal.com/taxes.html">tax return preparation</a>, <a href="http://maxwelllegal.com/taxes.html">cheap tax preparation</a>, <a href="http://concordnclawyer.com/">income tax preparation,</a> <a href="http://maxwelllegal.com/">software tax preparation</a>, <a href="http://concordnclawyer.com/">business tax preparation</a>, <a href="http://concordnclawyer.com/">income tax preparation services,</a> <a href="http://maxwelllegal.com/">professional tax preparation</a>,<a href="http://maxwelllegal.com/taxes.html"> software tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">help federal income tax preparation</a>, <a href="http://concordnclawyer.com/">certified tax preparer</a>, <a href="http://maxwelllegal.com/">individual tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">north Carolina income tax</a>, <a href="http://maxwelllegal.com/">low cost tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">online tax preparation</a>, <a href="http://concordnclawyer.com/">services income tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">tax preparation questions</a>, <a href="http://maxwelllegal.com/">corporate tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">income tax return preparation</a>, <a href="http://maxwelllegal.com/">income tax preparation</a>, <a href="http://concordnclawyer.com/">fees tax preparation rates</a>, <a href="http://maxwelllegal.com/">small business tax preparation north carolina</a>, <a href="http://maxwelllegal.com/taxes.html">best tax preparation</a>, <a href="http://maxwelllegal.com/">tax preparer license federal and state tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html"><em>efile tax preparation</em></a><a href="http://concordnclawyer.com/">, business tax preparation</a>, <a href="http://maxwelllegal.com/">software electronic tax, preparation tax preparation</a>, <a href="http://maxwelllegal.com/">tax preparation charlotte</a>, <a href="http://maxwelllegal.com/taxes.html">best tax preparation</a><a href="http://maxwelllegal.com/">, cheapest tax preparation concord north carolina</a>, <a href="http://maxwelllegal.com/">tax preparation checklist</a>, <a href="http://maxwelllegal.com/">tax preparer free tax preparation</a>, <a href="http://concordnclawyer.com/">concord north carolina tax preparation</a>, <a href="http://concordnclawyer.com/">federal tax return preparation</a>, <a href="http://maxwelllegal.com/">certified tax preparer become</a>, <a href="http://maxwelllegal.com/">a tax preparer professional income tax preparation software,</a> <a href="http://maxwelllegal.com/taxes.html">irs debt</a>, <a href="http://maxwelllegal.com/taxes.html">tax debt</a>, <a href="http://concordnclawyer.com/taxes.html">irs garnishment</a>, <a href="http://concordnclawyer.com/taxes.html">tax garnishment</a>, <a href="http://concordnclawyer.com/taxes.html">walkins welcome</a>, <a href="http://concordnclawyer.com/">tax preparation franchise tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">salisbury tax preparation</a>, <a href="http://maxwelllegal.com/">kannapolis low income tax preparation</a>, <a href="http://concordnclawyer.com/">online tax return preparation</a>, <a href="http://maxwelllegal.com/">income tax preparation programs</a>, <a href="http://maxwelllegal.com/taxes.html">tax preparation firms charlotte</a>, <a href="http://maxwelllegal.com/">tax preparation free online tax preparation</a>,<a href="http://maxwelllegal.com/taxes.html"> income tax preparation,</a><a href="http://maxwelllegal.com/taxes.html"> sc state tax preparation</a>, <a href="http://maxwelllegal.com/taxes.html">nc state tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">software tax preparation</a>, <a href="http://maxwelllegal.com/">personal income tax preparation</a>, <a href="http://concordnclawyer.com/taxes.html">tax preparation guide,</a> <a href="http://maxwelllegal.com/">north carolina tax preparation 2010</a>, <a href="http://concordnclawyer.com/">south carolina tax preparation 2010</a>, <a href="http://maxwelllegal.com/">irs online tax preparation 2010</a>, <a href="http://concordnclawyer.com/">tax preparation tax preparation</a>, <a href="http://concordnclawyer.com/">online tax preparation concord tax prep,</a> <a href="http://concordnclawyer.com/">tax return tax preparation</a>, <a href="http://maxwelllegal.com/">charlotte tax return preparation fees</a>, <a href="http://http/www.taxfoundation.org/files/state_individualincome_rates-20100327.pdf">state individual income tax,</a> <a href="http://concordnclawyer.com/">free tax preparation software</a>, <a href="http://maxwelllegal.com/taxes.html">Armed forces gross income</a>, <a href="http://concordnclawyer.com/taxes.html">Military income</a>, <a href="http://maxwelllegal.com/taxes.html">FEDERAL AND STATE INCOME TAX FILING</a><a href="http://concordnclawyer.com/taxes.html">, FAST, ACCURATE AND LOW COST</a>, <a href="http://charlotteattorney.typepad.com/">charlotte attorneys blog</a>, <a href="http://maxwelllegal.com/blog/">Charlotte Lawyer blog</a>, <a href="http://twitter.com/#%21/AttorneyMaxwell">attorneymaxwell,</a></p> 
+           </div> 
+          </div>
+          <div class="entry-meta pkg"> 
+           <div class="entry-meta-info"> 
+            <a href="http://charlottelawyer.typepad.com/blog/2011/01/tax-preparation-services-by-tax-lawyer.html">Jan 28, 2011 2:52:01 AM</a> | 
+            <a href="http://charlottelawyer.typepad.com/blog/1099/">1099</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/audit/">audit</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/audit-defense/">audit defense</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/collection-defense/">collection defense</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/collections/">collections</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax-1/">Income tax</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax/">income tax</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax-service/">Income Tax Service</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/income-tax-services/">income tax services</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/irs/">IRS</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/irs-debt/">irs debt</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-attorney/">tax attorney</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-credits/">tax credits</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-debt/">tax debt</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparation-1/">Tax preparation</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparation/">tax preparation</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparer/">tax preparer</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-services/">tax services</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/taxes-1/">Taxes</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/taxes/">taxes</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/wipe-away-debt/">wipe away debt</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/wipe-debt-away/">wipe debt away</a> 
+           </div> 
+           <div class="entry-facebook-like">
+            <fb:like href="http://charlottelawyer.typepad.com/blog/2011/01/tax-preparation-services-by-tax-lawyer.html" layout="button_count" show_faces="false"></fb:like>
+           </div>
+          </div> 
+          <div class="entry-footer"> 
+           <ul class="entry-footer-feedback pkg"> 
+            <li><iframe class="favorite-button-frame" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="true" src="http://www.typepad.com/services/connect/favorite?asset_id=6a0133ec9e4ca2970b0148c817f9a0970c&amp;theme_type=mb&amp;bgcolor=&amp;hi_color=&amp;brightness="></iframe></li> 
+            <li><a href="http://charlottelawyer.typepad.com/blog/2011/01/tax-preparation-services-by-tax-lawyer.html#comments" class="entry-footer-comment">Comment <span>0</span></a></li> 
+            <li><a href="javascript:var%20b=document.body;var%20TYPEPAD___bookmarklet_domain='http://www.typepad.com/';TYPEPAD___reblog_entryxid='6a0133ec9e4ca2970b0148c817f9a0970c'; TYPEPAD___is_reblog = 1; if(b&amp;&amp;!document.xmlVersion){void(z=document.createElement('script'));void(z.type='text/javascript');void(z.src='http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/js/qp/loader-combined-min.js');void(b.appendChild(z));}else{}" title="Grab this post for your own blog" class="entry-footer-reblog">Reblog It <span>0</span></a></li> 
+           </ul> 
+          </div> 
+         </div> 
+         <h2 class="date-header">01/18/2011</h2> 
+         <div class="entry-category-1099 entry-category-bankruptcy_attorney entry-category-bankruptcy_lawyer entry-category-cabarrus_lawyer entry-category-chapter_13 entry-category-chapter_7 entry-category-charlotte_attorney entry-category-charlotte_lawyer entry-category-collections entry-category-creditors entry-category-foreclosure entry-category-garnishment entry-category-gastonia_attorney entry-category-gastonia_bankruptcy entry-category-loan_modification entry-category-mecklenburg_county_attorney entry-category-monroe_lawyer entry-category-personal_bankruptcy entry-category-redemption entry-category-reposession entry-category-reposses entry-category-tax_debt entry-category-wipe_debt_away entry-author-attorney entry-has-title entry-type-post entry" id="entry-6a0133ec9e4ca2970b0147e1d87747970b"> 
+          <h3 class="entry-header"><a href="http://charlottelawyer.typepad.com/blog/2011/01/filing-bankruptcy-can-keep-the-creditors-from-harassing-you.html">Filing Bankruptcy Can Keep The Creditors From Harassing You</a></h3> 
+          <div class="entry-content"> 
+           <div class="entry-body"> 
+            <p>posted by&nbsp; <a href="http://maxwelllegal.com">charlotte chapter 7</a></p> 
+            <p>17.01.2011 | Author: <a href="http://www.freeezinearticles.com/author/smithsbryan/">smithsbryan</a> | Posted in <a href="http://www.freeezinearticles.com/category/finance/debt-consolidation/">Debt Consolidation</a></p> 
+            <p>Regardless of what your creditors may have led you to believe, you have more power than you think when it comes to your finances. You need to learn more about filing bankruptcy and how the automatic stay may give you comforting protection from creditors that you haven’t had in a very long time. If you’ve grown tired of the late-night collection calls from angry creditors and then having to explain to your kids why you’re so upset after getting off the phone, take action now before it’s too late.</p> 
+            <p>There is a lot of important information that a person should be aware of whether they are looking specifically for personal bankruptcy information or business bankruptcy information. If you are having financial troubles in your personal or business life and think that you may have to file for bankruptcy, this is information that you are going to find very useful.</p> 
+            <p>You may not even realize that there are other things you can do before you go through with bankruptcy, which just may end up saving you and helping you use all the benefits that are available to you.</p> 
+            <p><a href="http://maxwelllegal.com">charlotte chapter 7</a>, <a href="http://maxwelllegal.com/">Bankruptcy</a>, <a href="http://concordnclawyer.com/">Bankruptcies</a>, <a href="http://concordnclawyer.com/">North Carolina Bankruptcy</a>, <a href="http://maxwelllegal.com/">North Carolina Bankruptcy Attorney</a>, <a href="http://maxwelllegal.com/">North Carolina Bankruptcy Lawyer</a>, <a href="http://maxwelllegal.com">Debt free</a>, <a href="http://maxwelllegal.com">Filing bankruptcy in north Carolina</a>, <a href="http://maxwelllegal.com/">file for bankruptcy,</a> <a href="http://maxwelllegal.com">Bankruptcy in north Carolina</a>, <a href="http://concordnclawyer.com">bankruptcy in nc</a>, <a href="http://concordnclawyer.com">Cheap bankruptcy</a>, <a href="http://maxwelllegal.com">low cost bankruptcy</a>, <a href="http://maxwelllegal.com">Chlt Atty</a>, <a href="http://queencitylawyer.com">Queen City Lawyer</a>, <a href="http://queencityattorney.com">Queen City Attorney</a>, <a href="http://maxwelllegal.com">Clt Bk</a>, <a href="http://maxwelllegal.com">Bk Attorney</a>, <a href="http://concordnclawyer.com">Bk Lawyer</a>, <a href="http://maxwelllegal.com/">Charlotte Attorney,</a> <a href="http://maxwelllegal.com/">Charlotte Lawyer</a>,&nbsp; <a href="http://maxwelllegal.com/">Mecklenburg County Lawyer</a>, <a href="http://maxwelllegal.com/">Mecklenburg County Attorney</a>, <a href="http://concordnclawyer.com/">Concord Attorney</a>, <a href="http://concordnclawyer.com/">Concord NC Lawyer</a>, <a href="http://concordnclawyer.com">unpaid medical bills</a>, <a href="http://maxwelllegal.com/">Concord NC Attorney</a>, <a href="http://concordnclawyer.com/">Concord Lawyer</a>, <a href="http://concordnclawyer.com/">Cabarrus County Lawyer</a>, <a href="http://concordnclawyer.com/">Cabarrus County Attorney</a>, <a href="http://concordnclawyer.com/">Halt foreclosure with Bankruptcy</a>, <a href="http://maxwelllegal.com/">Stop Foreclosure in Charlotte</a>, <a href="http://maxwelllegal.com/">moratorium on foreclosure</a>, <a href="http://maxwelllegal.com/">Charlotte bankruptcy</a>, <a href="http://maxwelllegal.com">TAX DEBT</a>, <a href="http://maxwelllegal.com">IRS LEVY</a>,&nbsp; <a href="http://concordnclawyer.com/">Concord bankruptcy</a>, <a href="http://concordnclawyer.com/">Concord Bankruptcy Attorney,</a> <a href="http://concordnclawyer.com/">concord bankruptcy lawyer</a> <a href="http://maxwelllegal.com/">Concord chapter 7</a>, <a href="http://maxwelllegal.com">filing for chapter 7</a>, <a href="http://maxwelllegal.com">Chapter 7 Attorney</a>, <a href="http://concordnclawyer.com">Chapter 7 Lawyer</a>, <a href="http://concordnclawyer.com">Chapter 13 Attorney</a>, <a href="http://legalhelpincharlotte.com">Chapter 13 Lawyer</a>, <a href="http://maxwelllegal.com">north Carolina chapter 7</a>, <a href="http://www.maxwelllegal.com">charlotte attorneys</a>, <a href="http://concordnclawyer.com">concord nc foreclosure help</a>, <a href="http://concordnclawyer.com">foreclosure assistance</a>, <a href="http://maxwelllegal.com/">Charlotte chapter 7</a>, <a href="http://maxwelllegal.com/">Charlotte bankruptcy attorney</a>, <a href="http://maxwelllegal.com/">charlotte bankruptcy lawyer</a>, <a href="http://maxwelllegal.com/">Gastonia Bankruptcy</a>, <a href="http://maxwelllegal.com/">Monroe NC Bankruptcy</a>, <a href="http://maxwelllegal.com/">Monroe North Carolina bankruptcy</a>, <a href="http://maxwelllegal.com/">Union County Bankruptcy</a>, <a href="http://concordnclawyer.com/">Salisbury Bankruptcy</a>, <a href="http://concordnclawyer.com/">Lexington Bankruptcy</a>, <a href="http://concordnclawyer.com/">Winston Salem Bankruptcy</a>, <a href="http://concordnclawyer.com/">Kannapolis Bankruptcy,</a> <a href="http://maxwelllegal.com/">North Carolina Bankruptcy</a>, <a href="http://concordnclawyer.com/">Tax Attorney</a>, <a href="http://maxwelllegal.com/">Tax Debt Help</a>,&nbsp; <a href="http://maxwelllegal.com/">foreclosure help</a>,&nbsp; <a href="http://concordnclawyer.com/">foreclosure assistance</a>, <a href="http://maxwelllegal.com/">tax garnishment</a>, <a href="http://maxwelllegal.com/">chapter 7</a>, <a href="http://maxwelllegal.com/">chapter 13</a>, <a href="http://maxwelllegal.com/">stop foreclosure</a>, <a href="http://maxwelllegal.com/">bankruptcy lawyers</a>, <a href="http://maxwelllegal.com/">bankruptcy attorneys</a>,&nbsp; <a href="http://maxwelllegal.com/">tax foreclosures</a>, <a href="http://maxwelllegal.com/">Foreclosure defense</a>, <a href="http://maxwelllegal.com/taxes.html">FILE INCOME TAX</a>, <a href="http://maxwelllegal.com/taxes.html">NORTH CAROLINA TAX RETURNS</a>,&nbsp; <a href="http://concordnclawyer.com/">High Point Bankruptcy</a>, <a href="http://concordnclawyer.com/">Middle District of North Carolina</a>, <a href="http://maxwelllegal.com/">Western District of North Carolina</a>, <a href="http://maxwelllegal.com/">Bank foreclosures</a>, <a href="http://maxwelllegal.com/">wage garnishment</a>,&nbsp; <a href="http://liverpoollegal.com">CALIFORNIA BANKRUPTCY</a>, <a href="http://maxwelllegal.com/">North Carolina Bankruptcy</a>, <a href="http://maxwelllegal.com/">north Carolina bankruptcy lawyer</a>, <a href="http://concordnclawyer.com/">north Carolina bankruptcy attorney</a>, <a href="http://thelegaldocumentshop.com">sample bankruptcy petition</a>, <a href="http://thelegaldocumentshop.com">sample reaffirmation agreement</a>, <a href="http://thelegaldocumentshop.com">sample chapter 13 plan</a>, <a href="http://maxwelllegal.com/">loans after bankruptcy</a>, <a href="http://maxwelllegal.com/">credit repair</a> , <a href="http://maxwelllegal.com/foreclosure.html">stop foreclosure</a>, <a href="http://maxwelllegal.com/foreclosure.html">north Carolina short sale</a>, <a href="http://maxwelllegal.com/">deed in lieu of foreclosure, </a><a href="http://charlotteattorney.typepad.com">charlotte attorneys blog</a>, <a href="http://maxwelllegal.wordpress.com">Charlotte Lawyer blog</a>, <a href="http://twitter.com/#!/AttorneyMaxwell">attorneymaxwell</a>, <a href="http://thelegaldocumentshop.com">Sample NC Forms</a>, <a href="http://maxwelllegal.com/taxpreparation.html">charlotte income tax</a>, <a href="http://concordnclawyer.com/taxes.html">concord nc income tax</a>, <a href="http://liverpoollegal.com/">van nuys chapter 7</a></p> 
+           </div> 
+          </div>
+          <div class="entry-meta pkg"> 
+           <div class="entry-meta-info"> 
+            <a href="http://charlottelawyer.typepad.com/blog/2011/01/filing-bankruptcy-can-keep-the-creditors-from-harassing-you.html">Jan 18, 2011 12:00:00 AM</a> | 
+            <a href="http://charlottelawyer.typepad.com/blog/1099/">1099</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/bankruptcy-attorney-1/">Bankruptcy Attorney</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/bankruptcy-lawyer/">Bankruptcy Lawyer</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/cabarrus-lawyer/">Cabarrus Lawyer</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/chapter-13/">chapter 13</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/chapter-7/">chapter 7</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/charlotte-attorney-1/">Charlotte Attorney</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/charlotte-lawyer-1/">Charlotte Lawyer</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/collections/">collections</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/creditors/">creditors</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/foreclosure-1/">FORECLOSURE</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/garnishment/">garnishment</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/gastonia-attorney/">Gastonia Attorney</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/gastonia-bankruptcy/">gastonia bankruptcy</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/loan-modification-1/">LOAN MODIFICATION</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/mecklenburg-county-attorney/">Mecklenburg County Attorney</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/monroe-lawyer/">Monroe Lawyer</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/personal-bankruptcy/">personal bankruptcy</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/redemption/">redemption</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/reposession/">reposession</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/reposses/">reposses</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-debt/">tax debt</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/wipe-debt-away/">wipe debt away</a> 
+           </div> 
+           <div class="entry-facebook-like">
+            <fb:like href="http://charlottelawyer.typepad.com/blog/2011/01/filing-bankruptcy-can-keep-the-creditors-from-harassing-you.html" layout="button_count" show_faces="false"></fb:like>
+           </div>
+          </div> 
+          <div class="entry-footer"> 
+           <ul class="entry-footer-feedback pkg"> 
+            <li><iframe class="favorite-button-frame" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="true" src="http://www.typepad.com/services/connect/favorite?asset_id=6a0133ec9e4ca2970b0147e1d87747970b&amp;theme_type=mb&amp;bgcolor=&amp;hi_color=&amp;brightness="></iframe></li> 
+            <li><a href="http://charlottelawyer.typepad.com/blog/2011/01/filing-bankruptcy-can-keep-the-creditors-from-harassing-you.html#comments" class="entry-footer-comment">Comment <span>0</span></a></li> 
+            <li><a href="javascript:var%20b=document.body;var%20TYPEPAD___bookmarklet_domain='http://www.typepad.com/';TYPEPAD___reblog_entryxid='6a0133ec9e4ca2970b0147e1d87747970b'; TYPEPAD___is_reblog = 1; if(b&amp;&amp;!document.xmlVersion){void(z=document.createElement('script'));void(z.type='text/javascript');void(z.src='http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/js/qp/loader-combined-min.js');void(b.appendChild(z));}else{}" title="Grab this post for your own blog" class="entry-footer-reblog">Reblog It <span>0</span></a></li> 
+           </ul> 
+          </div> 
+         </div> 
+         <h2 class="date-header">01/16/2011</h2> 
+         <div class="entry-category-1099 entry-category-audit entry-category-audit_defense entry-category-business_bankruptcy entry-category-chapter_13 entry-category-chapter_7 entry-category-concord_bankruptcy entry-category-consumer_bankruptcy entry-category-credit_card_debt entry-category-deficiency entry-category-discharge entry-category-file_for_bankruptcy entry-category-foreclosure entry-category-fresh_start entry-category-ganishment entry-category-gastonia_bankruptcy_lawyer entry-category-halt_foreclosure entry-category-loan_modification entry-category-loans_after_bankruptcy entry-category-mecklenburg_county_attorney entry-category-misc_income entry-category-monroe_attorney entry-category-monroe_nc_bankruptcy entry-category-reposession entry-category-rowan_county_banrkruptcy entry-category-salisbury_bankruptcy entry-category-tax_debt entry-category-tax_preparation entry-category-tax_services entry-category-taxes entry-category-wipe_away_debt entry-author-attorney entry-has-title entry-type-post entry" id="entry-6a0133ec9e4ca2970b0148c7abf77f970c"> 
+          <h3 class="entry-header"><a href="http://charlottelawyer.typepad.com/blog/2011/01/student-loan-bankruptcy.html">Student Loan Bankruptcy</a></h3> 
+          <div class="entry-content"> 
+           <div class="entry-body"> 
+            <p>posted by <a href="http://concordnclawyer.com" title="Chapter 7 concord nc bankruptcy">chapter 7 concord north carolina </a></p>
+            <p>from http://loans.dracony.org/2011/01/15/student-loan-bankruptcy/</p>
+            <p><strong>Student Loans Aren’t Discharged by Bankruptcy</strong><br /> That’s the bad news. Due to bankruptcy reforms in 1998 and 2005, it’s almost impossible for the average person to discharge federal or private student loans through bankruptcy. You may be able to get help with your payments through a bankruptcy filing, but there are better options for repaying your student loans.</p>
+            <p><strong>The Student Loan Bankruptcy Exception</strong><br /> As with all rules there is one exception: you can discharge a student loan in bankruptcy due to undue hardship. Undue hardship is defined as the permanent physical inability to work. You must prove in bankruptcy court that:</p>
+            <p>You’re physically unable to work You’re likely to be unable to work for most of the loan term You’ve made a good faith effort to repay the debt Paying it would prevent you, your spouse, and your dependents from maintaining a “minimal” standard of living.</p>
+            <p>If you believe you qualify under these guidelines, see an experienced bankruptcy lawyer for help filing an adversary proceeding as part of your bankruptcy case.</p>
+            <p><strong>How Bankruptcy Can Help with Student Loans</strong><br /> Although your student loan can’t be discharged in bankruptcy, a bankruptcy court may be able to ease an overwhelming debt burden. Some courts may discharge a portion of your student loans, but this is rare and varies by court.</p>
+            <p>In most cases, the judge will incorporate your student loans into your debt repayment plan under Chapter 13 bankruptcy. Any balance remaining after the payment plan ends will still be due, but your other debts should be paid off by then.</p>
+            <p><strong>What to Do if You’re Heading Toward Bankruptcy</strong><br /> If your total debts have reached an unsustainable level and you feel you must file for bankruptcy, don’t simply stop paying your student loans. Not only are student loans not dischargeable in bankruptcy, but also the federal government has the right to assess stiff penalties, seize tax refunds and other government assistance money, and garnish your wages.</p>
+            <p>Lenders want to help you avoid default. Contact them for help applying for a deferral, forbearance, or extended repayment plan before the situation gets worse than it already is.</p>
+            <p><strong>Solutions for Student Loans You Don’t Owe</strong><br /> If a lender is demanding payment for a student loan you don’t think you owe, it’s best to resolve the situation before you wind up in bankruptcy court.</p>
+            <p>The most typical situation is a miscalculation of the actual loan balance, especially if the loan has changed lenders multiple times. If you think the lender is requesting more than you owe or hasn’t properly credited payments, write to them with your evidence. If the issue is not resolved, then a court can intervene to determine the amount you actually owe. A bankruptcy judge may also do this as part of a bankruptcy proceeding.</p>
+            <p>Your debt may be cancelled if a few situations apply:<br />Situation 1: Your school closed before you completed your education and you couldn’t complete it elsewhere. You don’t qualify if you voluntarily withdrew before the school closed. You may be entitled to a loan reduction if you voluntarily withdrew and the school improperly withheld any remaining student loan funds.</p>
+            <p>Situation 2: Your school or another party signed the promissory note in your name without your approval or the school falsely certified you as eligible for a student loan when you were not.</p>
+            <p>Situation 3: You were forced to withdraw due to a disability that developed while you were in school, or that certifiably worsened after you accepted the loan.</p>
+            <p>For all three situations, it’s best to contact the lender or the federal student loan program for assistance in resolving your unowed debts. Although a bankruptcy court can sort it out for you, other solutions are simpler and better for your financial future.</p>
+            <p><strong>Student Loan Cancellation Programs</strong><br /> Several federal and state agencies offer programs to help you cancel or reduce all or a portion of your student loan debt without filing for bankruptcy. Most programs involve teaching, nursing, or military service.</p>
+            <p>In most cases, bankruptcy won’t erase your student loans. Although bankruptcy is still a viable solution for desperate financial situations, it’s best for your future financial well being to avoid it. Contact your lenders as soon as a problem develops in order to avoid worse financial repercussions.</p>
+            <p>&nbsp;</p>
+            <p><a href="http://maxwelllegal.com/" title="Charlotte Charlotte 7">charlotte chapter 7</a>, <a href="http://maxwelllegal.com/">Bankruptcy</a>, <a href="http://concordnclawyer.com/">Bankruptcies</a>, <a href="http://concordnclawyer.com/">North Carolina Bankruptcy</a>, <a href="http://maxwelllegal.com/">North Carolina Bankruptcy Attorney</a>, <a href="http://maxwelllegal.com/">North Carolina Bankruptcy Lawyer</a>, <a href="http://maxwelllegal.com/">Debt free</a>, <a href="http://maxwelllegal.com/">Filing bankruptcy in north Carolina</a>, <a href="http://maxwelllegal.com/">file for bankruptcy,</a> <a href="http://maxwelllegal.com/">Bankruptcy in north Carolina</a>, <a href="http://concordnclawyer.com/">bankruptcy in nc</a>, <a href="http://concordnclawyer.com/">Cheap bankruptcy</a>, <a href="http://maxwelllegal.com/">low cost bankruptcy</a>, <a href="http://maxwelllegal.com/">Chlt Atty</a>, <a href="http://queencitylawyer.com/">Queen City Lawyer</a>, <a href="http://queencityattorney.com/">Queen City Attorney</a>, <a href="http://maxwelllegal.com/">Clt Bk</a>, <a href="http://maxwelllegal.com/">Bk Attorney</a>, <a href="http://concordnclawyer.com/">Bk Lawyer</a>, <a href="http://maxwelllegal.com/">Charlotte Attorney,</a> <a href="http://maxwelllegal.com/">Charlotte Lawyer</a>,&nbsp; <a href="http://maxwelllegal.com/">Mecklenburg County Lawyer</a>, <a href="http://maxwelllegal.com/">Mecklenburg County Attorney</a>, <a href="http://concordnclawyer.com/">Concord Attorney</a>, <a href="http://concordnclawyer.com/">Concord NC Lawyer</a>, <a href="http://concordnclawyer.com/">unpaid medical bills</a>, <a href="http://maxwelllegal.com/">Concord NC Attorney</a>, <a href="http://concordnclawyer.com/">Concord Lawyer</a>, <a href="http://concordnclawyer.com/">Cabarrus County Lawyer</a>, <a href="http://concordnclawyer.com/">Cabarrus County Attorney</a>, <a href="http://concordnclawyer.com/">Halt foreclosure with Bankruptcy</a>, <a href="http://maxwelllegal.com/">Stop Foreclosure in Charlotte</a>, <a href="http://maxwelllegal.com/">moratorium on foreclosure</a>, <a href="http://maxwelllegal.com/" target="_self">Charlotte bankruptcy</a>, <a href="http://maxwelllegal.com/" target="_self">TAX DEBT</a>, <a href="http://maxwelllegal.com/" target="_self">IRS LEVY</a>,&nbsp; <a href="http://concordnclawyer.com/" target="_self">Concord bankruptcy</a>, <a href="http://concordnclawyer.com/">Concord Bankruptcy Attorney,</a> <a href="http://concordnclawyer.com/">concord bankruptcy lawyer</a> <a href="http://maxwelllegal.com/" target="_self">Concord chapter 7</a>, <a href="http://maxwelllegal.com/">filing for chapter 7</a>, <a href="http://maxwelllegal.com/">Chapter 7 Attorney</a>, <a href="http://concordnclawyer.com/">Chapter 7 Lawyer</a>, <a href="http://concordnclawyer.com/">Chapter 13 Attorney</a>, <a href="http://legalhelpincharlotte.com/">Chapter 13 Lawyer</a>, <a href="http://maxwelllegal.com/">north Carolina chapter 7</a>,&nbsp; <a href="http://www.maxwelllegal.com/">charlotte attorneys</a>, <a href="http://concordnclawyer.com/" target="_self">concord nc foreclosure help</a>, <a href="http://concordnclawyer.com/" target="_self">foreclosure assistance</a>, <a href="http://maxwelllegal.com/" target="_self">Charlotte chapter 7</a>, <a href="http://maxwelllegal.com/" target="_self">Charlotte bankruptcy attorney</a>, <a href="http://maxwelllegal.com/" target="_self">charlotte bankruptcy lawyer</a>, <a href="http://maxwelllegal.com/">Gastonia Bankruptcy</a>, <a href="http://maxwelllegal.com/">Monroe NC Bankruptcy</a>, <a href="http://maxwelllegal.com/">Monroe North Carolina bankruptcy</a>, <a href="http://maxwelllegal.com/">Union County Bankruptcy</a>, <a href="http://concordnclawyer.com/">Salisbury Bankruptcy</a>, <a href="http://concordnclawyer.com/">Lexington Bankruptcy</a>, <a href="http://concordnclawyer.com/">Winston Salem Bankruptcy</a>, <a href="http://concordnclawyer.com/">Kannapolis Bankruptcy,</a> <a href="http://maxwelllegal.com/">North Carolina Bankruptcy</a>, <a href="http://concordnclawyer.com/">Tax Attorney</a>, <a href="http://maxwelllegal.com/">Tax Debt Help</a>, &nbsp;<a href="http://maxwelllegal.com/">foreclosure help</a>,&nbsp; <a href="http://concordnclawyer.com/">foreclosure assistance</a>, <a href="http://maxwelllegal.com/">tax garnishment</a>, <a href="http://maxwelllegal.com/">chapter 7</a>, <a href="http://maxwelllegal.com/">chapter 13</a>, <a href="http://maxwelllegal.com/">stop foreclosure</a>, <a href="http://maxwelllegal.com/">bankruptcy lawyers</a>, <a href="http://maxwelllegal.com/">bankruptcy attorneys</a>,&nbsp; <a href="http://maxwelllegal.com/">tax foreclosures</a>, <a href="http://maxwelllegal.com/">Foreclosure defense</a>, <a href="http://maxwelllegal.com/taxes.html" target="_self">FILE INCOME TAX</a>, <a href="http://maxwelllegal.com/taxes.html" target="_self">NORTH CAROLINA TAX RETURNS</a>,&nbsp; <a href="http://concordnclawyer.com/">High Point Bankruptcy</a>, <a href="http://concordnclawyer.com/">Middle District of North Carolina</a>, <a href="http://maxwelllegal.com/">Western District of North Carolina</a>,&nbsp;<a href="http://maxwelllegal.com/">Bank foreclosures</a>, <a href="http://maxwelllegal.com/">wage garnishment</a>,&nbsp; <a href="http://liverpoollegal.com/">CALIFORNIA BANKRUPTCY</a>, <a href="http://maxwelllegal.com/">North Carolina Bankruptcy</a>, <a href="http://maxwelllegal.com/">north Carolina bankruptcy lawyer</a>, <a href="http://concordnclawyer.com/">north Carolina bankruptcy attorney</a>, <a href="http://thelegaldocumentshop.com/">sample bankruptcy petition</a>, <a href="http://thelegaldocumentshop.com/">sample reaffirmation agreement</a>, <a href="http://thelegaldocumentshop.com/">sample chapter 13 plan</a>,&nbsp; <a href="http://maxwelllegal.com/">loans after bankruptcy</a>, <a href="http://maxwelllegal.com/">credit repair</a> , <a href="http://maxwelllegal.com/foreclosure.html">stop foreclosure</a>, <a href="http://maxwelllegal.com/foreclosure.html">north Carolina short sale</a>,&nbsp; <a href="http://maxwelllegal.com/">deed in lieu of foreclosure, </a> <a href="http://charlotteattorney.typepad.com/">charlotte attorneys blog</a>, <a href="../">Charlotte Lawyer blog</a>, <a href="http://twitter.com/#%21/AttorneyMaxwell">attorneymaxwell</a>, <a href="http://thelegaldocumentshop.com/" title="North Carolina Sample Legal Forms">Sample NC Forms</a>, <a href="http://maxwelllegal.com/taxpreparation.html" title="tax filing service">charlotte income tax</a>, <a href="http://concordnclawyer.com/taxes.html" title="Concord North Carolina Income Tax Service">concord nc income tax</a>, <a href="http://liverpoollegal.com/">van nuys chapter 7</a></p> 
+           </div> 
+          </div>
+          <div class="entry-meta pkg"> 
+           <div class="entry-meta-info"> 
+            <a href="http://charlottelawyer.typepad.com/blog/2011/01/student-loan-bankruptcy.html">Jan 16, 2011 8:32:49 AM</a> | 
+            <a href="http://charlottelawyer.typepad.com/blog/1099/">1099</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/audit/">audit</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/audit-defense/">audit defense</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/business-bankruptcy/">business bankruptcy</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/chapter-13/">chapter 13</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/chapter-7/">chapter 7</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/concord-bankruptcy/">concord bankruptcy</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/consumer-bankruptcy/">consumer bankruptcy</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/credit-card-debt/">credit card debt</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/deficiency/">deficiency</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/discharge/">discharge</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/file-for-bankruptcy/">file for bankruptcy</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/foreclosure/">foreclosure</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/fresh-start/">fresh start</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/ganishment/">ganishment</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/gastonia-bankruptcy-lawyer/">Gastonia Bankruptcy Lawyer</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/halt-foreclosure/">Halt foreclosure</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/loan-modification/">loan modification</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/loans-after-bankruptcy/">loans after bankruptcy</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/mecklenburg-county-attorney/">Mecklenburg County Attorney</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/misc-income/">Misc Income</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/monroe-attorney/">Monroe Attorney</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/monroe-nc-bankruptcy/">Monroe NC Bankruptcy</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/reposession/">reposession</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/rowan-county-banrkruptcy/">Rowan County Banrkruptcy</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/salisbury-bankruptcy/">Salisbury Bankruptcy</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-debt/">tax debt</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-preparation/">tax preparation</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/tax-services/">tax services</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/taxes/">taxes</a>, 
+            <a href="http://charlottelawyer.typepad.com/blog/wipe-away-debt/">wipe away debt</a> 
+           </div> 
+           <div class="entry-facebook-like">
+            <fb:like href="http://charlottelawyer.typepad.com/blog/2011/01/student-loan-bankruptcy.html" layout="button_count" show_faces="false"></fb:like>
+           </div>
+          </div> 
+          <div class="entry-footer"> 
+           <ul class="entry-footer-feedback pkg"> 
+            <li><iframe class="favorite-button-frame" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="true" src="http://www.typepad.com/services/connect/favorite?asset_id=6a0133ec9e4ca2970b0148c7abf77f970c&amp;theme_type=mb&amp;bgcolor=&amp;hi_color=&amp;brightness="></iframe></li> 
+            <li><a href="http://charlottelawyer.typepad.com/blog/2011/01/student-loan-bankruptcy.html#comments" class="entry-footer-comment">Comment <span>0</span></a></li> 
+            <li><a href="javascript:var%20b=document.body;var%20TYPEPAD___bookmarklet_domain='http://www.typepad.com/';TYPEPAD___reblog_entryxid='6a0133ec9e4ca2970b0148c7abf77f970c'; TYPEPAD___is_reblog = 1; if(b&amp;&amp;!document.xmlVersion){void(z=document.createElement('script'));void(z.type='text/javascript');void(z.src='http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/js/qp/loader-combined-min.js');void(b.appendChild(z));}else{}" title="Grab this post for your own blog" class="entry-footer-reblog">Reblog It <span>0</span></a></li> 
+           </ul> 
+          </div> 
+         </div> 
+         <div class="pager-bottom pager-entries pager content-nav"> 
+          <div class="pager-inner"> 
+           <span class="pager-right"> <a href="http://charlottelawyer.typepad.com/blog/1099/page/2/"><span class="pager-label">Next</span> <span class="chevron">&raquo;</span></a> </span> 
+          </div> 
+         </div> 
+        </div> 
+       </div> 
+       <div id="beta"> 
+        <div id="beta-inner" class="pkg"> 
+         <div class="module-profilefollowing module"> 
+          <div class="module-content"> 
+           <div class="userinfo pkg"> 
+            <div class="userinfo-userpic"> 
+             <a href="http://profile.typepad.com/attorney2"><img src="http://up2.typepad.com/6a0133ec9e4ca2970b0148c6bfb523970c-50si" alt="" width="50" height="50" class="userpic" /></a> 
+            </div> 
+            <div class="userinfo-username"> 
+             <h3><a href="http://profile.typepad.com/attorney2" style="text-decoration: none;">Attorney</a></h3> 
+             <p>Maxwell Law Firm, PLLC serving Charlotte and Concord Area</p> 
+            </div> 
+           </div> 
+           <div class="follow-data pkg"> 
+            <div id="user-following" class="user-following pkg"> 
+             <div class="user-contacts user-has-contacts"> 
+              <a rel="me" href="http://profile.typepad.com/attorney2/contacts" title="View all following" target="_parent"><span id="num-contacts" class="follow-num-size-l">9</span> Following</a> 
+             </div> 
+            </div> 
+            <div class="user-followers"> 
+             <div class="user-num-contacts"> 
+              <a rel="me" href="http://profile.typepad.com/attorney2/followers" title="View all followers" target="_parent"><span id="num-followers" class="follow-num-size-l">0</span> Followers</a> 
+             </div> 
+            </div> 
+            <div class="user-actions"> 
+             <iframe src="http://www.typepad.com/services/connect/profile_module?user_id=6p0133ec9e4ca2970b&amp;follow_only=1&amp;mb=1&amp;align=center&amp;source_uri=http%3A%2F%2Fcharlottelawyer.typepad.com%2Fblog%2F1099%2F" width="100%" height="30" frameborder="0" scrolling="no" allowtransparency="true" id="follow-button-frame" name="follow-button-frame"></iframe> 
+            </div> 
+           </div> 
+          </div> 
+          <div class="module-list pkg"> 
+           <div class="module-list-item">
+            <a href="http://profile.typepad.com/ussoccerplayers" target="_parent"><img src="http://up4.typepad.com/6a00e54eea3d1c8834010536283f20970b-50si" alt="USSoccerPlayers" title="USSoccerPlayers" class="userpic" /></a>
+           </div> 
+           <div class="module-list-item">
+            <a href="http://profile.typepad.com/todomundo" target="_parent"><img src="http://up1.typepad.com/6a00d834555ca169e20120a75475e3970b-50si" alt="David Byrne" title="David Byrne" class="userpic" /></a>
+           </div> 
+           <div class="module-list-item">
+            <a href="http://profile.typepad.com/elsiecake" target="_parent"><img src="http://up7.typepad.com/6a00d8358081ff69e20133f373e67a970b-50si" alt="elsiecake" title="elsiecake" class="userpic" /></a>
+           </div> 
+           <div class="module-list-item">
+            <a href="http://profile.typepad.com/fashioncopious" target="_parent"><img src="http://up3.typepad.com/6a00e54ef9645388340147e366b1b0970b-50si" alt="John" title="John" class="userpic" /></a>
+           </div> 
+           <div class="module-list-item">
+            <a href="http://profile.typepad.com/capndesign" target="_parent"><img src="http://up0.typepad.com/6a00d83455847069e20105360d8240970b-50si" alt="Matt Jacobs" title="Matt Jacobs" class="userpic" /></a>
+           </div> 
+           <div class="module-list-item">
+            <a href="http://profile.typepad.com/lizzyville" target="_parent"><img src="http://up5.typepad.com/6a00d83452daa569e20148c843ce3f970c-50si" alt="Liz Colville" title="Liz Colville" class="userpic" /></a>
+           </div> 
+           <div class="module-list-item">
+            <a href="http://profile.typepad.com/bloesem" target="_parent"><img src="http://up4.typepad.com/6a00d83451e8d469e20120a8fdb641970b-50si" alt="Bloesem" title="Bloesem" class="userpic" /></a>
+           </div> 
+           <div class="module-list-item">
+            <a href="http://profile.typepad.com/pim" target="_parent"><img src="http://up6.typepad.com/6a00d83451bc0669e20120a6be618f970b-50si" alt="Pim" title="Pim" class="userpic" /></a>
+           </div> 
+           <div class="module-list-item">
+            <a href="http://profile.typepad.com/typepadeverything" target="_parent"><img src="http://up3.typepad.com/6a00d83451c82369e20120a4e574c1970b-50si" alt="The TypePad Team" title="The TypePad Team" class="userpic" /></a>
+           </div> 
+          </div>
+         </div>
+         <!-- Blog Search Module -->
+         <div class="module-search module"> 
+          <h2 class="module-header">Search</h2> 
+          <div class="module-content"> 
+           <form id="search-blog" method="get" action="http://charlottelawyer.typepad.com/.services/blog/6a0133ec9e4ca2970b0133ec9e4d7f970b/search"> 
+            <input type="search" name="filter.q" results="5" value="" /> 
+            <input type="submit" value="Search" /> 
+           </form> 
+          </div>
+         </div>
+         <!-- END Blog Search Module -->
+         <div class="module-elsewhere module"> 
+          <h2 class="module-header">My Other Accounts</h2> 
+          <div class="module-content"> 
+           <ul class="module-list"> 
+            <li class="module-list-item"> <a href="http://ncsolopractice.blogspot.com" class="elsewhere-icon"><img src="http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/images/profile/service_icons/blogger.png" alt="Blogger" width="16" height="16" /></a> <a href="http://ncsolopractice.blogspot.com" rel="me" class="elsewhere-servicename"><span class="elsewhere-servicename-service">Blogger</span><span class="separator"> | </span><span class="elsewhere-servicename-account">ncsolopractice.blogspot.com</span></a> </li> 
+            <li class="module-list-item"> <a href="jabber:maxwelllegal" class="elsewhere-icon"><img src="http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/images/profile/service_icons/googletalk.png" alt="Google Talk" width="16" height="16" /></a> <a href="jabber:maxwelllegal" rel="me" class="elsewhere-servicename"><span class="elsewhere-servicename-service">Google Talk</span><span class="separator"> | </span><span class="elsewhere-servicename-account">maxwelllegal</span></a> </li> 
+            <li class="module-list-item"> <a href="http://www.linkedin.com/in/maxwelllaw" class="elsewhere-icon"><img src="http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/images/profile/service_icons/linkedin.png" alt="LinkedIn" width="16" height="16" /></a> <a href="http://www.linkedin.com/in/maxwelllaw" rel="me" class="elsewhere-servicename"><span class="elsewhere-servicename-service">LinkedIn</span><span class="separator"> | </span><span class="elsewhere-servicename-account">maxwelllaw</span></a> </li> 
+            <li class="module-list-item"> <a href="http://maxwelllegal.com" class="elsewhere-icon"><img src="http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/images/profile/service_icons/other.png" alt="Other..." width="16" height="16" /></a> <a href="http://maxwelllegal.com" rel="me" class="elsewhere-servicename"><span class="elsewhere-servicename-service">Other...</span><span class="separator"> | </span><span class="elsewhere-servicename-account">http://maxwelllegal.com</span></a> </li> 
+            <li class="module-list-item"> <a href="http://twitter.com/maxwelllegal" class="elsewhere-icon"><img src="http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/images/profile/service_icons/twitter.png" alt="Twitter" width="16" height="16" /></a> <a href="http://twitter.com/maxwelllegal" rel="me" class="elsewhere-servicename"><span class="elsewhere-servicename-service">Twitter</span><span class="separator"> | </span><span class="elsewhere-servicename-account">maxwelllegal</span></a> </li> 
+            <li class="module-list-item"> <a href="http://http%3A%2F%2Fmaxwelllegal.com%2Fblog%2F" class="elsewhere-icon"><img src="http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/images/profile/service_icons/wordpress.png" alt="Wordpress" width="16" height="16" /></a> <a href="http://http%3A%2F%2Fmaxwelllegal.com%2Fblog%2F" rel="me" class="elsewhere-servicename"><span class="elsewhere-servicename-service">Wordpress</span><span class="separator"> | </span><span class="elsewhere-servicename-account">http://maxwelllegal.com/blog/</span></a> </li> 
+            <li class="module-list-item"> <a href="http://www.youtube.com/user/vicky2276" class="elsewhere-icon"><img src="http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/images/profile/service_icons/youtube.png" alt="YouTube" width="16" height="16" /></a> <a href="http://www.youtube.com/user/vicky2276" rel="me" class="elsewhere-servicename"><span class="elsewhere-servicename-service">YouTube</span><span class="separator"> | </span><span class="elsewhere-servicename-account">vicky2276</span></a> </li> 
+           </ul> 
+          </div>
+         </div>
+         <div class="module-recent-comments-mb module"> 
+          <h2 class="module-header">Recent Comments</h2> 
+          <div class="module-content"> 
+           <ul class="module-list"> 
+            <li class="module-list-item pkg"> 
+             <div class="comment-avatar"> 
+              <img id="comment-6a0133ec9e4ca2970b0154331205d2970c-avatarimg" src="http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/default-userpics/10-50si.gif" alt="California bankruptcy Attorney &amp; Lawyer" width="32" height="32" /> 
+             </div> 
+             <div class="comment-content"> 
+              <div class="comment-content-excerpt">
+               <strong>California bankruptcy Attorney &amp; Lawyer:</strong> Thanks for sharing such an informative article ... 
+               <span class="separator">|</span> 
+               <a href="http://charlottelawyer.typepad.com/blog/2010/11/bankruptcy-in-a-nutshell-the-different-types-of-bankruptcy.html?cid=6a0133ec9e4ca2970b0154331205d2970c#comment-6a0133ec9e4ca2970b0154331205d2970c">more &raquo;</a>
+              </div> 
+              <div class="comment-content-info">
+               On 
+               <a href="http://charlottelawyer.typepad.com/blog/2010/11/bankruptcy-in-a-nutshell-the-different-types-of-bankruptcy.html">Bankruptcy in a Nutshell: The Different Types of Bankruptcy</a>
+              </div> 
+             </div> </li> 
+            <li class="module-list-item last pkg"> 
+             <div class="comment-avatar"> 
+              <img id="comment-6a0133ec9e4ca2970b0147e1a40c81970b-avatarimg" src="http://static.typepad.com/.shared:v20120306.02-0-ga5bc794:typepad:en_us/default-userpics/04-50si.gif" alt="Maxwell Law Firm, PLLC" width="32" height="32" /> 
+             </div> 
+             <div class="comment-content"> 
+              <div class="comment-content-excerpt">
+               <strong>Maxwell Law Firm, PLLC:</strong> you need to contact a california bankruptcy att... 
+               <span class="separator">|</span> 
+               <a href="comment-6a0133ec9e4ca2970b0147e1a40c81970b?cid=6a0133ec9e4ca2970b0147e1a40c81970b">more &raquo;</a>
+              </div> 
+              <div class="comment-content-info">
+               On 
+               <a href="">Foreclosure crisis phase 2: The negative equity dilemma</a>
+              </div> 
+             </div> </li> 
+           </ul> 
+          </div>
+         </div> 
+         <!-- sidebar --> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <div id="footer"> 
+   <div id="footer-inner"> 
+    <ul> 
+     <li class="footer-link-syndicate"><a href="http://charlottelawyer.typepad.com/blog/atom.xml">Subscribe to this blog's feed</a></li> 
+     <li class="footer-link-poweredby"><a href="http://www.typepad.com/">Powered by TypePad</a></li> 
+    </ul> 
+   </div>
+  </div> 
+  <script type="text/javascript"><!--var extra_happy = Math.floor(1000000000 * Math.random());document.write('<img src="http://www.typepad.com/t/stats?blog_id=86672982499366667&amp;user_id=&amp;page=' + escape(location.href) + '&amp;referrer=' + escape(document.referrer) + '&amp;i=' + extra_happy + '" width="1" height="1" alt="" style="position: absolute; top: 0; left: 0;" />');// --></script>
+  <script type="text/javascript">  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));</script>
+  <script type="text/javascript">  try{    var pageTracker = _gat._getTracker("UA-16291297-1");    pageTracker._trackPageview();  } catch(err) {}</script>
+  <!-- Start Quantcast tag -->
+  <script type="text/javascript" src="http://edge.quantserve.com/quant.js"></script>
+  <script type="text/javascript">_qoptions = { tags:"typepad.core" }; _qacct="p-fcYWUmj5YbYKM"; quantserve();</script>
+  <noscript>
+   <a href="http://www.quantcast.com/p-fcYWUmj5YbYKM" target="_blank"><img src="http://pixel.quantserve.com/pixel/p-fcYWUmj5YbYKM.gif?tags=typepad.core" style="display: none" border="0" height="1" width="1" alt="Quantcast" /></a>
+  </noscript>
+  <!-- End Quantcast tag --> 
+  <!-- Blogside Toolbar -->
+  <script type="text/javascript">    var TPToolbar = {        src:   "http://www.typepad.com/services/toolbar?blog_id=6a0133ec9e4ca2970b0133ec9e4d7f970b&asset_id=&atype=Category&to=http%3A%2F%2Fcharlottelawyer.typepad.com%2Fblog%2F1099%2F&autofollowed=0",        asset_xid: "",            bookmarklet_uri: "http://static.typepad.com/.shared/js/qp/loader-combined-min.js"    };    var TYPEPAD___bookmarklet_domain = "http://www.typepad.com/";</script>
+  <script type="text/javascript" src="/.shared/js/toolbar/blogside-toolbar-combined-min.js"></script>
+  <!-- End Blogside Toolbar -->
+  <!-- Begin comScore Tag -->
+  <script>document.write(unescape("%3Cscript src='" + (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js'%3E%3C/script%3E"));</script>
+  <script>COMSCORE.beacon({  c1: 2,  c2: "6035669",  c3: "",  c4: "http://charlottelawyer.typepad.com/blog/1099/",  c5: "",  c6: "",  c15: ""});</script>
+  <noscript> 
+   <img src="http://b.scorecardresearch.com/b?c1=2&amp;c2=6035669&amp;c3=&amp;c4=http%3A%2F%2Fcharlottelawyer.typepad.com%2Fblog%2F1099%2F&amp;c5=&amp;c6=&amp;c15=&amp;cv=1.3&amp;cj=1" style="display:none" width="0" height="0" alt="" />
+  </noscript>
+  <!-- End comScore Tag -->
+  <!-- ph=1 -->
+ </body>
+</html>
