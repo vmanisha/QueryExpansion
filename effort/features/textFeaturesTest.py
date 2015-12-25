@@ -37,5 +37,6 @@ class textFeaturesTest(unittest.TestCase):
 
 		self.assertEqual(getDocMetrics(queryText,sentences),gtMetrics)
 
+	
 if __name__ == '__main__':
 	unittest.main()

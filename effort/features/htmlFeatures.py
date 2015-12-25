@@ -216,7 +216,7 @@ class HtmlFeatures:
                 else:
                   minTag['others'] += 1.0
 
-.          currWord += tlen
+          currWord += tlen
           if minWind:
             allTuples.append(minWind)
             #print minWind, minBegin, minEnd , content[minBegin:minEnd+1]#, minTag, minTagPos		
