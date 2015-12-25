@@ -2,6 +2,8 @@ Packages for entity tagged query analysis
 
 Requirements
 
+
+
 Entity Tagging and query clustering
 	Following python packages are required to run respective modules. 
 	1. NLTK (stemming) and punkt for sentence extraction and tokenization
