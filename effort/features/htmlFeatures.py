@@ -216,8 +216,7 @@ class HtmlFeatures:
                 else:
                   minTag['others'] += 1.0
 
-            end += 1
-          currWord += tlen
+.          currWord += tlen
           if minWind:
             allTuples.append(minWind)
             #print minWind, minBegin, minEnd , content[minBegin:minEnd+1]#, minTag, minTagPos		
@@ -299,7 +298,12 @@ class HtmlFeatures:
 		self.tagCountAndPosition('a',set(qTerms))+','+\
 		self.getTextFeature(qTerms,url)
 
-
+'''
+argv[1] = file containing queries. Each line has query id and query.
+argv[2] = file containing query and url. Each line has query id and url.
+argv[3] = folder containing the html dump of urls.
+argv[4] = Output file containing the features.
+'''
 def main(argv):
   queryUrlFeatures = None  #{}
   pid = 0
@@ -361,6 +365,7 @@ def main(argv):
       pid += 1
       continue
 
+    #TODO: check for cases of sentences and query terms everywhere
     if pid > k:
       try:
         #fetch the content
@@ -386,7 +391,7 @@ def main(argv):
         #print link, len(pageText), len(sentences)
         metrics = getDocMetrics(query.lower(), sentences)
         queryDocMetrics = getQueryDocMetrics(query.lower(), sentences)
-        textMetrics = getQueryCount(query, sentences)
+        textMetrics = getQueryCount(query, sentences) #TODO: query.lower()?
 
         #print metrics, queryDocMetrics
         string = ','.join(str(round(val[1], 3))

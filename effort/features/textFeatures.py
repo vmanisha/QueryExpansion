@@ -65,7 +65,9 @@ def readFile(fileName, fileList, docSentences):
 
 def getQueryCount(queryText, sentences):
   metrics = {'queryFreq':0.0, 'avgTF':0.0,'minTF':0.0, 'maxTF':0.0,\
-		'minWPos':0.0,'maxWPos':0.0,'avgWPos':0.0}
+		'minQTermPos':0.0,'maxQTermPos':0.0,'avgQTermPos':0.0}
+
+  queryText = queryText.lower()
 
   pos = []
   qHash = {}
@@ -73,11 +75,12 @@ def getQueryCount(queryText, sentences):
     if entry not in stopSet and len(entry) > 1:
       qHash[entry] = 0
 
-  tid = 0
+  tid = 1
   for sent in sentences:
+    sent = sent.lower()
     if queryText in sent:
       metrics['queryFreq'] += 1.0
-    for token in tokenize.word_tokenize(entry):
+    for token in tokenize.word_tokenize(sent):
       strToken = str(token)
 
       if strToken in qHash:
@@ -86,19 +89,31 @@ def getQueryCount(queryText, sentences):
 
       tid += 1.0
 
-  for entry in qHash.keys():
-    if qHash[entry] == 0:
-      del qHash[entry]
-  try:
-    metrics['avgTF'] = np.mean(qHash.values())
+  #TODO: Check for removal of zero frequency q terms
+  # for entry in qHash.keys():
+  #   if qHash[entry] == 0:
+  #     del qHash[entry]
+  # try:
+  #   metrics['avgTF'] = np.mean(qHash.values())
+  #   metrics['minTF'] = min(qHash.values())
+  #   metrics['maxTF'] = max(qHash.values())
+
+  #   metrics['avgWPos'] = np.mean(pos)
+  #   metrics['minWPos'] = min(pos)
+  #   metrics['maxWPos'] = max(pos)
+  # except:
+  #   pass
+
+  if len(qHash.values()) > 1:
+    metrics['avgTF'] = round(np.mean(qHash.values()),3)
     metrics['minTF'] = min(qHash.values())
     metrics['maxTF'] = max(qHash.values())
 
-    metrics['avgWPos'] = np.mean(pos)
-    metrics['minWPos'] = min(pos)
-    metrics['maxWPos'] = max(pos)
-  except:
-    pass
+    #calculate word positions
+    metrics['avgQTermPos'] = round(np.mean(pos),3)
+    metrics['minQTermPos'] = min(pos)
+    metrics['maxQTermPos'] = max(pos)
+
   return metrics
 
 
@@ -127,6 +142,7 @@ def getDocMetrics(queryText, sentences):
     period += 1
     char += len(entry)
     qcount = 0
+    #TODO: entry.lower()?
     for token in tokenize.word_tokenize(entry):
       try:
         strToken = str(token)
@@ -233,7 +249,8 @@ def getQueryDocMetrics(queryText, sentences):
   #print qSplit, qHash, tInd, sInd, firstOcc, lastOcc, firstSent, lastSent
 
   metrics = {}
-  metrics['sentWithQueryTerm'] = sCount
+  #TODO: check use of sentWithQueryTerm for overwrite
+  metrics['sentWithQueryTerm'] = sCount 
   #metrics['queryTerms'] = len(qHash)
   #print len(summary), summary
   metrics.update(getDocMetrics(queryText, summary.values()))
