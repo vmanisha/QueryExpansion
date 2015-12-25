@@ -31,7 +31,7 @@ no of periods
 '''
 
 stopSet = set(['the', 'an', 'to', 'and', 'from', 'for', 'we', 'you', 'i', 'so',
-               'a', 'at', 'b', 'be', 'in', 'of', 'on', 'was'])
+               'a', 'at', 'b', 'be', 'in', 'of', 'on', 'was', 'is'])
 
 
 def readFile(fileName, fileList, docSentences):
@@ -93,22 +93,13 @@ def getQueryCount(queryText, sentences):
   # for entry in qHash.keys():
   #   if qHash[entry] == 0:
   #     del qHash[entry]
-  # try:
-  #   metrics['avgTF'] = np.mean(qHash.values())
-  #   metrics['minTF'] = min(qHash.values())
-  #   metrics['maxTF'] = max(qHash.values())
-
-  #   metrics['avgWPos'] = np.mean(pos)
-  #   metrics['minWPos'] = min(pos)
-  #   metrics['maxWPos'] = max(pos)
-  # except:
-  #   pass
-
+  
   if len(qHash.values()) > 1:
     metrics['avgTF'] = round(np.mean(qHash.values()),3)
     metrics['minTF'] = min(qHash.values())
     metrics['maxTF'] = max(qHash.values())
 
+  if len(pos) > 0:
     #calculate word positions
     metrics['avgQTermPos'] = round(np.mean(pos),3)
     metrics['minQTermPos'] = min(pos)
@@ -122,8 +113,10 @@ def getDocMetrics(queryText, sentences):
   metrics = {}
   metrics['sentWithQueryTerm'] = 0
 
+  queryText = queryText.lower()
+
   sent = 0.0
-  word_gt_1 = 0
+  word_gt_1 = 0.0
   word_gt_2 = 0.0
   word_gt_3 = 0.0
   diffWord = 0.0
@@ -136,20 +129,21 @@ def getDocMetrics(queryText, sentences):
   for entry in queryText.split():
     if entry not in stopSet and len(entry) > 1:
       qHash[entry] = 0
-
+  
   for entry in sentences:
+    entry = entry.lower()
+
     sent += 1
     period += 1
-    char += len(entry)
-    qcount = 0
-    #TODO: entry.lower()?
+    qcount = {}
     for token in tokenize.word_tokenize(entry):
       try:
         strToken = str(token)
-        if strToken not in tokenCount and strToken not in stopSet:
+        char += len(strToken)
+        if strToken not in tokenCount and strToken not in stopSet and len(strToken) > 1:
           tokenCount[strToken] = 1.0
         if strToken in qHash:
-          qcount += 1
+          qcount[strToken] = 1
 
         if len(token) > 6:
           diffWord += 1
@@ -161,13 +155,15 @@ def getDocMetrics(queryText, sentences):
           word_gt_1 += 1
         else:
           period += 1
+          # remove the punctuation from the character counting
+          char-=1
       except Exception as error:
         #print error
         er += 1
-    if qcount == len(qHash):
+    if len(qcount) == len(qHash):
       metrics['sentWithQueryTerm'] += 1
 
-  totalWords = (word_gt_2 + word_gt_3 + diffWord)
+  totalWords = (word_gt_1 + word_gt_2 + word_gt_3 + diffWord)
   metrics['sent'] = sent
   metrics['char'] = char
   metrics['words'] = len(tokenCount)
@@ -177,12 +173,15 @@ def getDocMetrics(queryText, sentences):
   metrics['period'] = period
   #metrics['sent100Word'] =(sent/totalWords)*100.0
   #metrics['char100Word'] =(char/totalWords)*100.0
+
+  print char, totalWords, sent, diffWord, period
+
   metrics['ARI'] = 0 if sent == 0 or totalWords == 0 else (
-      4.71 * (char / totalWords) + 0.5 * (totalWords / sent) - 21.43)
+      round(4.71 * (char / totalWords) + 0.5 * (totalWords / sent) - 21.43,2))
   metrics['CLI'] = 0 if sent == 0 or totalWords == 0 else (
-      5.88 * (char / totalWords) - 29.6 * (sent / totalWords) - 15.8)
+      round((5.88 * (char / totalWords)) - (29.6 * (sent / totalWords)) - 15.8,2))
   metrics['LIX'] = 0 if totalWords == 0 or period == 0 else (
-      (totalWords / period) + (diffWord / totalWords) * 100.0)
+      round((totalWords / period) + (diffWord / totalWords) * 100.0,2))
 
   return metrics
 
