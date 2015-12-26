@@ -272,7 +272,9 @@ class HtmlFeatures:
     pos = 0.0
     for ele in self.pObj.iter():
       pos += 1
-      if str(ele.tag).startswith(tagPrefix) and ele.tag not in tagCountAndPositionAvoidTags:
+
+      #TODO: check for children text of a node
+      if str(ele.tag).startswith(tagPrefix) and ele.tag not in self.tagCountAndPositionAvoidTags:
         if ele.text:
           split = set(word_tokenize(ele.text.lower().strip()))
           if len(queryTerms & split) > 0:
@@ -281,11 +283,15 @@ class HtmlFeatures:
             tagPos.append(pos)
             tagCount[ele.tag] += 1.0
 
+
     tagFeat['count'] = sum(tagCount.values())
+    print 'pos:',pos
+    print 'tagPos:',tagPos
+    print 'count:',sum(tagCount.values())
     if len(tagPos) > 0 and pos > 0:
       tagFeat['minPos'] = round(min(tagPos) / pos, 3)
       tagFeat['maxPos'] = round(max(tagPos) / pos, 3)
-      tagFeat['meanPos'] = round(np.median(tagPos) / pos, 3)
+      tagFeat['meanPos'] = round(np.mean(tagPos) / pos, 3)
 
     retString = ','.join([str(round(y[1], 3)) for y in sorted(tagFeat.items())])
     return retString

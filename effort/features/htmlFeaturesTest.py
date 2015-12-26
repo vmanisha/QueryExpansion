@@ -6,7 +6,7 @@ from utils import encodeUTF
 class HtmlFeaturesTest(unittest.TestCase):
 
 	def setUp(self):
-		self.page = open('../../clueweb_docs/test.html', 'r').read()
+		self.page = open('../../clueweb_docs/test_aratio.html', 'r').read()
 		self.content = encodeUTF(self.page).lower()
 		self.url = 'http://www.xperiencetech.com/forum/topic.asp?TOPIC_ID=8254'
 		self.qTerms = ['altitude' ,'sickness']
@@ -59,7 +59,7 @@ class HtmlFeaturesTest(unittest.TestCase):
 	'''
 
 	def test_tagCountAndPosition(self):
-        gtHTagFeat = {'count': 1.0, 'minPos': 2.0, 'maxPos': 3.0, 'meanPos': 4.0}
+		gtHTagFeat = {'count': 2.0, 'minPos': 0.364, 'maxPos': 0.909, 'meanPos': 0.636}
 		gtHTagFeatStr = ','.join([str(round(y[1], 3)) for y in sorted(gtHTagFeat.items())])
 		self.assertEqual(self.htmlFeatures.tagCountAndPosition('h',set(self.qTerms)),gtHTagFeatStr)	
 
