@@ -34,11 +34,6 @@ class HtmlFeatures:
     self.toKeepTags = set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'table', 'div',
                            'p', 'b', 'i', 'a', 'img', 'li', 'input', 'strong'])
 
-  def featureString(self,featDict):
-    tagDistStr = ','.join([str(round(x[1], 3)) 
-                           for x in sorted(featDict.items())])
-    return tagDistStr
-    	
   def tagDistribution(self):
     tagDist = {'h1':0,'h2':0,'h3':0,'h4':0,'h5':0,'h6':0,'table':0,\
 		'div':0,'p':0,'b':0,'i':0,'a':0,'img':0,'li':0,'input':0,'strong':0}
@@ -51,21 +46,15 @@ class HtmlFeatures:
           tagDist[ele.tag] = 0.0
         tagDist[ele.tag] += 1.0
         totalTags += 1.0
-    print totalTags
-    print tagDist
     try:
       for entry in tagDist.keys():
         tagDist[entry] /= totalTags
     except:
       pass
 
-    #print 'Tag dist' , tagDist
-    #print 'Total tags', totalTags
-    #tagDistStr = '\t'.join(['{0}:{1}'.format(x[0],str(x[1])) for x in sorted(tagDist.items())])
-    #return tagDistStr+'\ttotalTags:'+str(totalTags)  #textTags/totalTags
-    #tagDistStr = ','.join([str(round(x[1], 3))
-    #                       for x in sorted(tagDist.items())])
-    return tagDist #tagDistStr
+    tagDistStr = ','.join([str(round(x[1], 3))
+                           for x in sorted(tagDist.items())])
+    return tagDistStr
 
   def outlinksWithDiffDomain(self, url):
 

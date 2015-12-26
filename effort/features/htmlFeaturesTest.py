@@ -20,21 +20,15 @@ class HtmlFeaturesTest(unittest.TestCase):
 		#			</html>'
 
 		self.htmlFeatures = HtmlFeatures(self.content)
-
-	'''
+	
 	def test_tagDistribution(self):
-		gtTagDist = {'h1':0.03,'h2':0.0,'h3':0.0,'h4':0.0,'h5':0.0,'h6':0.0,'table':0.1, \
-		'div':0.0,'p':0.06,'b':0.13,'i':0.0,'a':0.4,'img':0.0,'li':0.0,'input':0.26,'strong':0.0}
+		gtTagDist = {'h1':0.032,'h2':0.0,'h3':0.0,'h4':0.0,'h5':0.0,'h6':0.0,'table':0.097, \
+		'div':0.0,'p':0.065,'b':0.129,'i':0.0,'a':0.387,'img':0.032,'li':0.0,'input':0.258,'strong':0.0}
 
-		#gtTagDistStr = ','.join([str(round(x[1], 2))
-                #           for x in sorted(gtTagDist.items())])
+		gtTagDistStr = ','.join([str(round(x[1], 3))
+                           for x in sorted(gtTagDist.items())])
 
-<<<<<<< HEAD
-		self.assertAlmostEqual(self.htmlFeatures.tagDistribution(),gtTagDist, delta=0.03)
-=======
 		self.assertEqual(self.htmlFeatures.tagDistribution(),gtTagDistStr)
-	'''
->>>>>>> 84e2e20c4101c8c0a82ee46e29a500fb8b261733
 
 	def test_outlinksWithDiffDomain(self):
 		gtOutlinkDist = {'page': 0.083, 'same-domain': 0.583, 'diff-domain': 0.333}
@@ -42,6 +36,7 @@ class HtmlFeaturesTest(unittest.TestCase):
                            for x in sorted(gtOutlinkDist.items())])
 
 		self.assertEqual(self.htmlFeatures.outlinksWithDiffDomain(self.url),gtOutLinkStr)
+	
 	'''
 	def test_outlinksToTextRatio(self):
 		gtOutlinkFeat = {'aRatio': 0.0, 'tRatio': 0.0, 'atTxtRatio': 0.0}
