@@ -144,7 +144,7 @@ def getDocMetrics(queryText, sentences):
           tokenCount[strToken] = 1.0
         if strToken in qHash:
           qcount[strToken] = 1
-
+	
         if len(token) > 6:
           diffWord += 1
         elif len(token) >= 3:
@@ -174,8 +174,6 @@ def getDocMetrics(queryText, sentences):
   #metrics['sent100Word'] =(sent/totalWords)*100.0
   #metrics['char100Word'] =(char/totalWords)*100.0
 
-  print char, totalWords, sent, diffWord, period
-
   metrics['ARI'] = 0 if sent == 0 or totalWords == 0 else (
       round(4.71 * (char / totalWords) + 0.5 * (totalWords / sent) - 21.43,2))
   metrics['CLI'] = 0 if sent == 0 or totalWords == 0 else (
@@ -196,6 +194,7 @@ def getQueryDocMetrics(queryText, sentences):
   #	     position of first query term
   #	     position of last query term
   #	     % sent containing query terms
+  queryText = queryText.lower()
   qSplit = queryText.split(' ')
   #stem the query string
   qHash = {}
@@ -248,8 +247,6 @@ def getQueryDocMetrics(queryText, sentences):
   #print qSplit, qHash, tInd, sInd, firstOcc, lastOcc, firstSent, lastSent
 
   metrics = {}
-  #TODO: check use of sentWithQueryTerm for overwrite
-  metrics['sentWithQueryTerm'] = sCount 
   #metrics['queryTerms'] = len(qHash)
   #print len(summary), summary
   metrics.update(getDocMetrics(queryText, summary.values()))

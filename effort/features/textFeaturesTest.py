@@ -37,6 +37,20 @@ class textFeaturesTest(unittest.TestCase):
 
 		self.assertEqual(getDocMetrics(queryText,sentences),gtMetrics)
 
-	
+	def test_getQueryDocMetrics(self):
+		queryText = 'altitude sickness'
+		sentences = ['Altitude sickness is a ordinary physiological','Tibet common bed',\
+			'can of a doctor','alti','doctor','Tibet','sickness','new alit']
+		gtMetrics = {'sentWithQueryTerm': 1, \
+				'sent': 5.0, \
+				'char': 74.0, \
+				'words': 9, \
+				'period': 5.0, \
+				'ARI': 6.68, \
+				'CLI': 6.29, \
+				'LIX': 41.06 \
+				}
+		self.assertEqual(getQueryDocMetrics(queryText,sentences),gtMetrics)			
+
 if __name__ == '__main__':
 	unittest.main()
