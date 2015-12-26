@@ -25,10 +25,10 @@ class HtmlFeaturesTest(unittest.TestCase):
 		gtTagDist = {'h1':0.03,'h2':0.0,'h3':0.0,'h4':0.0,'h5':0.0,'h6':0.0,'table':0.1, \
 		'div':0.0,'p':0.06,'b':0.13,'i':0.0,'a':0.4,'img':0.0,'li':0.0,'input':0.26,'strong':0.0}
 
-		gtTagDistStr = ','.join([str(round(x[1], 2))
-                           for x in sorted(gtTagDist.items())])
+		#gtTagDistStr = ','.join([str(round(x[1], 2))
+                #           for x in sorted(gtTagDist.items())])
 
-		self.assertEqual(self.htmlFeatures.tagDistribution(),gtTagDistStr)
+		self.assertAlmostEqual(self.htmlFeatures.tagDistribution(),gtTagDist, delta=0.03)
 
 	def test_outlinksWithDiffDomain(self):
 		gtOutlinkDist = {'page': 0.0, 'same-domain': 0.0, 'diff-domain': 0.0}
