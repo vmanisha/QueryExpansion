@@ -11,6 +11,10 @@ class HtmlFeaturesTest(unittest.TestCase):
 		self.url = 'http://www.xperiencetech.com/forum/topic.asp?TOPIC_ID=8254'
 		self.qTerms = ['altitude' ,'sickness']
 		self.qLen = 2
+
+		self.pageForSpan = open('../../clueweb_docs/test_span.html','r').read()
+		self.contentForSpan = encodeUTF(self.pageForSpan).lower()
+		
 		#content = '<!DOCTYPE html> \
 		#			<html> \
 		#			<body> \
@@ -21,7 +25,6 @@ class HtmlFeaturesTest(unittest.TestCase):
 
 		self.htmlFeatures = HtmlFeatures(self.content)
 	
-	'''
 	def test_tagDistribution(self):
 		gtTagDist = {'h1':0.032,'h2':0.0,'h3':0.0,'h4':0.0,'h5':0.0,'h6':0.0,'table':0.097, \
 		'div':0.0,'p':0.065,'b':0.129,'i':0.0,'a':0.387,'img':0.032,'li':0.0,'input':0.258,'strong':0.0}
@@ -56,8 +59,8 @@ class HtmlFeaturesTest(unittest.TestCase):
 
     		gtResultString = gtMinTagStr + ',' + gtSpanFeatStr
     		self.assertEqual(self.htmlFeatures.summaryTagSpan(self.qTerms,self.qLen),gtResultString)
-	'''
 
+	'''
 	def test_tagCountAndPosition(self):
         gtHTagFeat = {'count': 1.0, 'minPos': 2.0, 'maxPos': 3.0, 'meanPos': 4.0}
 		gtHTagFeatStr = ','.join([str(round(y[1], 3)) for y in sorted(gtHTagFeat.items())])
@@ -67,7 +70,6 @@ class HtmlFeaturesTest(unittest.TestCase):
 		gtATagFeatStr = ','.join([str(round(y[1], 3)) for y in sorted(gtATagFeat.items())])
 		self.assertEqual(self.htmlFeatures.tagCountAndPosition('a',set(self.qTerms)),gtATagFeatStr)	
 
-	'''
 	def test_getTextFeature(self):
 		gtMetrics = {'termsInTitle': 0.0, 'termsInURL': 0.0}
 		gtMetricsStr = ','.join([str(round(gtMetrics[y], 3))
