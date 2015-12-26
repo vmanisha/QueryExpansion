@@ -29,9 +29,15 @@ class HtmlFeatures:
 
     #print len(content), type(content)
     self.pObj = lh.fromstring(content)
+
+    #remove comment
+    for ele in self.pObj.iter():
+      if 'HtmlComment' in str(type(ele)):
+        ele.drop_tree()
+
     self.toAvoidTags = set(['comment','noscript','style','meta',\
 		'script','html','body','head','form','title'])
-    self.smallAvoidTags = set(['comment','script','noscript','meta','head'])
+    self.smallAvoidTags = set(['script','noscript','meta','head'])
     self.toKeepTags = set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'table', 'div',
                            'p', 'b', 'i', 'a', 'img', 'li', 'input', 'strong'])
 
@@ -145,8 +151,8 @@ class HtmlFeatures:
       #print 'Child',child.tag
       #get all the childrenlen stats
 
-      #skip toavoid tags (comments, scripts, etc.)
-      if 'HtmlComment' in str(type(child)) or child.tag in self.smallAvoidTags:
+      #skip toavoid tags (scripts, etc.)
+      if child.tag in self.smallAvoidTags:
         continue
 
       ctxt, catxt, ctxtCount, caCount = self.aToTextRatio(child,inA)
