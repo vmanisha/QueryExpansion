@@ -26,7 +26,7 @@ from pattern.web import plaintext, URL
 class HtmlFeatures:
 
   def __init__(self, content):
-
+    content = content.lower()
     #print len(content), type(content)
     self.pObj = lh.fromstring(content)
 
