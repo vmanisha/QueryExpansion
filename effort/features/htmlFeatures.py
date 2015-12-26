@@ -71,23 +71,25 @@ class HtmlFeatures:
 
     outlinkDist = {'page': 0.0, 'same-domain': 0.0, 'diff-domain': 0.0}
     for out in self.pObj.iterlinks():
-      #print 'Outlink href ',out[2]
-      if out[2].startswith('/'):
-        outlinkDist['same-domain'] += 1.0
-      if out[2].startswith('#') and len(out[2]) > 3:
-        outlinkDist['page'] += 1.0
+      #ignore links other than <a>
+      if out[1] != 'href':
+        continue
+
       if out[2].startswith('htt'):
-        #print tldextract.extract(out[2])
-        if tldextract.extract(out[2]).domain in url:
+          if tldextract.extract(out[2]).domain in url:
+            outlinkDist['same-domain'] += 1.0
+          else:
+            outlinkDist['diff-domain'] += 1.0
+      elif out[2].startswith('#'):
+          outlinkDist['page'] += 1.0
+      else:
           outlinkDist['same-domain'] += 1.0
-        else:
-          outlinkDist['diff-domain'] += 1.0
 
     try:
       total = sum(outlinkDist.values())
 
       for entry in outlinkDist.keys():
-        #print entry, total, outlinkDist[entry], outlinkDist[entry]/total
+        # print entry, total, outlinkDist[entry], outlinkDist[entry]/total
         outlinkDist[entry] /= total
     except:
       pass
