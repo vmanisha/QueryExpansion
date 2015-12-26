@@ -46,11 +46,14 @@ class HtmlFeatures:
           tagDist[ele.tag] = 0.0
         tagDist[ele.tag] += 1.0
         totalTags += 1.0
+    print totalTags
+    print tagDist
     try:
       for entry in tagDist.keys():
         tagDist[entry] /= totalTags
     except:
       pass
+
     #print 'Tag dist' , tagDist
     #print 'Total tags', totalTags
     #tagDistStr = '\t'.join(['{0}:{1}'.format(x[0],str(x[1])) for x in sorted(tagDist.items())])
