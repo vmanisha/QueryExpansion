@@ -37,7 +37,8 @@ class HtmlFeatures:
 
     self.toAvoidTags = set(['comment','noscript','style','meta',\
 		'script','html','body','head','form','title'])
-    self.smallAvoidTags = set(['script','noscript','meta','head'])
+    self.aToTextRatioAvoidTags = set(['script','noscript','meta','head'])
+    self.tagCountAndPositionAvoidTags = set(['script','noscript','meta','head','html'])
     self.toKeepTags = set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'table', 'div',
                            'p', 'b', 'i', 'a', 'img', 'li', 'input', 'strong'])
 
@@ -152,7 +153,7 @@ class HtmlFeatures:
       #get all the childrenlen stats
 
       #skip toavoid tags (scripts, etc.)
-      if child.tag in self.smallAvoidTags:
+      if child.tag in self.aToTextRatioAvoidTags:
         continue
 
       ctxt, catxt, ctxtCount, caCount = self.aToTextRatio(child,inA)
@@ -271,7 +272,7 @@ class HtmlFeatures:
     pos = 0.0
     for ele in self.pObj.iter():
       pos += 1
-      if str(ele.tag).startswith(tagPrefix):
+      if str(ele.tag).startswith(tagPrefix) and ele.tag not in tagCountAndPositionAvoidTags:
         if ele.text:
           split = set(word_tokenize(ele.text.lower().strip()))
           if len(queryTerms & split) > 0:
@@ -280,14 +281,11 @@ class HtmlFeatures:
             tagPos.append(pos)
             tagCount[ele.tag] += 1.0
 
-    try:
-      tagFeat['count'] = sum(tagCount.values())
-      if len(tagPos) > 0:
-        tagFeat['minPos'] = round(min(tagPos) / pos, 3)
-        tagFeat['maxPos'] = round(max(tagPos) / pos, 3)
-        tagFeat['meanPos'] = round(np.median(tagPos) / pos, 3)
-    except:
-      pass
+    tagFeat['count'] = sum(tagCount.values())
+    if len(tagPos) > 0 and pos > 0:
+      tagFeat['minPos'] = round(min(tagPos) / pos, 3)
+      tagFeat['maxPos'] = round(max(tagPos) / pos, 3)
+      tagFeat['meanPos'] = round(np.median(tagPos) / pos, 3)
 
     retString = ','.join([str(round(y[1], 3)) for y in sorted(tagFeat.items())])
     return retString
