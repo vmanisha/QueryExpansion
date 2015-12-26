@@ -37,14 +37,14 @@ class HtmlFeaturesTest(unittest.TestCase):
 
 		self.assertEqual(self.htmlFeatures.outlinksWithDiffDomain(self.url),gtOutLinkStr)
 	
-	'''
 	def test_outlinksToTextRatio(self):
-		gtOutlinkFeat = {'aRatio': 0.0, 'tRatio': 0.0, 'atTxtRatio': 0.0}
+		gtOutlinkFeat = {'aRatio': 2.0, 'tRatio': 2.667, 'atTxtRatio': 0.5}
 		gtOutlinkFeatStr = ','.join([str(round(x[1], 3))
                           for x in sorted(gtOutlinkFeat.items())])
 
 	   	self.assertEqual(self.htmlFeatures.outlinksToTextRatio(),gtOutlinkFeatStr)
 
+	'''
 	def test_summaryTagSpan(self):
 		gtMinTag = {'spanA': 0.0, 'spanH': 0.0, 'spanB': 0.0, 'others': 0.0}
 	    	gtSpanFeat = {'noSpan':0.0, 'avgSpanLen':0.0,'minSpanPos':0.0,\

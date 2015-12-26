@@ -31,6 +31,7 @@ class HtmlFeatures:
     self.pObj = lh.fromstring(content)
     self.toAvoidTags = set(['comment','noscript','style','meta',\
 		'script','html','body','head','form','title'])
+    self.smallAvoidTags = set(['comment','script','noscript','meta','head'])
     self.toKeepTags = set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'table', 'div',
                            'p', 'b', 'i', 'a', 'img', 'li', 'input', 'strong'])
 
@@ -89,7 +90,7 @@ class HtmlFeatures:
 
   def outlinksToTextRatio(self):
     #find all the words
-    txt, atxt, txtCount, aCount = self.aToTextRatio(self.pObj)
+    txt, atxt, txtCount, aCount = self.aToTextRatio(self.pObj,False)
     #print txt, atxt, txtCount, aCount
 
     splitt = word_tokenize(txt)
@@ -98,13 +99,20 @@ class HtmlFeatures:
     wordt = Counter(splitt)
     worda = Counter(splita)
 
-    outlinkFeat = {'aRatio': 0.0, 'tRatio': 0.0, 'atTxtRatio': 0.0}
-    try:
+    outlinkFeat = {'aRatio': 0.0, 'tRatio': 0.0, 'atTxtRatio': 0.5}
+
+    if aCount > 0:
       outlinkFeat['aRatio'] = len(worda) / aCount
+    else:
+      outlinkFeat['aRatio'] = 0
+
+    if txtCount > 0:
       outlinkFeat['tRatio'] = len(wordt) / txtCount
       outlinkFeat['atTxtRatio'] = len(worda) / (len(wordt) * 1.0)
-    except:
-      pass
+    else:
+      outlinkFeat['tRatio'] = 0
+      outlinkFeat['atTxtRatio'] = 0
+
     retString = ','.join([str(round(x[1], 3))
                           for x in sorted(outlinkFeat.items())])
     return retString
@@ -112,31 +120,36 @@ class HtmlFeatures:
     #aCount, txtCount, len(splita), len(worda), len(splitt), len(wordt)
     #aCount/txtCount , len(splita)/(len(splitt)*1.0), len(worda)/(len(wordt)*1.0)
 
-  def aToTextRatio(self, node):
+  def aToTextRatio(self, node, inA):
     #for this node calculate the following:
     txt = ''  #text itself
     atxt = ''  #a text
     txtCount = 0  #text nodes
     aCount = 0  #a nodes
-    #print 'In',node.tag
+    # print 'In',node.tag
+    
+    if node.tag == 'a':
+      aCount += 1.0
+      inA = True
+
+    if node.text:
+      ntxt = node.text.strip()
+      if len(ntxt) > 1:
+        if inA:  
+          atxt += ntxt + ' '
+        else:
+          txt += ntxt + ' '
+          txtCount += 1.0
+
     for child in node.iterchildren():
       #print 'Child',child.tag
-      if child.tag == 'a':
-        aCount += 1.0
-        if child.text:
-          ntxt = child.text.strip()
-          if len(ntxt) > 1:
-            atxt += ntxt + ' '
+      #get all the childrenlen stats
 
-      else:
-        if child.text:
-          ntxt = child.text.strip()
-          if len(ntxt) > 1:
-            txt += ntxt + ' '
-            txtCount += 1.0
+      #skip toavoid tags (comments, scripts, etc.)
+      if 'HtmlComment' in str(type(child)) or child.tag in self.smallAvoidTags:
+        continue
 
-        #get all the childrenlen stats
-      ctxt, catxt, ctxtCount, caCount = self.aToTextRatio(child)
+      ctxt, catxt, ctxtCount, caCount = self.aToTextRatio(child,inA)
       #update current stats
       txt += ' ' + ctxt
       atxt += ' ' + catxt
