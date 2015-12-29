@@ -24,6 +24,7 @@ class HtmlFeaturesTest(unittest.TestCase):
 		#			</html>'
 
 		self.htmlFeatures = HtmlFeatures(self.content)
+		self.htmlFeaturesForSpan = HtmlFeatures(self.contentForSpan)
 	
 	def test_tagDistribution(self):
 		gtTagDist = {'h1':0.032,'h2':0.0,'h3':0.0,'h4':0.0,'h5':0.0,'h6':0.0,'table':0.097, \
@@ -49,6 +50,8 @@ class HtmlFeaturesTest(unittest.TestCase):
 	   	self.assertEqual(self.htmlFeatures.outlinksToTextRatio(),gtOutlinkFeatStr)
 
 	def test_summaryTagSpan(self):
+		self.qTermsForSpan = ['altitude' ,'and','sickness']
+		
 		gtMinTag = {'spanA': 0.0, 'spanH': 0.0, 'spanB': 0.0, 'others': 0.0}
 	    	gtSpanFeat = {'noSpan':0.0, 'avgSpanLen':0.0,'minSpanPos':0.0,\
 		'maxSpanPos':0.0,'meanSpanPos':0.0}
@@ -58,7 +61,7 @@ class HtmlFeaturesTest(unittest.TestCase):
                            for y in sorted(gtSpanFeat.keys())])
 
     		gtResultString = gtMinTagStr + ',' + gtSpanFeatStr
-    		self.assertEqual(self.htmlFeatures.summaryTagSpan(self.qTerms,self.qLen),gtResultString)
+    		self.assertEqual(self.htmlFeaturesForSpan.summaryTagSpan(self.qTermsForSpan,self.qLen),gtResultString)
 
 	'''
 	def test_tagCountAndPosition(self):

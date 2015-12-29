@@ -201,26 +201,30 @@ class HtmlFeatures:
         found = 0.0
         #print content, tlen
         if len(ele.text.strip()) > qLen:
-          #print content
+          print tlen, end, ele.tag
           while end < tlen:
-            #print found, begin, end, toFind, hasFound
             eword = content[end]
             if eword not in toFind:
-              end += 1
+              end+=1
               continue
             hasFound[eword] += 1.0
             if hasFound[eword] <= toFind[eword]:
               found += 1.0
-            #print found, begin, end, toFind, hasFound
+              print 'Just found ',eword, found, hasFound
+            print 'post update ',found, begin, end, hasFound
 
             if found == len(queryTerms):  #found all
               bword = content[begin]
+              print 'found = querylen ',found, bword, begin, hasFound
+              
               while (bword not in toFind) or (hasFound[bword] > toFind[bword]):
                 if bword in hasFound and hasFound[bword] > toFind[bword]:
                   hasFound[bword] -= 1.0
                 begin += 1
                 bword = content[begin]
+                print 'In while ',bword, begin, hasFound
               wind = end - begin + 1
+              print 'Found All ', wind, begin, end, bword, content[end], hasFound
               if minWind > wind or not minWind:
                 minWind = wind
                 minBegin = begin
@@ -234,7 +238,7 @@ class HtmlFeatures:
                   minTag['spanB'] += 1.0
                 else:
                   minTag['others'] += 1.0
-
+            end+=1        
           currWord += tlen
           if minWind:
             allTuples.append(minWind)
