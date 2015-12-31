@@ -54,9 +54,9 @@ def plotMultipleSys(data, xlab, ylab, fileDest, tit):
   y = []
   #ppoints = ['rx','gx','bx','g+','r+','b+']
   for sys, points in data.iteritems():
-    print sys, '\t', len(points), points
+    #print sys, '\t', len(points), points
     if len(points) > 0:
-      for a, plist in sorted(points.items(), key=lambda x: x[0]):
+      for a, plist in sorted(points.items(), reverse=True, key=lambda x: x[0]):
         val = None
         if type(plist) is list:
           val = (sum(plist) * 1.0) / len(plist)
@@ -65,8 +65,12 @@ def plotMultipleSys(data, xlab, ylab, fileDest, tit):
         x.append(a)
         y.append(val)
 
-    if len(x) > 0 and len(y) > 0:
+    # single point
+    if len(x) == 1 and len(y) == 1:
+      l, = plt.plot(x, y, marker='^',markersize=12, label=sys)
+    elif len(x) > 0 and len(y) > 0:
       l, = plt.plot(x, y, label=sys)
+
 
     i += 1
     x = []
@@ -76,8 +80,19 @@ def plotMultipleSys(data, xlab, ylab, fileDest, tit):
   plt.ylabel(ylab)
   #plt.xscale('log')
   #plt.yscale('log')
-  #plt.rcParams['xtick.major.pad']='4';
-  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., title=tit)
+  plt.tick_params(
+    axis='x',          # changes apply to the x-axis
+    which='both',      # both major and minor ticks are affected
+    bottom='off',      # ticks along the bottom edge are off
+    top='off',         # ticks along the top edge are off
+    labelbottom='off') # labels along the bottom edge are off
+  #plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., title=tit)
+
+  plt.legend(bbox_to_anchor=(0.05, -0.1),\
+             loc=2,
+             ncol=4,
+             borderaxespad=0.,
+             title=tit)
   plt.savefig(fileDest, bbox_inches='tight')
   plt.close()
 
@@ -126,62 +141,104 @@ def plotMultiplePlotsInOne(px, py, plotDict, xaxis, yaxis, fname):
   f, axarr = plt.subplots(px, py)
   i = 0
   j = 0
-
+  k = 0
   # {pNamei : {aname:([x1],[y1]), ([],[]), ([],[])} }
   for pair in sorted(plotDict.items(), key=lambda x: x[0]):
     ploti = pair[0]
     plotiList = pair[1]
     for name, entry in plotiList.items():
-      axarr[i, j].plot(entry[0], entry[1], label=name, lw=1.5)
+      print i, j, entry[0] , entry[1]
+      if len(entry[0]) == 1 and len(entry[1]) == 1:
+        axarr[i,j].plot(entry[0], entry[1], marker='^',markersize=12, label=name)
+      else:
+        axarr[i, j].plot(entry[0], entry[1], label=name, lw=1.5)
     axarr[i, j].set_title(ploti)
     if i > 0:
-      axarr[i, j].set_xlabel(xaxis)
+      axarr[i, j].set_xlabel(xaxis[k])
     if j < 1:
-      axarr[i, j].set_ylabel(yaxis)
+      axarr[i, j].set_ylabel(yaxis[k])
 
     j += 1
     if j >= py:
       j = 0
       i += 1
+    k+=1
   plt.legend(bbox_to_anchor=(-0.7, -0.11),
              loc=2,
              ncol=3,
              borderaxespad=0.,
-             title='')
+             title=fname)
   #plt.savefig(fname)
   #plt.close();
   plt.show()
 
   #plot the band of entity popularity
 
-
+# argv[1] = file_name_with_metrics
 if __name__ == '__main__':
   argv = sys.argv
-  toPlot = {}
+  precision_recall_curve = {}
 
-  for iFile in os.listdir(argv[1]):
-    sys = {}
-    suffix = '20' + iFile[0:2]
-    for line in open(argv[1] + '/' + iFile, 'r'):
-      if line.startswith('Prec') and 'all' not in line:
-        split = line.split()
-        if split[1] not in sys:
-          sys[split[1]] = {}
-        print split
-        sys[split[1]][int(split[2])] = round(float(split[3]), 3)
+  for line in open(argv[1],'r'):
+    split = line.split('\t')
+    approach = split[0]
+    measure = split[1]
 
-    toPlot[suffix] = {}
-    for name, rDict in sys.items():
-      toIns = tuple([[], []])
+    value = float(split[3])
+    if approach != 'cat_merge':
+      threshold = float(split[2])
+      if approach not in precision_recall_curve:
+        precision_recall_curve[approach] = {}
+      if threshold not in precision_recall_curve[approach]:
+    	precision_recall_curve[approach][threshold] = {}
+      if measure == 'Recall' or measure == 'Precision':
+        precision_recall_curve[approach][threshold][measure] = value
 
-      for entry in sorted(rDict.items(), key=lambda x: x[0]):
-        toIns[0].append(entry[0])
-        toIns[1].append(entry[1])
+  final_precision_recall_curve = {'Precision':{}, 'Recall':{}}
 
-      toPlot[suffix][name] = toIns
-    print suffix, toPlot[suffix]
+  for system, threshold_prec_recall_dict in precision_recall_curve.items():
+    if system not in final_precision_recall_curve['Precision']:
+      final_precision_recall_curve['Precision'][system] = [[],[]]
+    if system not in final_precision_recall_curve['Recall']:
+      final_precision_recall_curve['Recall'][system] = []
 
-  plotMultiplePlotsInOne(2, 2, toPlot, '#Terms', 'Precision', argv[2])
+    for entry in sorted(threshold_prec_recall_dict.items(), reverse = True, key = lambda x: x[0]):
+      print system, entry[0] , entry[1]
+      final_precision_recall_curve['Precision'][system].append((1/entry[0],\
+      entry[1]['Precision']))
+      final_precision_recall_curve['Recall'][system].append((1/entry[0],\
+      entry[1]['Recall']))
+  plotMultiplePlotsInOne(1, 2, final_precision_recall_curve, ['Merge Factor/NoClusters','Merge Factor/NoClusters'], ['Precision', 'Recall'], 'Systems')
+  #plotMultipleSys(final_precision_recall_curve, 'Merge Factor/NoClusters', \
+  #		'Recall', 'threshold_recall_henry_chiir.png','Systems')
+	
+
+  ############## MULTIPLE PLOTS #####################################
+  #for iFile in os.listdir(argv[1]):
+    #sys = {}
+    #suffix = '20' + iFile[0:2]
+    #for line in open(argv[1] + '/' + iFile, 'r'):
+      #if line.startswith('Prec') and 'all' not in line:
+        #split = line.split()
+        #if split[1] not in sys:
+          #sys[split[1]] = {}
+        #print split
+        #sys[split[1]][int(split[2])] = round(float(split[3]), 3)
+
+    #toPlot[suffix] = {}
+    #for name, rDict in sys.items():
+      #toIns = tuple([[], []])
+
+      #for entry in sorted(rDict.items(), key=lambda x: x[0]):
+        #toIns[0].append(entry[0])
+        #toIns[1].append(entry[1])
+
+      #toPlot[suffix][name] = toIns
+    #print suffix, toPlot[suffix]
+
+  #plotMultiplePlotsInOne(2, 2, toPlot, '#Terms', 'Precision', argv[2])
+  #####################################################################
+
   #for ifile in os.listdir(argv[1]):
   #name = '20'+ ifile[:ifile.find('.')];
   #if name not in toPlot:

@@ -60,19 +60,18 @@ def avgCatDistance(qset1, qset2, weightMatrix):
   return avgDist
 
 
-def mergeCategories(categoryNetwork, catQueryDist, weightMatrix):
+def mergeCategories(categoryNetwork, catQueryDist, weightMatrix, threshold):
 
   avoid = set()
   for i in range(15):
     for entry in categoryNetwork.nodes():
       toDel = False
-      if entry in catQueryDist and len(
-          catQueryDist[entry]) < 140 and entry not in avoid:
+      if entry in catQueryDist and entry not in avoid:
         #send the queries to inedges
-        merge = 0
+        #merge = 0
         parents = {}
         #parents = []
-        bestParent = None
+        #bestParent = None
 
         for in_tup in categoryNetwork.in_edges_iter(entry):
           parent = in_tup[0]
@@ -104,7 +103,7 @@ def mergeCategories(categoryNetwork, catQueryDist, weightMatrix):
             for parent in sorted(parents.items(),
                                  reverse=True,
                                  key=lambda x: x[1]):
-              if parent[1] > 0.5:
+              if parent[1] > threshold:
                 catQueryDist[parent[0]].update(catQueryDist[entry])
 
                 #add the outgoing to incoming
@@ -128,11 +127,11 @@ def mergeCategories(categoryNetwork, catQueryDist, weightMatrix):
   return categoryNetwork, catQueryDist
 
 
-def returnFilteredNetwork(queryFile, skosFile, featMan, weightMatrix):
+def returnFilteredNetwork(queryFile, skosFile, featMan, weightMatrix,threshold):
 
   catNetwork, catQueryDist = buildNetwork(queryFile, skosFile, featMan)
   catNetwork, catQueryDist = mergeCategories(catNetwork, catQueryDist,
-                                             weightMatrix)
+                                             weightMatrix, threshold)
 
   return catNetwork, catQueryDist
 

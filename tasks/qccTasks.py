@@ -11,6 +11,9 @@ from nltk import stem
 import numpy as np
 from features import toString, readWeightMatrix
 from clustering.evaluate.external import getRecallPrecision
+import argparse as ap
+from entity.category.findCategoryClusters import loadPairsFromFile, getPairLabelsFromClusters, mergeMetrics, computeAverageAndVarianceOfMetrics
+
 '''#load features #load session #find connected components
 '''
 
@@ -79,51 +82,123 @@ class QCCTasks:
     #argv[4] = weight file
     #Test normalize
     #
-def main(argv):
+if __name__ == '__main__':
+
+  parser = ap.ArgumentParser(description = 'Generate clusters of'+ \
+                        'Lucchesse QCC tasks')
+  parser.add_argument('-f', '--featFile', help='Feature file', required=True)
+  parser.add_argument('-d', '--distFile', help='Pairwise Similarity file',\
+                    required=True)
+  parser.add_argument('-o', '--outDir', help='Output Directory', \
+                    required=True)
+  parser.add_argument('-a', '--algo', help='qcc', \
+                    required=True)
+  parser.add_argument('-l', '--lowerLimit', help='min limit on #terms in '+\
+                    'cluster', required=True,type=float)
+  parser.add_argument('-u', '--upperLimit', help='upper limit on #terms in'+\
+                    ' cluster', required=True,type=float)
+  parser.add_argument('-s', '--sessionFile', help='Session file containing'+\
+                    ' queries', required=True)
+  parser.add_argument('-p', '--pairLabelFile', help='Task labels for a'+\
+                    ' pair of queries, same_task and different_task',\
+                     required=False)
+
+  args = parser.parse_args()
 
   qcc = QCCTasks()
   featMan = FeatureManager()
-  #gurlDict = {}
 
-  stemmer = stem.porter.PorterStemmer()
-  #qid = 1
-  #uid = 1
+  #stemmer = stem.porter.PorterStemmer()
+  featMan.readFeatures(args.featFile)
+  weightMatrix = readWeightMatrix(args.distFile)
 
-  featMan.readFeatures(argv[1])
-  weightMatrix = readWeightMatrix(argv[2])
+  samePairsSet = differentPairsSet = None
+  if args.pairLabelFile:
+    samePairsSet , differentPairsSet =   loadPairsFromFile(args.pairLabelFile)
 
-  sessCount = 0
-  lastSes = None
-  session = []
-  #parse sessions	
-  #for line in open(argv[2],'r'):
-  #	split = line.split('\t');
-  #	sessNo = int(split[0]);
-
-  #	if lastSes != sessNo:
-  #		newSession = []
-
-  metrics = {}
-  for threshold in np.arange(0.24, 0.80, 0.05):
+  total_metrics_dict = {}
+  for threshold in np.arange(args.lowerLimit, args.upperLimit, 0.05):
+    sessCount = 0
+    lastSes = None
+    session = []
+    metrics = {}
     qcc = QCCTasks()
-
-    for session in getSessionWithQuery(argv[3]):
-      #print session
+    for session in getSessionWithQuery(args.sessionFile):
+      newSession = []
       if len(session) > 2:
         newSession = []
-        for i in range(len(session) - 1):
-          qid1, qf1 = featMan.returnFeature(session[i])
-          if qf1:
-            newSession.append(session[i])
+      for i in range(len(session) - 1):
+        qid1, qf1 = featMan.returnFeature(session[i])
+        if qf1:
+          newSession.append(session[i])
+      session = newSession
+      #calculate the score
+      for i in range(len(session) - 1):
+        qid1, qf1 = featMan.returnFeature(session[i])
+        if qf1:
+          for j in range(i + 1, len(session)):
+            qid2, qf2 = featMan.returnFeature(session[j])
+            if qf2:
+              try:
+                if qid1 < qid2:
+                  edgeScore = 1.0 - weightMatrix[qid1][qid2]
+                else:
+                  edgeScore = 1.0 - weightMatrix[qid2][qid1]
+                if edgeScore > threshold:
+                  qcc.addEdge(qid1, qid2, edgeScore)
+              except:
+                pass
+            else:
+              print 'Query feature error ', session[j]
+        else:
+            print 'Query feature error ', session[i]
+      sessCount += 1
+    labels = qcc.getTaskComponents()
+    fname = args.outDir + '_'+args.algo+'_' + str(threshold) + '.txt'
+    outFile = open(fname, 'w')
 
-        session = newSession
-        #calculate the score
-        for i in range(len(session) - 1):
-          qid1, qf1 = featMan.returnFeature(session[i])
-          if qf1:
-            for j in range(i + 1, len(session)):
-              qid2, qf2 = featMan.returnFeature(session[j])
-              if qf2:
+    for entry in labels:
+      string = ''
+      for qid in entry:
+        string += featMan.returnQuery(qid) + '\t'
+      outFile.write(string.strip() + '\n')
+    outFile.close()
+    predicted_same_pairs, predicted_different_pairs=\
+     getPairLabelsFromClusters(labels,featMan)
+    metrics[threshold] = getRecallPrecision(samePairsSet, differentPairsSet, predicted_same_pairs, predicted_different_pairs)
+    for tcount, met in metrics.items():
+      print tcount, met
+    mergeMetrics(total_metrics_dict, metrics)
+  computeAverageAndVarianceOfMetrics(args.algo, total_metrics_dict)
+  #qcc.writeWeights(labels,argv[4])
+
+  #reading and creating features
+  #load the features of queries
+  #for line in open(argv[1], 'r'):
+  #split = line.strip().split('\t')
+  #query = split[0].strip()
+  #nquery = normalize(query, stemmer);
+  #qVect = getDictFromSet(nquery.split())
+  #if len(qVect) > 0:
+  #ngrams = getNGramsAsList(nquery,2)
+  ##if len(ngrams) > 0:
+  ##    print query, ngrams
+  #userDict = extractFeatureTuple(split[1])
+  #urlDict = extractFeatureTuple(split[2],True)
+  #newDict = {}
+  #for entry, count in urlDict.items():
+  #if entry not in gurlDict:
+  #gurlDict[entry] = uid
+  #uid+=1
+  #newDict[gurlDict[entry]] = count;
+  #
+  #queryFeat = QueryFeature(ngrams, qVect, newDict, userDict)
+  #featMan.addFeature(nquery,qid, queryFeat)
+  #qid +=1
+  ##    else:
+  ##        print query
+  #featMan.writeFeatures(argv[4])
+  #
                 #qcos, ucos, userCos, sessionCos, ngramCos, entCos, \
                 #catCos,typeCos = qf1.findCosineDistance(qf2)
                 #qjac = qf1.findJacardDistance(qf2)
@@ -139,78 +214,3 @@ def main(argv):
                 #12.5*ngramCos + 12.5*ucos + 15*sessionCos +\
                 #15*userCos + 10*entCos + 10*catCos+ 10*typeCos)
 
-                try:
-                  print qid1, qid2
-                  if qid1 < qid2:
-                    edgeScore = 1.0 - weightMatrix[qid1][qid2]
-                  else:
-                    edgeScore = 1.0 - weightMatrix[qid2][qid1]
-
-                  if edgeScore > threshold:
-                    #print session[i], session[j], edgeScore, qcos, qjac, ucos, userCos, qedit
-                    qcc.addEdge(qid1, qid2, edgeScore)
-                except:
-                  pass
-              else:
-                print 'Query feature error ', session[j]
-          else:
-            print 'Query feature error ', session[i]
-    #update the graph			
-    #session = [];
-    sessCount += 1
-    #if sessCount == 30:
-    #	break
-
-    #session.append(normalize(split[1].strip(),stemmer));
-    #session.append(split[1].strip());
-    #lastSes = sessNo;
-
-    labels = qcc.getTaskComponents()
-    fname = argv[4] + '_' + str(threshold) + '.txt'
-    outFile = open(fname, 'w')
-
-    for entry in labels:
-      string = ''
-      for qid in entry:
-        string += featMan.returnQuery(qid) + '\t'
-      outFile.write(string.strip() + '\n')
-
-    outFile.close()
-    metrics[threshold] = getRecallPrecision(argv[5], argv[6], fname, argv[1])
-
-  for tcount, met in metrics.items():
-    print tcount, met
-
-  #qcc.writeWeights(labels,argv[4])
-
-
-if __name__ == '__main__':
-  main(sys.argv)
-
-  #reading and creating features
-  #load the features of queries
-  #for line in open(argv[1], 'r'):
-  #split = line.strip().split('\t')
-  #query = split[0].strip()
-  #nquery = normalize(query, stemmer);
-  #qVect = getDictFromSet(nquery.split())
-  #if len(qVect) > 0:
-  #ngrams = getNGramsAsList(nquery,2)
-  ##if len(ngrams) > 0:
-  ##	print query, ngrams
-  #userDict = extractFeatureTuple(split[1])
-  #urlDict = extractFeatureTuple(split[2],True)
-  #newDict = {}
-  #for entry, count in urlDict.items():
-  #if entry not in gurlDict:
-  #gurlDict[entry] = uid
-  #uid+=1
-  #newDict[gurlDict[entry]] = count;
-  #
-  #queryFeat = QueryFeature(ngrams, qVect, newDict, userDict)
-  #featMan.addFeature(nquery,qid, queryFeat)
-  #qid +=1
-  ##	else:
-  ##		print query
-  #featMan.writeFeatures(argv[4])
-  #

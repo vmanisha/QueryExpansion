@@ -67,19 +67,27 @@ def calculateIndicesFromSets(same_pairs_set, different_pairs_set,
 	true_negatives = 0.0
 	false_negatives = 0.0
 	false_positives = 0.0
+	covered_pairs_set = set()
 	
 	for predicted_pair in predicted_same_pairs_set:
-		if predicted_pair in same_pairs_set:
-			true_positives+=1.0
-		if predicted_pair in different_pairs_set:
-			false_positives+=1.0
+		if predicted_pair not in covered_pairs_set:
+			if predicted_pair in same_pairs_set:
+				true_positives+=1.0
+			if predicted_pair in different_pairs_set:
+				false_positives+=1.0
+			covered_pairs_set.add(predicted_pair)
 	for predicted_pair in predicted_different_pairs_set:
-		if predicted_pair in same_pairs_set:
-			false_negatives+=1.0
-		if predicted_pair in different_pairs_set:
-			true_negatives+=1.0
-	return true_positives, false_positives, true_negatives, \
-	false_negatives, len(same_pairs_set)+ len(different_pairs_set)
+		if predicted_pair not in covered_pairs_set:
+			if predicted_pair in same_pairs_set:
+				false_negatives+=1.0
+			if predicted_pair in different_pairs_set:
+				true_negatives+=1.0
+			covered_pairs_set.add(predicted_pair)
+	print true_positives, false_positives, false_negatives , true_negatives,\
+	len(same_pairs_set)+ len(different_pairs_set)
+
+	return true_positives, false_positives, false_negatives, \
+	true_negatives, len(same_pairs_set)+ len(different_pairs_set)
 	
 	
 def calculateIndiciesFromFiles(trueLabelFile, differentPairFile, predictedLabelFile,
@@ -171,16 +179,21 @@ def printIndices(argv1, argv2, argv3):
 
 
 def getRecallPrecision(true, diff, predicted_same, predicted_diff):
-  tp, fp, fn, tn, totalPairs = calculateIndicesFromSets(true, diff, predicted_same, predicted_diff)
-  rand = RandIndex(tp, tn, totalPairs)
-  print 'Rand-Index ',
-  recall = Recall(tp, fn)
-  print 'Recall', recall
-  prec = Precision(tp, fp)
-  print 'Precision', prec
-  print 'fMeasure', fMeasure(prec, recall)
+  tp, fp, fn, tn, totalPairs = calculateIndicesFromSets(true, diff, \
+  										predicted_same, predicted_diff)
+  if tp > 0 and fp > 0 and fn > 0:
+	  rand = RandIndex(tp, tn, totalPairs)
+	  print 'Rand-Index ', rand
+	  recall = Recall(tp, fn)
+	  print 'Recall', recall
+	  prec = Precision(tp, fp)
+	  print 'Precision', prec
+	  print 'fMeasure', fMeasure(prec, recall)
+	
+	  return {'Rand-Index':rand, 'Recall':recall, 'Precision':prec,\
+	   'FMeasure:':fMeasure(prec, recall)}
 
-  return rand, recall, prec, fMeasure(prec, recall)
+  return {'Rand-Index':0, 'Recall':0, 'Precision':0,'FMeasure:':0}
 
   #trueLabelFile,differentPairFile, predictedLabelFile, queryList
 

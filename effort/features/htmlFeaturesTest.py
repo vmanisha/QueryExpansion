@@ -6,7 +6,7 @@ from utils import encodeUTF
 class HtmlFeaturesTest(unittest.TestCase):
 
 	def setUp(self):
-		self.page = open('../../clueweb_docs/test_aratio.html', 'r').read()
+		self.page = open('../../clueweb_docs/test.html', 'r').read()
 		self.content = encodeUTF(self.page).lower()
 		self.url = 'http://www.xperiencetech.com/forum/topic.asp?TOPIC_ID=8254'
 		self.qTerms = ['altitude' ,'sickness']
@@ -15,16 +15,15 @@ class HtmlFeaturesTest(unittest.TestCase):
 		self.pageForSpan = open('../../clueweb_docs/test_span.html','r').read()
 		self.contentForSpan = encodeUTF(self.pageForSpan).lower()
 		
-		#content = '<!DOCTYPE html> \
-		#			<html> \
-		#			<body> \
-		#			<h1>My First Heading</h1> \
-		#			<p>My first paragraph.</p> \
-		#			</body> \
-		#			</html>'
+		self.pageForOutlinkToTextRatio = \
+                        open('../../clueweb_docs/test_aratio.html','r').read()
+		self.contentForOutlinkToTextRatio = \
+                        encodeUTF(self.pageForOutlinkToTextRatio).lower()
 
 		self.htmlFeatures = HtmlFeatures(self.content)
 		self.htmlFeaturesForSpan = HtmlFeatures(self.contentForSpan)
+		self.htmlFeaturesForOutlinkToTextRatio =\
+                        HtmlFeatures(self.contentForOutlinkToTextRatio)
 	
 	def test_tagDistribution(self):
 		gtTagDist = {'h1':0.032,'h2':0.0,'h3':0.0,'h4':0.0,'h5':0.0,'h6':0.0,'table':0.097, \
@@ -43,43 +42,54 @@ class HtmlFeaturesTest(unittest.TestCase):
 		self.assertEqual(self.htmlFeatures.outlinksWithDiffDomain(self.url),gtOutLinkStr)
 
 	def test_outlinksToTextRatio(self):
-		gtOutlinkFeat = {'aRatio': 2.0, 'tRatio': 2.667, 'atTxtRatio': 0.5}
+		gtOutlinkFeat = {'aRatio': 2.5, 'tRatio': 2.333, 'atTxtRatio':0.714}
 		gtOutlinkFeatStr = ','.join([str(round(x[1], 3))
                           for x in sorted(gtOutlinkFeat.items())])
 
-	   	self.assertEqual(self.htmlFeatures.outlinksToTextRatio(),gtOutlinkFeatStr)
+	   	self.assertEqual(self.htmlFeaturesForOutlinkToTextRatio.outlinksToTextRatio(),gtOutlinkFeatStr)
 
 	def test_summaryTagSpan(self):
-		self.qTermsForSpan = ['altitude' ,'and','sickness']
+		qTermsForSpan = ['altitude' ,'and','sickness']
 		
-		gtMinTag = {'spanA': 0.0, 'spanH': 0.0, 'spanB': 0.0, 'others': 0.0}
-	    	gtSpanFeat = {'noSpan':0.0, 'avgSpanLen':0.0,'minSpanPos':0.0,\
-		'maxSpanPos':0.0,'meanSpanPos':0.0}
+		gtMinTag = {'spanA': 0.5, 'spanH': 0.5, 'spanB': 0.0, 'others': 0.0}
+	    	gtSpanFeat = {'noSpan':2.0, 'avgSpanLen':3.5,'minSpanPos':0.6,\
+		'maxSpanPos':0.8,'meanSpanPos':0.7}
 		gtMinTagStr = ','.join([str(round(gtMinTag[y], 3))
                            for y in sorted(gtMinTag.keys())])
 		gtSpanFeatStr = ','.join([str(round(gtSpanFeat[y], 3))
                            for y in sorted(gtSpanFeat.keys())])
 
     		gtResultString = gtMinTagStr + ',' + gtSpanFeatStr
-    		self.assertEqual(self.htmlFeaturesForSpan.summaryTagSpan(self.qTermsForSpan,self.qLen),gtResultString)
+    		self.assertEqual(self.htmlFeaturesForSpan.summaryTagSpan(qTermsForSpan),gtResultString)
 
-	'''
 	def test_tagCountAndPosition(self):
-		gtHTagFeat = {'count': 2.0, 'minPos': 0.364, 'maxPos': 0.909, 'meanPos': 0.636}
+		gtHTagFeat = {'count': 2.0, 'minPos': 0.286, 'maxPos': 0.714,\
+                        'meanPos': 0.5}
 		gtHTagFeatStr = ','.join([str(round(y[1], 3)) for y in sorted(gtHTagFeat.items())])
-		self.assertEqual(self.htmlFeatures.tagCountAndPosition('h',set(self.qTerms)),gtHTagFeatStr)	
+		self.assertEqual(self.htmlFeaturesForOutlinkToTextRatio.tagCountAndPosition('h',set(self.qTerms)),gtHTagFeatStr)
 
-		gtATagFeat = {'count': 1.0, 'minPos': 2.0, 'maxPos': 3.0, 'meanPos': 4.0}
+		gtATagFeat = {'count': 2.0, 'minPos': 0.429, 'maxPos': 0.5,\
+                        'meanPos': 0.464}
 		gtATagFeatStr = ','.join([str(round(y[1], 3)) for y in sorted(gtATagFeat.items())])
-		self.assertEqual(self.htmlFeatures.tagCountAndPosition('a',set(self.qTerms)),gtATagFeatStr)	
+		self.assertEqual(self.htmlFeaturesForOutlinkToTextRatio.tagCountAndPosition('a',set(self.qTerms)),gtATagFeatStr)
 
 	def test_getTextFeature(self):
 		gtMetrics = {'termsInTitle': 0.0, 'termsInURL': 0.0}
 		gtMetricsStr = ','.join([str(round(gtMetrics[y], 3))
                         for y in sorted(gtMetrics.keys())])
+                self.assertEqual(self.htmlFeatures.getTextFeature(self.qTerms,self.url),gtMetricsStr)
 
-    		self.assertEqual(self.htmlFeatures.getTextFeature(self.qTerms,self.url),gtMetricsStr)
-	'''
+		qTermsMatch = ['SERVER']
+		gtMetrics = {'termsInTitle': 1.0, 'termsInURL': 0.0}
+		gtMetricsStr = ','.join([str(round(y[1], 3)) for y in\
+                    sorted(gtMetrics.items())])
+                self.assertEqual(self.htmlFeatures.getTextFeature(qTermsMatch,self.url),gtMetricsStr)
+		
+                qTermsMatch = ['topic']
+		gtMetrics = {'termsInTitle': 0.0, 'termsInURL': 1.0}
+		gtMetricsStr = ','.join([str(round(y[1], 3)) for y in\
+                    sorted(gtMetrics.items())])
+                self.assertEqual(self.htmlFeatures.getTextFeature(qTermsMatch,self.url),gtMetricsStr)
 
 if __name__ == '__main__':
 	unittest.main()

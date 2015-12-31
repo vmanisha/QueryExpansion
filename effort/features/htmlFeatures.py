@@ -21,7 +21,7 @@ import numpy as np
 from utils import encodeUTF
 from effort.features.textFeatures import getDocMetrics, getQueryDocMetrics, getQueryCount
 from pattern.web import plaintext, URL
-
+import Queue
 
 class HtmlFeatures:
 
@@ -106,7 +106,16 @@ class HtmlFeatures:
     wordt = Counter(splitt)
     worda = Counter(splita)
 
-    outlinkFeat = {'aRatio': 0.0, 'tRatio': 0.0, 'atTxtRatio': 0.5}
+	# Remove words with length 1 (one letter, number or symbol).
+    for entry in wordt.keys():
+      if len(entry) <2:
+        del wordt[entry]
+
+    for entry in worda.keys():
+      if len(entry) <2:
+        del worda[entry]
+
+	outlinkFeat = {'aRatio': 0.0, 'tRatio': 0.0, 'atTxtRatio': 0.5}
 
     if aCount > 0:
       outlinkFeat['aRatio'] = len(worda) / aCount
@@ -168,7 +177,7 @@ class HtmlFeatures:
 
     #def outlinksToTagRatio(self):
 
-  def summaryTagSpan(self, queryTerms, qLen):
+  def summaryTagSpan(self, queryTerms):
     #if you know the sentence structure and tag structure
     #sentences = 0.0
     tagPos = 0.0
@@ -177,6 +186,8 @@ class HtmlFeatures:
     spanFeat = {'noSpan':0.0, 'avgSpanLen':0.0,'minSpanPos':0.0,\
 		'maxSpanPos':0.0,'meanSpanPos':0.0}
 
+    pos = 0.0
+    queryTerms = lowerCase(queryTerms)
     currWord = 0.0
     allTuples = []
     for ele in self.pObj.iter():
@@ -187,7 +198,7 @@ class HtmlFeatures:
       minBegin = -1.0
       minEnd = -1.0
       minWind = None
-
+      qLen = len(queryTerms)
       for entry in queryTerms:
         toFind[entry] = 1.0
         hasFound[entry] = 0.0
@@ -199,9 +210,7 @@ class HtmlFeatures:
         content = word_tokenize(ele.text)
         tlen = len(content)
         found = 0.0
-        #print content, tlen
         if len(ele.text.strip()) > qLen:
-          print tlen, end, ele.tag
           while end < tlen:
             eword = content[end]
             if eword not in toFind:
@@ -210,31 +219,25 @@ class HtmlFeatures:
             hasFound[eword] += 1.0
             if hasFound[eword] <= toFind[eword]:
               found += 1.0
-              print 'Just found ',eword, found, hasFound
-            print 'post update ',found, begin, end, hasFound
 
             if found == len(queryTerms):  #found all
               bword = content[begin]
-              print 'found = querylen ',found, bword, begin, hasFound
-              
               while (bword not in toFind) or (hasFound[bword] > toFind[bword]):
                 if bword in hasFound and hasFound[bword] > toFind[bword]:
                   hasFound[bword] -= 1.0
                 begin += 1
                 bword = content[begin]
-                print 'In while ',bword, begin, hasFound
               wind = end - begin + 1
-              print 'Found All ', wind, begin, end, bword, content[end], hasFound
-              if minWind > wind or not minWind:
+              if (sum(hasFound.values()) == sum(toFind.values())) and (minWind > wind or not minWind):
                 minWind = wind
                 minBegin = begin
                 minEnd = end
                 minTagPos.append(tagPos)
                 if str(ele.tag).startswith('a'):
                   minTag['spanA'] += 1.0
-                if str(ele.tag).startswith('h'):
+                elif str(ele.tag).startswith('h'):
                   minTag['spanH'] += 1.0
-                if str(ele.tag).startswith('b'):
+                elif str(ele.tag).startswith('b'):
                   minTag['spanB'] += 1.0
                 else:
                   minTag['others'] += 1.0
@@ -242,18 +245,15 @@ class HtmlFeatures:
           currWord += tlen
           if minWind:
             allTuples.append(minWind)
-            #print minWind, minBegin, minEnd , content[minBegin:minEnd+1]#, minTag, minTagPos		
-            #print allTuples, minTag, minTagPos
 
     try:
-      #print minTag, len(allTuples), queryTerms
-      if sum(minTag.values()) > 0:
+      totalSpans = sum(minTag.values())
+      if totalSpans > 0:
         for entry in minTag.keys():
-          minTag[entry] /= sum(minTag.values())
-
+          minTag[entry] /= totalSpans
       if len(allTuples) > 0:
         spanFeat['noSpan'] = len(allTuples)
-        spanFeat['avgSpanLen'] = round(np.mean(allTuples), 2)
+        spanFeat['avgSpanLen'] = round(np.mean(allTuples), 3)
 
       if len(minTagPos) > 0:
         spanFeat['minSpanPos'] = min(minTagPos) / tagPos
@@ -266,32 +266,37 @@ class HtmlFeatures:
                            for y in sorted(minTag.keys())])
     retString2 = ','.join([str(round(spanFeat[y], 3))
                            for y in sorted(spanFeat.keys())])
-
     return retString1 + ',' + retString2  #allTuples, minTag, minTagPos
+
 
   def tagCountAndPosition(self, tagPrefix, queryTerms):
     tagCount = {}
     tagPos = []
     tagFeat = {'count': 0.0, 'minPos': 0.0, 'maxPos': 0.0, 'meanPos': 0.0}
     pos = 0.0
+    queryTerms = lowerCase(queryTerms)
     for ele in self.pObj.iter():
       pos += 1
-
-      #TODO: check for children text of a node
       if str(ele.tag).startswith(tagPrefix) and ele.tag not in self.tagCountAndPositionAvoidTags:
-        if ele.text:
-          split = set(word_tokenize(ele.text.lower().strip()))
+        # Recursively get all the text of each child.
+        eleQueue = Queue.Queue()
+        eleQueue.put(ele)
+        allChildText = ''
+        while not eleQueue.empty():
+          qele = eleQueue.get()
+          if qele.text:
+            allChildText += qele.text +' '
+          for child in qele.iterchildren():
+            eleQueue.put(child)
+        if len(allChildText) > 1:
+          split = set(word_tokenize(allChildText.strip()))
           if len(queryTerms & split) > 0:
             if ele.tag not in tagCount:
               tagCount[ele.tag] = 0.0
             tagPos.append(pos)
             tagCount[ele.tag] += 1.0
 
-
     tagFeat['count'] = sum(tagCount.values())
-    print 'pos:',pos
-    print 'tagPos:',tagPos
-    print 'count:',sum(tagCount.values())
     if len(tagPos) > 0 and pos > 0:
       tagFeat['minPos'] = round(min(tagPos) / pos, 3)
       tagFeat['maxPos'] = round(max(tagPos) / pos, 3)
@@ -300,9 +305,11 @@ class HtmlFeatures:
     retString = ','.join([str(round(y[1], 3)) for y in sorted(tagFeat.items())])
     return retString
 
-  def getTextFeature(self, qTerms, url):
-    metrics = {'termsInTitle': 0.0, 'termsInURL': 0.0}
 
+  def getTextFeature(self, qTerms, url):
+    qTerms = lowerCase(qTerms)
+    metrics = {'termsInTitle': 0.0, 'termsInURL': 0.0}
+    url = url.lower()
     for term in qTerms:
       if term in url:
         metrics['termsInURL'] += 1.0
@@ -323,6 +330,12 @@ class HtmlFeatures:
 		','+self.tagCountAndPosition('h',set(qTerms))+','+\
 		self.tagCountAndPosition('a',set(qTerms))+','+\
 		self.getTextFeature(qTerms,url)
+
+def lowerCase(termList):
+    newList = set()
+    for entry in termList:
+      newList.add(entry.lower())
+    return newList
 
 '''
 argv[1] = file containing queries. Each line has query id and query.
