@@ -9,6 +9,7 @@
 #headings with query terms
 #summary tag span
 
+import argparse
 import sys
 import lxml.html as lh
 import urllib2
@@ -19,7 +20,7 @@ import tldextract
 from collections import Counter
 import numpy as np
 from utils import encodeUTF
-from effort.features.textFeatures import getDocMetrics, getQueryDocMetrics, getQueryCount
+from effort.features.textFeatures import getDocMetrics, getQueryDocMetrics, getQueryCount,stopSet
 from pattern.web import plaintext, URL
 import Queue
 
@@ -324,9 +325,9 @@ class HtmlFeatures:
                           for y in sorted(metrics.keys())])
     return retString
 
-  def getAllFeatures(self, url, qTerms, qLen):
+  def getAllFeatures(self, url, qTerms):
     return self.tagDistribution()+','+self.outlinksToTextRatio()+','+\
-		self.outlinksWithDiffDomain(url)+','+self.summaryTagSpan(qTerms, qLen)+\
+		self.outlinksWithDiffDomain(url)+','+self.summaryTagSpan(qTerms)+\
 		','+self.tagCountAndPosition('h',set(qTerms))+','+\
 		self.tagCountAndPosition('a',set(qTerms))+','+\
 		self.getTextFeature(qTerms,url)
@@ -337,101 +338,104 @@ def lowerCase(termList):
       newList.add(entry.lower())
     return newList
 
-'''
-argv[1] = file containing queries. Each line has query id and query.
-argv[2] = file containing query and url. Each line has query id and url.
-argv[3] = folder containing the html dump of urls.
-argv[4] = Output file containing the features.
-'''
-def main(argv):
-  queryUrlFeatures = None  #{}
+def writeFeatureHeader(oFile):
+  tagDist = {'h1':0,'h2':0,'h3':0,'h4':0,'h5':0,'h6':0,'table':0,\
+    		'div':0,'p':0,'b':0,'i':0,'a':0,'img':0,'li':0,'input':0,'strong':0}
+  outlinkDist = {'page': 0.0, 'same-domain': 0.0, 'diff-domain': 0.0}
+  outlinkFeat = {'aRatio': 0.0, 'tRatio': 0.0, 'atTxtRatio': 0.0}
+  minTag = {'spanA': 0.0, 'spanH': 0.0, 'spanB': 0.0, 'others': 0.0}
+  spanFeat = {'noSpan':0.0, 'avgSpanLen':0.0,'minSpanPos':0.0,\
+    		'maxSpanPos':0.0,'avgSpanPos':0.0}
+  metrics = {'queryFreq':0.0, 'avgTF':0.0,'minTF':0.0, 'maxTF':0.0,\
+    	'minQTermPos':0.0,'maxQTermPos':0.0,'avgQTermPos':0.0}
+  metricsT = {'termsInTitle': 0.0, 'termsInURL': 0.0}
+  oFile.write('query_id,doc_id,doc_rel,')
+  oFile.write( ','.join([x for x in sorted(tagDist.keys())]) + ',')
+  oFile.write( ','.join([x for x in sorted(outlinkFeat.keys())]) + ',')
+  oFile.write( ','.join([x for x in sorted(outlinkDist.keys())]) + ',')
+  oFile.write( ','.join([x for x in sorted(minTag.keys())]) + ',')
+  oFile.write( ','.join([x for x in sorted(spanFeat.keys())]) + ',')
+  for pre in ['A', 'H']:
+    tagFeat = {'count': 0.0, 'minPos': 0.0, 'maxPos': 0.0, 'meanPos': 0.0}
+    oFile.write( ','.join([x + pre for x in sorted(tagFeat.keys())]) + ',')
+  oFile.write(','.join([x for x in sorted(metricsT.keys())]) + ',')
+
+  for pre in ['doc_', 'sum_']:
+    textMetrics = {'sent':0.0, 'char':0.0,'words':0.0,'period':0.0,\
+    			'ARI':0.0,'CLI':0.0, 'LIX':0.0,'sentWithQueryTerm':0.0}
+    oFile.write( ','.join([pre + x for x in sorted(textMetrics.keys())]) +\
+            ',')
+  oFile.write(','.join([x for x in sorted(metrics.keys())]) + '\n')
+
+def main():
+  queryUrlFeatures = None
   pid = 0
+  parser = argparse.ArgumentParser(description='Given a corpus of documents,\
+          the module extracts both text (readability and others) and html\
+          oriented features.')
+  parser.add_argument('-t','--tsvFile', help ='File containing the\
+          following fields tab seperated: query-id, query-type, query,\
+          query description, doc-id, doc-relevance, doc-url, doc-text',required=True)
+
+  parser.add_argument('-k','--beginIndex', help ='Number of lines\
+          to skip before calculating features.',required=True)
+  parser.add_argument('-o','--outputFile', help ='Output file containing\
+          features of each document. Each line contains query-id, document-id,\
+          document features.',required=True)
 
   #user_agent = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_4; en-US) AppleWebKit/534.3 (KHTML, like Gecko) Chrome/6.0.472.63 Safari/534.3'
   #headers = { 'User-Agent' : user_agent }
 
-  #oFile = open('url_pid_mapping.txt','w')
-  fFile = open(argv[4], 'w')  #open('all_features_combined.txt','w')
-  k = -1
-
-  qMap = {}
-  for line in open(argv[1], 'r'):
-    split = line.strip().split('\t')
-    qMap[split[0]] = split[1]
-
-  #print string
-  for line in open(argv[2], 'r'):
-    split = line.split()
-    query = qMap[split[0].strip()]
-
+  pid = 0
+  qTermsMap = {}
+  args = parser.parse_args()
+  k = max(-1, args.beginIndex)
+  oFile = open(args.outputFile,'w')
+  writeFeatureHeader(oFile)
+  for line in open(args.tsvFile,'r'):
+    split = line.split('\t')
+    query_id = split[0]
+    query = split[2].lower()
+    doc_id = split[4].strip()
+    doc_rel = split[5]
+    doc_url = split[6]
+    doc_text = split[7]
+    if len(split) != 8:
+      raise StandardError('Invalid number of columns. There should be 8\
+                tab seperated columns on each line. ')
+      print pid
+      exit()
+    # Build map of id and query terms. 
     qTerms = []
-    for t in query.split():
-      if len(t.strip()) > 1:
-        qTerms.append(t)
-    link = split[1].strip()
-    key = query + '\t' + link
+    if query_id not in qTermsMap:
+      for t in query.split():
+        if len(t.strip()) > 1 and t not in stopSet:
+          qTerms.append(t.lower())
+      qTermsMap[query_id] = qTerms
+    else:
+      qTerms = qTermsMap[query_id]
 
-    if pid == 0:
-      #print line.strip(),
-      tagDist = {'h1':0,'h2':0,'h3':0,'h4':0,'h5':0,'h6':0,'table':0,\
-			'div':0,'p':0,'b':0,'i':0,'a':0,'img':0,'li':0,'input':0,'strong':0}
-      outlinkDist = {'page': 0.0, 'same-domain': 0.0, 'diff-domain': 0.0}
-      outlinkFeat = {'aRatio': 0.0, 'tRatio': 0.0, 'atTxtRatio': 0.0}
-      minTag = {'spanA': 0.0, 'spanH': 0.0, 'spanB': 0.0, 'others': 0.0}
-      spanFeat = {'noSpan':0.0, 'avgSpanLen':0.0,'minSpanPos':0.0,\
-			'maxSpanPos':0.0,'avgSpanPos':0.0}
-      metrics = {'queryFreq':0.0, 'avgTF':0.0,'minTF':0.0, 'maxTF':0.0,\
-			'minWPos':0.0,'maxWPos':0.0,'avgWPos':0.0}
-      metricsT = {'termsInTitle': 0.0, 'termsInURL': 0.0}
-
-      print ','.join([x for x in sorted(tagDist.keys())]) + ',',
-      print ','.join([x for x in sorted(outlinkFeat.keys())]) + ',',
-      print ','.join([x for x in sorted(outlinkDist.keys())]) + ',',
-      print ','.join([x for x in sorted(minTag.keys())]) + ',',
-      print ','.join([x for x in sorted(spanFeat.keys())]) + ',',
-      for pre in ['A', 'H']:
-        tagFeat = {'count': 0.0, 'minPos': 0.0, 'maxPos': 0.0, 'meanPos': 0.0}
-        print ','.join([x + pre for x in sorted(tagFeat.keys())]) + ',',
-      print ','.join([x for x in sorted(metricsT.keys())]) + ',',
-
-      for pre in ['doc_', 'sum_']:
-        textMetrics = {'sent':0.0, 'char':0.0,'words':0.0,'period':0.0,\
-				'ARI':0.0,'CLI':0.0, 'LIX':0.0,'sentWithQueryTerm':0.0}
-        print ','.join([pre + x for x in sorted(textMetrics.keys())]) + ',',
-      print ','.join([x for x in sorted(metrics.keys())]) + ',',
-
-      print
-      pid += 1
-      continue
-
-    #TODO: check for cases of sentences and query terms everywhere
-    if pid > k:
+    if pid >= k:
       try:
         #fetch the content
-
         #req = urllib2.Request(link,  None, headers)
         #response = urllib2.urlopen(req)
         #page = response.read()
         #page = encodeUTF(page)
-        page = open(argv[3] + '/' + link + '.txt', 'r').read()  #response.read()
-        page = encodeUTF(page).lower()
-
-        #open(argv[2]+'/'+str(pid)+'.txt','w').write(page)
-        #oFile.write(query+','+link+','+argv[2]+str(pid)+'.txt\n')
-
+        #page = open(argv[3] + '/' + link + '.txt', 'r').read()  #response.read()
         #page = open(link.strip(),'r').read()
+
+        page = encodeUTF(doc_text).lower()
+
         queryUrlFeatures = HtmlFeatures(page.lower())
-
-        toWrite = qMap[split[0]]+','+split[1]+','+ \
-				queryUrlFeatures.getAllFeatures(link,qTerms,len(query))
-
+        toWrite = query_id+','+ doc_id+',' + doc_rel+','+ \
+				queryUrlFeatures.getAllFeatures(doc_url,qTerms)
+        # Assuming the query is already in lowercase.
         pageText = plaintext(page)
         sentences = sent_tokenize(pageText)
-        #print link, len(pageText), len(sentences)
-        metrics = getDocMetrics(query.lower(), sentences)
-        queryDocMetrics = getQueryDocMetrics(query.lower(), sentences)
-        textMetrics = getQueryCount(query, sentences) #TODO: query.lower()?
-
+        metrics = getDocMetrics(query, sentences)
+        queryDocMetrics = getQueryDocMetrics(query, sentences)
+        textMetrics = getQueryCount(query, sentences)
         #print metrics, queryDocMetrics
         string = ','.join(str(round(val[1], 3))
                           for val in sorted(metrics.items()))
@@ -442,25 +446,16 @@ def main(argv):
         string += ','.join(str(round(val[1], 3))
                            for val in sorted(textMetrics.items()))
 
-        fFile.write(toWrite + ',' + string + '\n')
-
+        oFile.write(toWrite + ',' + string + '\n')
+        if pid %1000 == 0:
+          print 'Processed ', pid
         #print toWrite+','+string
       except Exception as ex:
-        print ex, '\tERROR\t', line
+        print ex, '\tERROR\t', pid
     pid += 1
   #writeFeatures(argv[2],queryUrlFeatures)
-  #oFile.close()
+  oFile.close()
 
 
 if __name__ == '__main__':
-  main(sys.argv)
-
-  #print splitt, splita, wordt, worda, len(splita),len(splitt), len(worda),len(wordt)
-  #print aCount/txtCount, len(splita)/(len(splitt)*1.0), len(worda)/(len(wordt)*1.0)
-  #retString = 'aCount:'+str(aCount)+'\ttxtCount:'+str(txtCount)+'\tuniqueA:'+\
-  #str(len(worda))+'\tallA:'+str(len(splita))+'\tuniqueT:'+ str(len(wordt))+\
-  #'\tallT:'+str(len(splitt))
-
-  #retString+= '\tminSpanPos:'+str(minT)+'\tmaxSpanPos:'+str(maxT)+\
-  #			'\tmeanSpanPos:'+str(round(np.mean(minTagPos),2))+\
-  #			'\tmedSpanPos:'+str(round(np.median(minTagPos),2))
+  main()

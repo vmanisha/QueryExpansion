@@ -74,27 +74,27 @@ def getQueryCount(queryText, sentences):
   for entry in queryText.split():
     if entry not in stopSet and len(entry) > 1:
       qHash[entry] = 0
-
   tid = 1
-  for sent in sentences:
-    sent = sent.lower()
-    if queryText in sent:
-      metrics['queryFreq'] += 1.0
-    for token in tokenize.word_tokenize(sent):
-      strToken = str(token)
+  try:
+    for sent in sentences:
+      sent = sent.lower()
+      if queryText in sent:
+        metrics['queryFreq'] += sent.count(queryText)
+      for strToken in tokenize.word_tokenize(sent):
+        if strToken in qHash:
+          qHash[strToken] += 1.0
+          pos.append(tid)
 
-      if strToken in qHash:
-        qHash[strToken] += 1.0
-        pos.append(tid)
-
-      tid += 1.0
+        tid += 1.0
+  except Exception as ex:
+	print ex
 
   #TODO: Check for removal of zero frequency q terms
   # for entry in qHash.keys():
   #   if qHash[entry] == 0:
   #     del qHash[entry]
-  
-  if len(qHash.values()) > 1:
+ 
+  if len(qHash.values()) > 0:
     metrics['avgTF'] = round(np.mean(qHash.values()),3)
     metrics['minTF'] = min(qHash.values())
     metrics['maxTF'] = max(qHash.values())
