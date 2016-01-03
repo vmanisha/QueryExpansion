@@ -1,5 +1,0 @@
-html features
-
-noSpan = no of snippets (shortest) in all tags in dom.
-avgSpanLen = Avg length of such spans.
-
