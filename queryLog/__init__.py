@@ -69,11 +69,13 @@ def parseLine(line, sep='\t'):
     entry[USER] = split[UIND]
     raw_split = re.sub(SYMB, ' ', split[QIND].lower()).split(' ')
     entry[QUERY] = filterStopWordsFromList(raw_split)
-    if 'T' in split[TIND]:
+    if ('T' in split[TIND]) and ('.' in split[TIND]):
+        entry[QTIME] = datetime.datetime.strptime(split[TIND],"%Y-%m-%dT%H:%M:%S.%f")  #np.datetime64(split[2])
+    elif 'T' in split[TIND]:
         entry[QTIME] = datetime.datetime.strptime(split[TIND].split('.')[0],"%Y-%m-%dT%H:%M:%S")  #np.datetime64(split[2])
     else: 
-      entry[QTIME] = datetime.datetime.strptime(split[TIND], '%Y-%m-%d %H:%M:%S')  #np.datetime64(split[2])
-    if len(split) > 3:
+        entry[QTIME] = datetime.datetime.strptime(split[TIND], '%Y-%m-%d %H:%M:%S')  #np.datetime64(split[2])
+    if len(split) > 4:
       try:
         entry[CLICKR] = int(split[CIND])
       except Exception as err:

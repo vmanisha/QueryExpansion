@@ -4,7 +4,7 @@ import argparse as ap
 from queryLog import getSessionTuples
 from queryLog import USER, QUERY, CLICKU
 from entity.tag.findEntitiesWithDexter import tagQueryWithDexter, getCatAndTypeInfo
-from utils import getNGramsAsList,getDictFromSet
+from utils import getNGramsAsList,getDictFromSet,encodeUTF
 from queryLog import filterStopWordsFromQuery
 #for each query in log do the following
 #store the clicked document
@@ -43,11 +43,11 @@ def main():
     boolUid = args.uid
 
     #load the category list
-    # dbCatList = loadCategories(args.catFile)
-    # print 'Categories',len(dbCatList)
+    dbCatList = loadCategories(args.catFile)
+    print 'Categories',len(dbCatList)
     #load the type list
-    # dbTypeList = loadInstancesInList(args.typeFile)
-    # print 'Types',len(dbTypeList)
+    dbTypeList = loadInstancesInList(args.typeFile)
+    print 'Types',len(dbTypeList)
 
     #query list
     queryList = {}
@@ -64,7 +64,6 @@ def main():
     #type list
     typeList = {}
 
-
     ipaddress = 'localhost'
 
     tagURL = 'http://'+ipaddress+':8080/dexter-webapp/api/rest/annotate'
@@ -72,7 +71,7 @@ def main():
     cqid = 1
     sid = 1
     qid = None
-    for session in getSessionTuples(args.iFile, ','):
+    for session in getSessionTuples(args.iFile, '\t'):
         print 'Session' , sid, len(session)
         for entry in session:
             query = entry[QUERY]
@@ -86,11 +85,11 @@ def main():
                     #given wtype find the following
                     if query not in queryList:
                         queryList[query] = cqid
-			qid = cqid
-			cqid+=1
-		    else:
-			qid = queryList[query]
-		    #print query, qid, queryList
+			            qid = cqid
+			            cqid+=1
+		            else:
+			            qid = queryList[query]
+		            #print query, qid, queryList
                     updateDict(sessionList,sid, qid)
 
                     if boolUid:
@@ -103,46 +102,38 @@ def main():
                             updateDict(categoryList,spot['cat'], qid)
                             updateDict(typeList,spot['type'], qid)
                             updateDict(entityList,str(spot['wikiname'].lower()),qid)
-			    #print qid, query, 'Cat',spot['cat'], categoryList[qid]
-			    #print qid, query, 'Type',spot['type'], typeList[qid]
 			    
-
                 if args.wtype == 'phrase':
                     for spot in updatedSpotDict['spots']:
-			splits = query.split(spot['mention'])
+			            splits = query.split(spot['mention'])
                         for split in splits:
-			    split = split.strip()
+			                split = split.strip()
                             #remove stop words
-			    split = filterStopWordsFromQuery(split)
+			                split = filterStopWordsFromQuery(split)
                             if len(split) > 1:
                                 if split not in queryList:
                                     queryList[split] = cqid
-                            	    qid = cqid
-				    cqid+=1
-				else:
-				    qid = queryList[split]
-                                updateDict(sessionList,sid, qid)
-
-                                if boolUid:
-                                    updateDict(userList, entry[USER], qid)
-                                if CLICKU in entry:
-                                    updateDict(urlList, entry[CLICKU],qid)
-				
-				if updatedSpotDict:
-                                    #for spot in updatedSpotDict['spots']:
-				    #print query, splits, spot['mention']
-                                    updateDict(categoryList,spot['cat'], qid)
-                                    updateDict(typeList,spot['type'], qid)
-				    #print qid, spot['wikiname'], entityList
-                                    updateDict(entityList,str(spot['wikiname'].lower()),qid)
-
+                	                qid = cqid
+				                    cqid+=1
+				                else:
+				                    qid = queryList[split]
+                                    updateDict(sessionList,sid, qid)
+                                    if boolUid:
+                                        updateDict(userList, entry[USER], qid)
+                                    if CLICKU in entry:
+                                        updateDict(urlList, entry[CLICKU],qid)
+				            if updatedSpotDict:
+                                #for spot in updatedSpotDict['spots']:
+				                #print query, splits, spot['mention']
+                                updateDict(categoryList,spot['cat'], qid)
+                                updateDict(typeList,spot['type'], qid)
+				                #print qid, spot['wikiname'], entityList
+                                updateDict(entityList,encodeUTF(spot['wikiname'].lower()),qid)
 
         sid+=1
 
-
         #write the features to the outfile
         outF = open(args.oFile,'w')
-
         for query, qid in queryList.items():
             outF.write(query)
             #generate ngrams
@@ -152,7 +143,6 @@ def main():
             outF.write('\t'+str(ngramString))
             #query vect = 2
             outF.write('\t'+str(queryVect))
-
 
             if qid in urlList:
                 outF.write('\t'+str(urlList[qid]))
