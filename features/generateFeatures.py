@@ -43,11 +43,11 @@ def main():
     boolUid = args.uid
 
     #load the category list
-    dbCatList = loadCategories(args.catFile)
-    print 'Categories',len(dbCatList)
+    # dbCatList = loadCategories(args.catFile)
+    # print 'Categories',len(dbCatList)
     #load the type list
-    dbTypeList = loadInstancesInList(args.typeFile)
-    print 'Types',len(dbTypeList)
+    # dbTypeList = loadInstancesInList(args.typeFile)
+    # print 'Types',len(dbTypeList)
 
     #query list
     queryList = {}
@@ -72,7 +72,7 @@ def main():
     cqid = 1
     sid = 1
     qid = None
-    for session in getSessionTuples(args.iFile):
+    for session in getSessionTuples(args.iFile, ','):
         print 'Session' , sid, len(session)
         for entry in session:
             query = entry[QUERY]

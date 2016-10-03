@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import ast, sys
 from queryLog import getSessionWithXML
-from utils.coOcManager import CoOcManager
-from utils.coOccurrence import CoOccurrence
+from utils.ds.coOcManager import CoOcManager
+from utils.ds.coOccurrence import CoOccurrence
 from entity.category.categoryManager import CategoryManager
-from entity.dexter import Dexter
-from entity.ranker import Ranker
+from entity.tag.dexter import Dexter
+from entity.expand.ranker import Ranker
 from entity.category import loadCategoryVector
-from entity.catThesExpansion import CatThesExpansion
+from entity.expand.catThesExpansion import CatThesExpansion
 from entity.category.category import Category
 from entity.category.categorySubcluster import CategorySubcluster
 from nltk import stem

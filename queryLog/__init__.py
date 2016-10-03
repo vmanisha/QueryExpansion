@@ -62,14 +62,17 @@ def getQuery(filename, index):
       print line,
 
 
-def parseLine(line):
+def parseLine(line, sep='\t'):
   entry = {}
-  split = line.strip().split('\t')
+  split = line.strip().split(sep)
   try:
-    entry[USER] = int(split[UIND])
+    entry[USER] = split[UIND]
     raw_split = re.sub(SYMB, ' ', split[QIND].lower()).split(' ')
     entry[QUERY] = filterStopWordsFromList(raw_split)
-    entry[QTIME] = datetime.datetime.strptime(split[TIND], '%Y-%m-%d %H:%M:%S')  #np.datetime64(split[2])
+    if 'T' in split[TIND]:
+        entry[QTIME] = datetime.datetime.strptime(split[TIND].split('.')[0],"%Y-%m-%dT%H:%M:%S")  #np.datetime64(split[2])
+    else: 
+      entry[QTIME] = datetime.datetime.strptime(split[TIND], '%Y-%m-%d %H:%M:%S')  #np.datetime64(split[2])
     if len(split) > 3:
       try:
         entry[CLICKR] = int(split[CIND])
@@ -78,7 +81,7 @@ def parseLine(line):
       entry[CLICKU] = split[CUIND].lower().strip()
     return entry
   except Exception as err:
-    print err
+    print line, err
     return {}
 
 
@@ -241,18 +244,17 @@ def getSessionWithNL(fileName):
   yield sid, session
 
 
-def getSessionTuples(fileName, timeCutoff=1500):
+def getSessionTuples(fileName, sep, timeCutoff=1500):
   session = []
   lastTime = lastQuery = None
 
   for line in open(fileName, 'r'):
-    split = line.strip().split('\t')
+    split = line.strip().split(sep)
     try:
-      entry = parseLine(line)
-      currTime = datetime.datetime.strptime(split[TIND], '%Y-%m-%d %H:%M:%S')  #np.datetime64(split[2])
-      query = split[QIND].strip().lower()
-      entry[QUERY] = query
-      raw_split = query.split(' ')
+      entry = parseLine(line,sep)
+      currTime = entry[QTIME] #np.datetime64(split[2])
+      query = entry[QUERY]
+      raw_split = entry[QUERY].split(' ')
       if not ((lastTime == None) or \
 			((currTime -lastTime).total_seconds()<timeCutoff)):
         #if len(session) > 1:

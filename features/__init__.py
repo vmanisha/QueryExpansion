@@ -2,7 +2,7 @@
 from queryLog import parseLine, hasAlpha, QUERY, CLICKU
 from utils import stopSet, ashleelString
 import sys, ast
-from utils.word import Word
+from utils.ds.word import Word
 from nltk.stem import porter
 from features.featureManager import FeatureManager
 
