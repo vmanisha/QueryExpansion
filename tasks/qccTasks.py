@@ -76,12 +76,6 @@ class QCCTasks:
     outFile.close()
 
 
-    #argv[1] = feature file
-    #argv[2] = session file
-    #argv[3] = outFile
-    #argv[4] = weight file
-    #Test normalize
-    #
 if __name__ == '__main__':
 
   parser = ap.ArgumentParser(description = 'Generate clusters of'+ \
@@ -110,6 +104,7 @@ if __name__ == '__main__':
 
   #stemmer = stem.porter.PorterStemmer()
   featMan.readFeatures(args.featFile)
+  # Loads the distance between two queries (i.e. 1-similarity)
   weightMatrix = readWeightMatrix(args.distFile)
 
   samePairsSet = differentPairsSet = None
@@ -170,47 +165,18 @@ if __name__ == '__main__':
       print tcount, met
     mergeMetrics(total_metrics_dict, metrics)
   computeAverageAndVarianceOfMetrics(args.algo, total_metrics_dict)
-  #qcc.writeWeights(labels,argv[4])
 
-  #reading and creating features
-  #load the features of queries
-  #for line in open(argv[1], 'r'):
-  #split = line.strip().split('\t')
-  #query = split[0].strip()
-  #nquery = normalize(query, stemmer);
-  #qVect = getDictFromSet(nquery.split())
-  #if len(qVect) > 0:
-  #ngrams = getNGramsAsList(nquery,2)
-  ##if len(ngrams) > 0:
-  ##    print query, ngrams
-  #userDict = extractFeatureTuple(split[1])
-  #urlDict = extractFeatureTuple(split[2],True)
-  #newDict = {}
-  #for entry, count in urlDict.items():
-  #if entry not in gurlDict:
-  #gurlDict[entry] = uid
-  #uid+=1
-  #newDict[gurlDict[entry]] = count;
-  #
-  #queryFeat = QueryFeature(ngrams, qVect, newDict, userDict)
-  #featMan.addFeature(nquery,qid, queryFeat)
-  #qid +=1
-  ##    else:
-  ##        print query
-  #featMan.writeFeatures(argv[4])
-  #
-                #qcos, ucos, userCos, sessionCos, ngramCos, entCos, \
-                #catCos,typeCos = qf1.findCosineDistance(qf2)
-                #qjac = qf1.findJacardDistance(qf2)
-                ##qedit = qf1.findEditDistance(qf2)
-                ##normalized distance
-                ##dist = (j - i)#*1.0/len(session)
-                ##oFile.write(str(qid1)+'\t'+str(qid2)+'\t'+\
-                ##str(round(qcos,2))+'\t'+str(round(qjac,2))+'\t'+\
-                ##str(round(ngramCos,2))+'\t'+str(round(userCos,2))+'\t' + \
-                ##str(round(entCos,2))+'\t'+ str(round(catCos,2))+\
-                ##'\t'+ str(round(sessionCos,2))+'\t'+ str(round(typeCos,2))+'\n')
-                #edgeScore = (15*((qcos + qjac )/2.0) +\
-                #12.5*ngramCos + 12.5*ucos + 15*sessionCos +\
-                #15*userCos + 10*entCos + 10*catCos+ 10*typeCos)
-
+  #qcos, ucos, userCos, sessionCos, ngramCos, entCos, \
+  #catCos,typeCos = qf1.findCosineDistance(qf2)
+  #qjac = qf1.findJacardDistance(qf2)
+  ##qedit = qf1.findEditDistance(qf2)
+  ##normalized distance
+  ##dist = (j - i)#*1.0/len(session)
+  ##oFile.write(str(qid1)+'\t'+str(qid2)+'\t'+\
+  ##str(round(qcos,2))+'\t'+str(round(qjac,2))+'\t'+\
+  ##str(round(ngramCos,2))+'\t'+str(round(userCos,2))+'\t' + \
+  ##str(round(entCos,2))+'\t'+ str(round(catCos,2))+\
+  ##'\t'+ str(round(sessionCos,2))+'\t'+ str(round(typeCos,2))+'\n')
+  #edgeScore = (15*((qcos + qjac )/2.0) +\
+  #12.5*ngramCos + 12.5*ucos + 15*sessionCos +\
+  #15*userCos + 10*entCos + 10*catCos+ 10*typeCos)

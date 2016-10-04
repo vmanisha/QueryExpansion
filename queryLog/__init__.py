@@ -278,17 +278,17 @@ def getSessionTuples(fileName, sep, timeCutoff=1500):
   yield session
 
 
-  #get user sessions with time difference
-def getSessionWithQuery(fileName, timeCutoff=1500):
+#get user sessions with only user queries.
+def getSessionWithQuery(fileName, timeCutoff=1500, sep='\t'):
   session = []
   lastUser = lastTime = lastQuery = None
 
   for line in open(fileName, 'r'):
-    split = line.strip().split('\t')
     try:
-      currTime = datetime.datetime.strptime(split[TIND], '%Y-%m-%d %H:%M:%S')  #np.datetime64(split[2])
-      query = split[QIND].strip().lower()
-      currUser = split[UIND].lower()
+      entry = parseLine(line,sep)
+      currTime = entry[QTIME] #datetime.datetime.strptime(split[TIND], '%Y-%m-%d %H:%M:%S')  #np.datetime64(split[2])
+      query = entry[QUERY]
+      currUser = entry[USER]
       raw_split = query.split(' ')
       if not ((lastTime == None) or \
 			((currTime -lastTime).total_seconds()<timeCutoff \
@@ -308,7 +308,7 @@ def getSessionWithQuery(fileName, timeCutoff=1500):
       lastTime = currTime
       lastQuery = query
     except Exception as err:
-      #	print line.strip(), query, err, err.args
+      print line.strip(), err, err.args
       pass
 
   yield session

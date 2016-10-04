@@ -5,7 +5,7 @@ import sys, ast
 from utils.ds.word import Word
 from nltk.stem import porter
 from features.featureManager import FeatureManager
-
+import argparse as ap
 
 def readWeightMatrix(fileName):
   weightMatrix = {}
@@ -134,13 +134,13 @@ def mergeQueryCountS(file1, file2):
     print entry, '\t', freq
 
 
-def findPairwiseDistance(iFile, file2):
+def findPairwiseDistance(featureFile, outFile):
   featMan = FeatureManager()
 
-  featMan.readFeatures(iFile)
+  featMan.readFeatures(featureFile)
   featDict = featMan.featureDict
 
-  oFile = open(file2, 'w')
+  oFile = open(outFile, 'w')
   #oFile1 = open('feature-wise-similarity.txt','w')
 
   ids = featDict.keys()
@@ -172,45 +172,18 @@ def findPairwiseDistance(iFile, file2):
   oFile.close()
 
 
-'''argv[1] = Query Log argv[2] = tagged File
-'''
-
-
 def main(argv):
+  parser = ap.ArgumentParser(description = 'Generate word level features and\
+          compute pairwise distance between two queries.')
+  parser.add_argument('-o', '--oFile', help='Output feature file', required=True)
+  parser.add_argument('-f', '--featureFile', help='File containing features', required=True)
+
+  args = parser.parse_args()
   #clickedInfo = loadClickedTerms(argv[1])
   #calWordFeatures(argv[2], clickedInfo)
   #mergeQueryCountS(argv[1],argv[2])
-  findPairwiseDistance(argv[1], argv[2])
+  findPairwiseDistance(args.featureFile, args.oFile)
 
 
 if __name__ == '__main__':
   main(sys.argv)
-'''#In the tagged logs for each term:
-
-        IN CATEGORY
-        #no of queries
-        #no of unique entities
-        #no of terms
-        #no of queries with clicks
-        #total entites
-        #is an entity
-        #max PMI
-        #avg PMI
-        #cat freq
-
-        OUTSIDE CATEGORY
-        #no of categories
-        #avg Cat Freq
-        #max Cat Freq
-        #no of queries with clicks
-        #no of entities
-        #no of terms
-        #no of queries
-        #is an entity
-        #no of unique entities
-        #max PMI
-        #avg PMI
-        #cat freq
-
-
-'''
