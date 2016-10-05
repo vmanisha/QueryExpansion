@@ -38,8 +38,6 @@ def generatePairs(item_list1, item_list2, featMan, output_list):
 
 def clusterAllWithKMeans(lowerLimit, upperLimit, featMan, weightMatrix,\
 					samePairsSet, differentPairsSet, outDir):
-	
-	#stemmer =  stem.porter.PorterStemmer()
 	metrics = {}
 	print len(weightMatrix)
 
@@ -51,7 +49,6 @@ def clusterAllWithKMeans(lowerLimit, upperLimit, featMan, weightMatrix,\
 		kmeans = KMeans(i,data,weightMatrix,5, 0.1)
 		kmeans.cluster();
 		clusters = kmeans.getClusters();
-		#means = kmeans.getMeans();
 		noClus =kmeans.getTermInNoCluster();
 		
 		if clusters:
@@ -64,8 +61,6 @@ def clusterAllWithKMeans(lowerLimit, upperLimit, featMan, weightMatrix,\
 					oFile.write(toString(entry,featMan)+'\n')
 			oFile.write('NO CLUST\t'+toString(noClus,featMan)+'\n');
 			oFile.close()
-			predicted_same_pairs, predicted_different_pairs = \
-						getPairLabelsFromClusters(clusters,featMan)
 			metrics[k] = getRecallPrecision(samePairsSet, \
 			differentPairsSet, predicted_same_pairs, predicted_different_pairs)
 	for tcount, met in metrics.items():
@@ -76,10 +71,8 @@ def clusterCatWithKMeans(lowerLimit, upperLimit, featMan, \
 						weightMatrix, samePairsSet, \
 						differentPairsSet, catQueryDist,\
 						outFile = 'cat-clusters-with-mean.txt'):
-	
 	metrics = {}
-	
-	for termCount in range(lowerLimit, upperLimit, 2):
+	for termCount in range(lowerLimit, upperLimit):
 		i = 1
 		fclusters = []
 		allCatClusters = []
@@ -90,13 +83,11 @@ def clusterCatWithKMeans(lowerLimit, upperLimit, featMan, \
 				if k == 0:
 					k = 1
 				print cat, len(qIdSet), k
-				
 				if k > 1:
 					kmeans = KMeans(k,list(qIdSet),weightMatrix,5, 0.1)
 					kmeans.cluster();
 					clusters = kmeans.getClusters();
 					noClus =kmeans.getTermInNoCluster();
-								
 					for entry in clusters:
 						if len(entry) > 1:
 							allCatClusters.append(entry)
@@ -133,7 +124,7 @@ def clusterAllWithKMediods(lowerLimit, upperLimit,\
 	
 	data = featMan.returnKeys()
 	weightList = getWeightMatrixForKMedFromFile(featMan.returnLastId(),\
-												weightFile,data)
+                weightFile,data)
 	#getWeightMatrixForKMed(data, weightMatrix)
 	print len(weightList)
 	metrics = {}
@@ -180,7 +171,7 @@ def clusterCatWithMediods(lowerLimit, upperLimit,featMan, weightMatrix, \
 	
 	oFile = open(outFile,'w')
 	metrics = {}
-	for noTerms in range(lowerLimit, upperLimit, 2):
+	for noTerms in range(lowerLimit, upperLimit):
 		#fclusters = []
 		cluster_list = []
 		i = 0
@@ -207,18 +198,16 @@ def clusterCatWithMediods(lowerLimit, upperLimit,featMan, weightMatrix, \
 					qStr = toString(entry,featMan)
 					#fclusters.append(qStr)
 					oFile.write(cat+'\t'+qStr+'\n');
-								
 				print 'Clust ',cat, len(clusters), error, opt
 				if i % 5 == 0:
 					print i
-					
 				i+=1	
 		predicted_same_pairs, predicted_different_pairs = \
 						getPairLabelsFromClusters(cluster_list,featMan)
 		metrics[noTerms] = getRecallPrecision(samePairsSet, \
-										differentPairsSet,\
-										predicted_same_pairs,\
-										predicted_different_pairs)	
+					differentPairsSet,\
+					predicted_same_pairs,\
+					predicted_different_pairs)	
 
 		oFile.close()
 	for tcount, met in metrics.items():
@@ -226,11 +215,11 @@ def clusterCatWithMediods(lowerLimit, upperLimit,featMan, weightMatrix, \
 	return metrics
 
 def clusterCatWithMediodsAndNetwork(threshold, \
-									lowerLimit, upperLimit, featMan, \
-									weightMatrix, samePairsSet, \
-									differentPairsSet, catQueryDist, \
-									catNetwork, \
-									outFile = 'cat-clusters-with-med.txt'):
+				    lowerLimit, upperLimit, featMan, \
+				    weightMatrix, samePairsSet, \
+				    differentPairsSet, catQueryDist, \
+				    catNetwork, \
+				    outFile = 'cat-clusters-with-med.txt'):
 	#cluster each cat find the outliers
 	#move them to parents
 	metrics = {}
@@ -247,7 +236,6 @@ def clusterCatWithMediodsAndNetwork(threshold, \
 				#print cat, len(qSet), k
 				qList = list(qSet)
 				catDist = getWeightMatrixForKMed(qList, weightMatrix)
-							
 				clusArray, error, opt = clust.kmedoids(catDist,k, 5, None)
 				#print 'Queries', qList
 				clusters = {}
@@ -262,24 +250,19 @@ def clusterCatWithMediodsAndNetwork(threshold, \
 					qStr = toString(entry,featMan)
 					oFile.write(cat+'\t'+qStr+'\n');
 					#fclusters.append(qStr)
-								
 				print 'Clust ',cat, len(clusters), error, opt
-				
 				if i % 50 == 0:
 					print i
-				i+=1	
+				i+=1
 		predicted_same_pairs, predicted_different_pairs = \
 						getPairLabelsFromClusters(cluster_list,featMan)
 		key = str(threshold)+'_'+str(noTerms)
 		metrics[key] = getRecallPrecision(samePairsSet, differentPairsSet,\
-										predicted_same_pairs,\
-										predicted_different_pairs)	
-
+			     		            predicted_same_pairs,\
+			     		            predicted_different_pairs)
 		oFile.close()
-		
 	for tcount, met in metrics.items():
 		print tcount, met
-	
 	return metrics
 
 def getWeightMatrixForKMedFromFile(count, fileName,data):
@@ -489,7 +472,7 @@ if __name__ == '__main__':
 	parser.add_argument('-p', '--pairLabelFile', help='Task labels for a'+\
 						' pair of queries, same_task and different_task',\
 						 required=False)
-	parser.add_argument('-t', '--ontFile', help='DBpedia ontology file', 						 required=False)
+	parser.add_argument('-t', '--ontFile', help='DBpedia ontology file', required=False)
 	
 	#argv = sys.argv
 	args = parser.parse_args()

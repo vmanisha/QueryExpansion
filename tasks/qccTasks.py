@@ -106,13 +106,13 @@ if __name__ == '__main__':
   featMan.readFeatures(args.featFile)
   # Loads the distance between two queries (i.e. 1-similarity)
   weightMatrix = readWeightMatrix(args.distFile)
-
+  print len(weightMatrix)
   samePairsSet = differentPairsSet = None
   if args.pairLabelFile:
     samePairsSet , differentPairsSet =   loadPairsFromFile(args.pairLabelFile)
 
   total_metrics_dict = {}
-  for threshold in np.arange(args.lowerLimit, args.upperLimit, 0.05):
+  for threshold in np.arange(args.lowerLimit, args.upperLimit, 0.02):
     sessCount = 0
     lastSes = None
     session = []

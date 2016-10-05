@@ -3,6 +3,15 @@ import random
 
 class KMeans:
 
+  '''
+   k = number of centers (i.e. number of clusters)
+   data = data points to cluster
+   distMatrix = Matrix containing similarity between two queries. 
+   iteration = Number of times to randomize. 
+   threshold = Threshold to stop clustering iterations. If difference between 
+   means generated between two iterations is less than threshold, the algorithm
+   terminates.
+  '''
   def __init__(self, k1, data1, distMatrix, iteration, threshold):
     self.k = k1
     self.data = data1

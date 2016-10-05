@@ -3,13 +3,13 @@ import ast, sys
 from queryLog import getSessionWithXML
 from utils.ds.coOcManager import CoOcManager
 from utils.ds.coOccurrence import CoOccurrence
-from entity.category.categoryManager import CategoryManager
+from entity.category.ds.categoryManager import CategoryManager
 from entity.tag.dexter import Dexter
 from entity.expand.ranker import Ranker
 from entity.category import loadCategoryVector
 from entity.expand.catThesExpansion import CatThesExpansion
-from entity.category.category import Category
-from entity.category.categorySubcluster import CategorySubcluster
+from entity.category.ds.category import Category
+from entity.category.ds.categorySubcluster import CategorySubcluster
 from nltk import stem
 from queryLog import normalize
 from utils import loadFileInList

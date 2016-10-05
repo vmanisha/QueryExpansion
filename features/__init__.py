@@ -164,7 +164,7 @@ def findPairwiseDistance(featureFile, outFile):
       edgeScore = (15*((qcos + qjac )/2.0) +\
 			12.5*ngramCos + 12.5*ucos + 15*sessionCos +\
 			15*userCos + 10*entCos + 10*catCos+ 10*typeCos)
-      if edgeScore > 25:
+      if edgeScore > 10:
         #print session[i], session[j], edgeScore, qcos, qjac, ucos, userCos, qedit
         #print qid1, qid2, round(edgeScore,3)
         oFile.write(
