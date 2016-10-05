@@ -4,7 +4,7 @@ import Pycluster as clust
 import numpy as np
 import random
 from entity.category import findCatQueryDist
-from clustering.build.kmean import KMeans
+from clustering.build.kmeans import KMeans
 from features import toString,readWeightMatrix
 from buildCategoryNetwork import returnFilteredNetwork
 from clustering.evaluate.external import getRecallPrecision

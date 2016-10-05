@@ -6,7 +6,7 @@ import json
 from utils import stopSet
 from features.featureManager import FeatureManager
 from nltk import stem
-from clustering.cluster import KMeans
+from build.kmeans import KMeans
 from queryLog import normalize
 import numpy as np
 import Pycluster as clust

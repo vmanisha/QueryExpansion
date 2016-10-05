@@ -119,14 +119,6 @@ if __name__ == '__main__':
     metrics = {}
     qcc = QCCTasks()
     for session in getSessionWithQuery(args.sessionFile):
-      newSession = []
-      if len(session) > 2:
-        newSession = []
-      for i in range(len(session) - 1):
-        qid1, qf1 = featMan.returnFeature(session[i])
-        if qf1:
-          newSession.append(session[i])
-      session = newSession
       #calculate the score
       for i in range(len(session) - 1):
         qid1, qf1 = featMan.returnFeature(session[i])
@@ -143,8 +135,6 @@ if __name__ == '__main__':
                   qcc.addEdge(qid1, qid2, edgeScore)
               except:
                 pass
-            else:
-              print 'Query feature error ', session[j]
         else:
             print 'Query feature error ', session[i]
       sessCount += 1

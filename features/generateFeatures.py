@@ -96,7 +96,7 @@ def main():
                     for spot in updatedSpotDict['spots']:
                         updateDict(categoryList,spot['cat'], qid)
                         updateDict(typeList,spot['type'], qid)
-                        updateDict(entityList,str(spot['wikiname'].lower()),qid)
+                        updateDict(entityList,encodeUTF(spot['wikiname'].lower()),qid)
 
             if args.wtype == 'phrase':
                 for spot in updatedSpotDict['spots']:
@@ -124,55 +124,53 @@ def main():
                                 updateDict(entityList,encodeUTF(spot['wikiname'].lower()),qid)
         sid+=1
 
-        #write the features to the outfile
-        outF = open(args.oFile,'w')
+    #write the features to the outfile
+    outF = open(args.oFile,'w')
 
-        for query, qid in queryList.items():
-            outF.write(query)
-            #generate ngrams
-            queryVect = getDictFromSet(query.split())
-            ngramString = getNGramsAsList(query,3)
-            #ngrams = 1
-            outF.write('\t'+str(ngramString))
-            #query vect = 2
-            outF.write('\t'+str(queryVect))
+    for query, qid in queryList.items():
+        outF.write(query)
+        #generate ngrams
+        queryVect = getDictFromSet(query.split())
+        ngramString = getNGramsAsList(query,3)
+        #ngrams = 1
+        outF.write('\t'+str(ngramString))
+        #query vect = 2
+        outF.write('\t'+str(queryVect))
 
 
-            if qid in urlList:
-                outF.write('\t'+str(urlList[qid]))
-            else:
-                outF.write('\t{}')
+        if qid in urlList:
+            outF.write('\t'+str(urlList[qid]))
+        else:
+            outF.write('\t{}')
 
-            if qid in userList:
-                if len(userList[qid]) > 0:
-                  print qid, userList[qid]
-                outF.write('\t'+str(userList[qid]))
-            else:
-                outF.write('\t{}')
+        if qid in userList:
+            outF.write('\t'+str(userList[qid]))
+        else:
+            outF.write('\t{}')
 
-            if qid in entityList:
-                outF.write('\t'+str(entityList[qid]))
-            else:
-                outF.write('\t{}')
+        if qid in entityList:
+            outF.write('\t'+str(entityList[qid]))
+        else:
+            outF.write('\t{}')
 
-            if qid in categoryList:
-                outF.write('\t'+str(categoryList[qid]))
-            else:
-                outF.write('\t{}')
+        if qid in categoryList:
+            outF.write('\t'+str(categoryList[qid]))
+        else:
+            outF.write('\t{}')
 
-            if qid in typeList:
-                outF.write('\t'+str(typeList[qid]))
-            else:
-                outF.write('\t{}')
+        if qid in typeList:
+            outF.write('\t'+str(typeList[qid]))
+        else:
+            outF.write('\t{}')
 
-            if qid in sessionList:
-                outF.write('\t'+str(sessionList[qid]))
-            else:
-                outF.write('\t{}')
+        if qid in sessionList:
+            outF.write('\t'+str(sessionList[qid]))
+        else:
+            outF.write('\t{}')
 
-            outF.write('\n')
+        outF.write('\n')
 
-        outF.close()
+    outF.close()
 
 if __name__ == '__main__':
     main()

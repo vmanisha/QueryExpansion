@@ -248,7 +248,7 @@ def getSessionWithNL(fileName):
 
 def getSessionTuples(fileName, sep, timeCutoff=1500):
   session = []
-  lastTime = lastQuery = None
+  lastUser = lastTime = lastQuery = None
 
   for line in open(fileName, 'r'):
     split = line.strip().split(sep)
@@ -256,9 +256,11 @@ def getSessionTuples(fileName, sep, timeCutoff=1500):
       entry = parseLine(line,sep)
       currTime = entry[QTIME] #np.datetime64(split[2])
       query = entry[QUERY]
+      currUser = entry[USER]
       raw_split = entry[QUERY].split(' ')
       if not ((lastTime == None) or \
-			((currTime -lastTime).total_seconds()<timeCutoff)):
+			((currTime -lastTime).total_seconds()<timeCutoff and \
+                        currUser == lastUser)):
         #if len(session) > 1:
         #print currTime, lastTime, (currTime - lastTime).total_seconds(), lastUser, currUser
         yield session
@@ -270,6 +272,7 @@ def getSessionTuples(fileName, sep, timeCutoff=1500):
 			and hasAlpha(query)):  # hasWebsite(query)):
         session.append(entry)
 
+      lastUser = currUser
       lastTime = currTime
       lastQuery = query
     except Exception as err:

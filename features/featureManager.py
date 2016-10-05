@@ -128,7 +128,7 @@ class FeatureManager:
     i = 1
     for line in open(fileName, 'r'):
       split = line.strip().split('\t')
-      query = self.filterWords(split[0])
+      query = split[0]#self.filterWords(split[0])
       typeList = ast.literal_eval(split[7])
       #if toFilter and query in toFilter:
       #query1, ngrams1, qVect, urlDict1, userDict1, sessionDict1 = 8, entDict1 = 5  \
