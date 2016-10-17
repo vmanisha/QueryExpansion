@@ -36,7 +36,7 @@ stopSet = set (['_CAT_','a','above','about','according','accordingly','after','a
 SYMB = '[^\w]+'
 SYMBreg = re.compile('[^\w]+')
 SYMB2 = re.compile('[\.\!\,\;\-\*\&\"\'\_\%\^\@\~\#\<\>\/\:\=\`\?\~\|]+')
-SYMB2_string = '[\.\!\,\;\-\*\&\"\'\_\%\^\@\~\#\<\>\/\:\=\`\?\~\|]+'
+SYMB2_string = '[\.\!\,\;\-\*\&\"\'\_\%\^\@\~\#\<\>\/\:\=\`\?\~\|\[\]\{\}\+\$]+'
 DIGIT = re.compile(r'\d')
 WORD = re.compile(r'\w+')
 WEB = re.compile(

@@ -4,7 +4,7 @@ import sys
 '''
 import numpy as np
 import datetime
-from utils import SYMB, SYMB2, WEB, ashleelString, stopSet
+from utils import SYMB, SYMB2_string, WEB, ashleelString, stopSet
 import re
 import os
 from lxml import etree
@@ -69,6 +69,7 @@ def parseLine(line, sep='\t'):
     entry[USER] = split[UIND]
     raw_split = re.sub(SYMB, ' ', split[QIND].lower()).split(' ')
     entry[QUERY] = filterStopWordsFromList(raw_split)
+    #print split[QIND],'-----', entry[QUERY]
     if ('T' in split[TIND]) and ('.' in split[TIND]):
         entry[QTIME] = datetime.datetime.strptime(split[TIND],"%Y-%m-%dT%H:%M:%S.%f")  #np.datetime64(split[2])
     elif 'T' in split[TIND]:
@@ -301,7 +302,7 @@ def getSessionWithQuery(fileName, timeCutoff=1500, sep='\t'):
         yield session
         session = []
 
-      if (lastTime != currTime or lastQuery != query) \
+      if (lastTime != currTime) and (lastQuery != query) \
 			and (not hasManyChars(query,raw_split,1,4,70) \
 			and not hasInapWords(raw_split) and not hasManyWords(raw_split,15,40) \
 			and hasAlpha(query)):  # hasWebsite(query)):

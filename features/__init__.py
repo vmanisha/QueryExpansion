@@ -141,7 +141,6 @@ def findPairwiseDistance(featureFile, outFile):
   featDict = featMan.featureDict
 
   oFile = open(outFile, 'w')
-  #oFile1 = open('feature-wise-similarity.txt','w')
 
   ids = featDict.keys()
   keys = sorted(ids)
@@ -154,21 +153,19 @@ def findPairwiseDistance(featureFile, outFile):
 			catCos,typeCos = qf1.findCosineDistance(qf2)
       qjac = qf1.findJacardDistance(qf2)
       #qedit = qf1.findEditDistance(qf2)
-      #normalized distance
-      #dist = (j - i)#*1.0/len(session)
-      #oFile1.write(str(qid1)+'\t'+str(qid2)+'\t'+\
-      #str(round(qcos,2))+'\t'+str(round(qjac,2))+'\t'+\
-      #str(round(ngramCos,2))+'\t'+str(round(userCos,2))+'\t' + \
-      #str(round(entCos,2))+'\t'+ str(round(catCos,2))+\
-      #'\t'+ str(round(sessionCos,2))+'\t'+ str(round(typeCos,2))+'\n')
       edgeScore = (15*((qcos + qjac )/2.0) +\
 			12.5*ngramCos + 12.5*ucos + 15*sessionCos +\
-			15*userCos + 10*entCos + 10*catCos+ 10*typeCos)
-      if edgeScore > 10:
-        #print session[i], session[j], edgeScore, qcos, qjac, ucos, userCos, qedit
-        #print qid1, qid2, round(edgeScore,3)
+			15*userCos + 10*entCos + 10*catCos+ 10*typeCos)/100.0
+      if edgeScore > 0.0:
         oFile.write(
-            str(qid1) + ' ' + str(qid2) + ' ' + str(round(edgeScore, 3)) + '\n')
+            #str(qid1) + ' ' + str(qid2) + ' ' + str(round(edgeScore, 3)) + '\n')
+            featMan.returnQuery(qid1) + '\t' + featMan.returnQuery(qid2) + '\t' + str(round(edgeScore, 3)) + '\n')
+        
+        #oFile1.write(str(qid1)+'\t'+str(qid2)+'\t'+\
+        #str(round(qcos,2))+'\t'+str(round(qjac,2))+'\t'+\
+        #str(round(ngramCos,2))+'\t'+str(round(userCos,2))+'\t' + \
+        #str(round(entCos,2))+'\t'+ str(round(catCos,2))+\
+        #'\t'+ str(round(sessionCos,2))+'\t'+ str(round(typeCos,2))+'\n')
   oFile.close()
 
 
