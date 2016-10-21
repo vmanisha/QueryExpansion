@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from dbPedia import loadCategories,loadInstancesInList
 import argparse as ap
-from queryLog import getSessionTuples
+from queryLog import getSessionWithQuery, getSessionTuples 
 from queryLog import USER, QUERY, CLICKU
 from entity.tag.findEntitiesWithDexter import tagQueryWithDexter, getCatAndTypeInfo
 from utils import getNGramsAsList,getDictFromSet, encodeUTF
@@ -43,10 +43,10 @@ def main():
 
     #load the category list
     dbCatList = loadCategories(args.catFile)
-    print 'Categories',len(dbCatList)
+    #print 'Categories',len(dbCatList)
     #load the type list
     dbTypeList = loadInstancesInList(args.typeFile)
-    print 'Types',len(dbTypeList)
+    #print 'Types',len(dbTypeList)
 
     #query list
     queryList = {}
@@ -69,18 +69,18 @@ def main():
     cqid = 1
     sid = 1
     qid = None
-    for session in getSessionTuples(args.iFile,'\t'):
-        print 'Session' , sid, len(session)
+    for session in getSessionTuples(args.iFile,'\t', 1560):
+        print 'Session id and length' , sid, len(session)
         for entry in session:
             query = entry[QUERY]
             #tag it with dexter and get all 3 parameters
             spotDict = tagQueryWithDexter(query,tagURL)
             if 'spots' in spotDict:
                 updatedSpotDict = getCatAndTypeInfo(spotDict,dbCatList, dbTypeList)
-
             if args.wtype == 'query':
                 #given wtype find the following
                 if query not in queryList:
+                    #print 'Mapping ', query , 'to ', cqid
                     queryList[query] = cqid
                     qid = cqid
                     cqid+=1

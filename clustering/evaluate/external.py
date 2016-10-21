@@ -20,9 +20,10 @@ def Recall(tp, fn):
   return tp / (1.0 * (tp + fn))
 
 
+
 def fMeasure(prec, recall):
-  beta = 5
-  pow2 = math.pow(beta, 2)
+  #beta = 5
+  #pow2 = math.pow(beta, 2)
   #return ((pow2+1.0)*( prec* recall))/(pow2*prec+recall)
   return 2.0 * ((prec * recall) / (prec + recall))
 
@@ -48,7 +49,7 @@ def loadPairs(queryId, fileName, labeledPoints, pairLabels):
       #	print normQuery
       #		pass
       #print 'True same ',normQuery
-      pairs = generatePairs(sorted(cpoints))
+      pairs = generatePairsFromList(sorted(cpoints))
 
     for pair in pairs:
       pairLabels.add(pair)
@@ -56,8 +57,8 @@ def loadPairs(queryId, fileName, labeledPoints, pairLabels):
 			
 	
 # each pair in these sets is sorted by alphabetical order.	
-# format : same_pairs_dict = set(query1+'\t'+query2)
-# format : different_pairs = set(query1+'\t'+query2)
+# format : same_pairs_set = set(query1+'\t'+query2)
+# format : different_pairs_set = set(query1+'\t'+query2)
 # format : predicted_same_pairs_set = set(query1+'\t'+query2)
 # format : predicted_different_pairs_set = set(query1+'\t'+query2)
 def calculateIndicesFromSets(same_pairs_set, different_pairs_set,
@@ -133,7 +134,7 @@ def calculateIndiciesFromFiles(trueLabelFile, differentPairFile, predictedLabelF
         except:
           #print entry
           pass
-      pairs = generatePairs(sorted(cpoints))
+      pairs = generatePairsFromList(sorted(cpoints))
       for pair in pairs:
         if pair in l_samePairs or pair in l_diffPairs:
           #if pair in l_diffPairs:
@@ -159,13 +160,17 @@ def calculateIndiciesFromFiles(trueLabelFile, differentPairFile, predictedLabelF
   return tp, fp, fn, tn, total_pairs
 
 
-def generatePairs(elist):
-  pairList = []
+def generatePairsFromList(elist, sep=' '):
+  pairList = set([])
   for i in range(len(elist) - 1):
     for j in range(i + 1, len(elist)):
       if elist[i] != elist[j]:
-        pairList.append(elist[i] + ' ' + elist[j])
-  return pairList
+        if elist[i] > elist[j]:
+          temp = elist[i]
+          elist[i] = elist[j]
+          elist[j]= temp
+        pairList.add(elist[i] + sep + elist[j])
+  return list(pairList)
 
 
 def printIndices(argv1, argv2, argv3):
@@ -180,23 +185,46 @@ def printIndices(argv1, argv2, argv3):
 
 def getRecallPrecision(true, diff, predicted_same, predicted_diff):
   tp, fp, fn, tn, totalPairs = calculateIndicesFromSets(true, diff, \
-  										predicted_same, predicted_diff)
+  				    predicted_same, predicted_diff)
   if tp > 0 and fp > 0 and fn > 0:
-	  rand = RandIndex(tp, tn, totalPairs)
-	  print 'Rand-Index ', rand
-	  recall = Recall(tp, fn)
-	  print 'Recall', recall
-	  prec = Precision(tp, fp)
-	  print 'Precision', prec
-	  print 'fMeasure', fMeasure(prec, recall)
-	
-	  return {'Rand-Index':rand, 'Recall':recall, 'Precision':prec,\
-	   'FMeasure:':fMeasure(prec, recall)}
+    rand = RandIndex(tp, tn, totalPairs)
+    print 'Rand-Index ', rand
+    recall = Recall(tp, fn)
+    print 'Recall', recall
+    prec = Precision(tp, fp)
+    print 'Precision', prec
+    print 'fMeasure', fMeasure(prec, recall)
+
+    return {'Rand-Index':rand, 'Recall':recall, 'Precision':prec,\
+        'FMeasure:':fMeasure(prec, recall)}
 
   return {'Rand-Index':0, 'Recall':0, 'Precision':0,'FMeasure:':0}
 
   #trueLabelFile,differentPairFile, predictedLabelFile, queryList
 
+'''
+Calculate Metrics: Precision, Recall and Precision on pair of queries marked on
+same task in ground truth and predicted by algorithm
+'''
+def getSamePairPrecisionRecallF1Calculator(ground_truth_same_pairs, predicted_same_pairs):
+    
+    print 'GT length and predict length', len(ground_truth_same_pairs), len(predicted_same_pairs)
+    
+    #print 'Predicted', predicted_same_pairs
+  
+    #print 'Ground truth', ground_truth_same_pairs
+    
+    precision = recall = f1_meas = 0
+    if len(predicted_same_pairs) > 0 and len(ground_truth_same_pairs) > 0:
+        precision = len(predicted_same_pairs & ground_truth_same_pairs) / \
+            (len(predicted_same_pairs)* 1.0)
+        recall = len(predicted_same_pairs & ground_truth_same_pairs) / \
+            (len(ground_truth_same_pairs)* 1.0)
+
+    if precision + recall > 0:
+        f1_meas = ((2* precision* recall) / (precision + recall))
+ 
+    return {'Rand-Index':0, 'Recall':recall, 'Precision': precision,'FMeasure:':f1_meas}
 
 if __name__ == '__main__':
   argv = sys.argv

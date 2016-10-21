@@ -25,12 +25,11 @@ class FeatureManager:
         key = self.idDict[query]
         #ngrams and query terms will remain the same
         self.featureDict[key].mergeFeature(feat)
-      #print 'Mergin query ', query
       #add new query
       else:
         self.idDict[query] = qid
         #self.qDict[qid] = query;
-
+        print 'Mapping', query, qid
         if qid not in self.featureDict:
           self.featureDict[qid] = feat
 

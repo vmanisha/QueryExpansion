@@ -7,6 +7,7 @@ import datetime
 from utils import SYMB, SYMB2_string, WEB, ashleelString, stopSet
 import re
 import os
+import sys
 from lxml import etree
 '''
                 AnonID - an anonymous user ID number.
@@ -69,7 +70,6 @@ def parseLine(line, sep='\t'):
     entry[USER] = split[UIND]
     raw_split = re.sub(SYMB, ' ', split[QIND].lower()).split(' ')
     entry[QUERY] = filterStopWordsFromList(raw_split)
-    #print split[QIND],'-----', entry[QUERY]
     if ('T' in split[TIND]) and ('.' in split[TIND]):
         entry[QTIME] = datetime.datetime.strptime(split[TIND],"%Y-%m-%dT%H:%M:%S.%f")  #np.datetime64(split[2])
     elif 'T' in split[TIND]:
@@ -81,10 +81,12 @@ def parseLine(line, sep='\t'):
         entry[CLICKR] = int(split[CIND])
       except Exception as err:
         print line, err
+        #sys.exit()
       entry[CLICKU] = split[CUIND].lower().strip()
     return entry
   except Exception as err:
-    print line, err
+    print 'Error in parse',line, err
+    #sys.exit()
     return {}
 
 
@@ -267,17 +269,20 @@ def getSessionTuples(fileName, sep, timeCutoff=1500):
         yield session
         session = []
 
-      if (lastTime != currTime or lastQuery != query) \
-			and (not hasManyChars(query,raw_split,1,4,70) \
+      if (lastTime != currTime) \
+			and (not hasManyChars(query,raw_split,1,2,70) \
 			and not hasInapWords(raw_split) and not hasManyWords(raw_split,15,40) \
 			and hasAlpha(query)):  # hasWebsite(query)):
         session.append(entry)
+      else:
+        print 'Not adding query to sesion',query, entry
 
       lastUser = currUser
       lastTime = currTime
       lastQuery = query
     except Exception as err:
-      #	print line.strip(), query, err, err.args
+      print 'ERROR', line.strip(), err, err.args
+      #sys.exit()
       pass
   yield session
 

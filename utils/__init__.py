@@ -10,7 +10,7 @@ import ast
 
 
 ashleelString = set (['sex','sexy','porn','horny','sexi','naked','pornstar','kiss','masturbation','porno','fucking','penis','shag', 'viagra','sexual'\
-				'dicks','dick','penus','boobs','breasts','boob','orgasm','pregnant','masturbate','fuck','nude','topless','boobs','nudes','vagina','xxx'\
+				'dicks','dick','penus','boobs','breasts','boob','orgasm','masturbate','fuck','nude','topless','boobs','nudes','vagina','xxx'\
 			'testicle','fucks','tits', 'boobies','whore','erotic', 'masturbating','nipple','nipples','cock','cocks','shagging','pussy','nudist'])
 
 stopSet = set (['_CAT_','a','above','about','according','accordingly','after','all','also','am','an','and','any','anything','are','as',\

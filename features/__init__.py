@@ -7,6 +7,32 @@ from nltk.stem import porter
 from features.featureManager import FeatureManager
 import argparse as ap
 
+
+'''
+Read the weight matrix of queries. Map queries to ids using FeatManager.
+'''
+def readWeightMatrixWithQueries(fileName, featManager, sep = '\t'):
+  weightMatrix = {}
+  for line in open(fileName, 'r'):
+    split = line.split(sep)
+    query1= split[0]
+    query2= split[1]
+    id1 = featManager.returnId(query1)
+    id2 = featManager.returnId(query2)
+    if id1 and id2:
+      # Get the id of query 
+      if id1 not in weightMatrix:
+        weightMatrix[id1] = {}
+      try:
+        weightMatrix[id1][id2] = 1.0 - round(float(split[-1]),4)# / 100.0, 2)
+        #print 'Adding--', query1, '---',query2, id1, id2, weightMatrix[id1][id2]
+      except:
+        print 'Error reading ', line
+    #else:
+    #  print 'Cant find', query1, id1, query2, id2
+  return weightMatrix
+
+
 def readWeightMatrix(fileName):
   weightMatrix = {}
   lbreak = False
@@ -154,8 +180,8 @@ def findPairwiseDistance(featureFile, outFile):
       qjac = qf1.findJacardDistance(qf2)
       #qedit = qf1.findEditDistance(qf2)
       edgeScore = (15*((qcos + qjac )/2.0) +\
-			12.5*ngramCos + 12.5*ucos + 15*sessionCos +\
-			15*userCos + 10*entCos + 10*catCos+ 10*typeCos)/100.0
+			12.5*ngramCos + 12.5*ucos + 20*sessionCos +\
+			20*userCos + 10*((entCos + catCos)/2.0) + 10*typeCos)/100.0
       if edgeScore > 0.0:
         oFile.write(
             #str(qid1) + ' ' + str(qid2) + ' ' + str(round(edgeScore, 3)) + '\n')
