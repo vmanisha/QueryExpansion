@@ -7,9 +7,25 @@ from entity.category import findCatQueryDist
 from clustering.build.kmeans import KMeans
 from features import toString,readWeightMatrix, readWeightMatrixWithQueries
 from buildCategoryNetwork import returnFilteredNetwork
-from clustering.evaluate.external import getRecallPrecision,getSamePairPrecisionRecallF1Calculator, generatePairsFromList
+from clustering.evaluate.external import F1SetCalculator, getRecallPrecision,getSamePairPrecisionRecallF1Calculator, generatePairsFromList
 import argparse as ap
 import sys
+
+
+def getSetBasedLabelsAndMetric(cluster_list,  allTaskDict, featMan):
+    fmeas_set = 0
+    task_size_total = 0
+
+    for task in cluster_list:
+        task_set = set([])
+        for qid in task:
+            task_set.add(featMan.returnQuery(qid))
+
+        # Get the fmeasure for task.
+        fmeas_set += len(task_set)* F1SetCalculator(allTaskDict, task_set)
+        task_size_total+= len(task_set)
+    return {"F-measure": fmeas_set/task_size_total,\
+            "total_task_queries":task_size_total, 'total_fmeas':fmeas_set}
 
 def getPairLabelsFromClusters(cluster_list, featMan):
 	samePairsSet = set()
@@ -126,7 +142,8 @@ def clusterCatWithKMeans(lowerLimit, upperLimit, featMan, \
 
 def clusterAllWithKMediods(lowerLimit, upperLimit,\
 				 featMan, weightMatrix, \
-                                 #weightFile, 
+                                 #weightFile,
+                                 allTaskDict, 
                                  samePairsSet, \
 				 differentPairsSet, outDir):
 	
@@ -178,8 +195,10 @@ def clusterAllWithKMediods(lowerLimit, upperLimit,\
 		#				differentPairsSet,\
 		#				predictedSamePairsSet,\
 		#				predictedDifferentPairsSet)	
-                metrics[k] = getSamePairPrecisionRecallF1Calculator(samePairsSet,\
-                                predictedSamePairsSet)
+                # metrics[k] = getSamePairPrecisionRecallF1Calculator(samePairsSet,\
+                #                predictedSamePairsSet)
+                metrics[k] = getSetBasedLabelsAndMetric(cluster_list,\
+                        allTaskDict, featMan)
 
 	for tcount, met in metrics.items():
 		print tcount, met
@@ -577,6 +596,7 @@ if __name__ == '__main__':
 	#metrics = {}
 	#metrics['pre-merge'] = getRecallPrecision(argv[6],argv[7],argv[4],argv[1])
 	samePairsSet = differentPairsSet = None
+        
 	if args.pairLabelFile:
 	    samePairsSet , differentPairsSet =\
 					loadPairsFromFile(args.pairLabelFile)
@@ -597,6 +617,7 @@ if __name__ == '__main__':
 			metrics = clusterAllWithKMediods(args.lowerLimit, args.upperLimit,\
 								featMan,weightMatrix,\
                                                                 #args.distFile, 
+                                                                task_label_dict,
                                                                 samePairsSet,\
 								differentPairsSet, args.outDir)
 			mergeMetrics(total_metrics_dict, metrics)

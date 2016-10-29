@@ -237,3 +237,41 @@ if __name__ == '__main__':
   prec = Precision(tp, fp)
   print 'Precision', prec
   print 'fMeasure', fMeasure(prec, recall)
+
+
+  
+'''
+all_tasks_ground_truth : A dictionary containing task-label-i : set(query1i, query2i .. query_{ni})
+predicted_task : A set of queries (query1, query2 ...) considered to be on same task.
+
+'''
+def F1SetCalculator(all_tasks_ground_truth, predicted_task):
+    all_task_fmeas = [0.0]
+   
+    # Should always be an array
+    predicted_set = set(predicted_task)
+ 
+    # Iterate over each task to find out the F-measure. 
+    for task, query_set in all_tasks_ground_truth.items():
+        # TP / (TP+FP)
+        
+        true_positives = len(query_set & predicted_set)
+        precision = 0
+        if len(predicted_set) > 0:
+           precision  = true_positives / (len(predicted_set) * 1.0)
+
+        # TP / (TP+FN)
+        recall =0
+        if len(query_set) > 0:
+            recall =  true_positives / (len(query_set) * 1.0)
+        prec_recall_sum = (precision + recall)
+
+        f_meas = 0
+        if prec_recall_sum > 0:
+          f_meas = ( 2.0 * precision * recall ) / prec_recall_sum
+
+        #print len(query_set), len(predicted_set), precision, recall, f_meas
+        all_task_fmeas.append(round(f_meas,4))
+    
+    return max(all_task_fmeas)
+
